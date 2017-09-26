@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.kasun.busysms.autoSms.updateTimeSlot"
+    android:background="@drawable/back">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Time From"
+        android:id="@+id/textView4"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/time_from"
+        android:layout_alignBottom="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/abc_primary_text_disable_only_material_dark" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Time To"
+        android:id="@+id/textView3"
+        android:layout_marginTop="32dp"
+        android:layout_below="@+id/textView4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/time_to"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignLeft="@+id/time_from"
+        android:layout_alignStart="@+id/time_from"
+        android:textColor="@color/abc_primary_text_disable_only_material_dark" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Repeat"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/time_to"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="57dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/repeat"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_alignLeft="@+id/time_to"
+        android:layout_alignStart="@+id/time_to"
+        android:textColor="@color/abc_primary_text_disable_only_material_dark" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/status"
+        android:textColor="@color/abc_primary_text_disable_only_material_dark"
+        android:hint="Status"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:padding="10dp"
+        android:background="@drawable/input_outline"
+        android:singleLine="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/messege"
+        android:layout_below="@+id/status"
+        android:layout_alignLeft="@+id/status"
+        android:layout_alignStart="@+id/status"
+        android:layout_marginTop="31dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/abc_primary_text_disable_only_material_dark"
+        android:hint="Message"
+        android:padding="10dp"
+        android:background="@drawable/input_outline"
+        android:singleLine="false" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Changers"
+        android:id="@+id/updateTimeSlot"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/button_draw"
+        android:textStyle="normal|bold"
+        android:textColor="@color/cardview_light_background" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SMS"
+        android:id="@+id/for_sms"
+        android:checked="false"
+        android:textColor="@color/abc_primary_text_disable_only_material_dark"
+        android:layout_below="@+id/messege"
+        android:layout_toRightOf="@+id/textView4"
+        android:layout_toEndOf="@+id/textView4" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CALL"
+        android:id="@+id/for_call"
+        android:checked="false"
+        android:textColor="@color/abc_primary_text_disable_only_material_dark"
+        android:layout_below="@+id/messege"
+        android:layout_alignLeft="@+id/enableSwitch"
+        android:layout_alignStart="@+id/enableSwitch" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="For"
+        android:id="@+id/textView"
+        android:layout_alignBottom="@+id/for_sms"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/enableSwitch"
+        android:checked="false"
+        android:layout_alignBottom="@+id/textView6"
+        android:layout_toRightOf="@+id/repeat"
+        android:textOff=""
+        android:textOn=""
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Activation"
+        android:id="@+id/textView6"
+        android:layout_above="@+id/updateTimeSlot"
+        android:layout_toLeftOf="@+id/for_sms"
+        android:layout_toStartOf="@+id/for_sms"
+        android:layout_marginBottom="15dp" />
+
+
+</RelativeLayout>
