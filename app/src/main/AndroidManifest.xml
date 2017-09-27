@@ -70,9 +70,30 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".alarmHome" android:parentActivityName=".home" />
-        <activity android:name=".blockerHome" android:parentActivityName=".home" />
-        <activity android:name=".calendarHome" android:parentActivityName=".home"></activity>
+        <activity
+            android:name=".alarmHome"
+            android:parentActivityName=".home" />
+        <activity
+            android:name=".blockerHome"
+            android:parentActivityName=".home" />
+        <activity
+            android:name=".taskCalendar.TaskCalendarHomeActivity"
+            android:label="@string/title_activity_task_calendar_home"
+            android:parentActivityName=".home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kasun.busysms.home" />
+        </activity>
+        <activity
+            android:name=".taskCalendar.ViewTaskActivity"
+            android:label="@string/title_activity_view_task"
+            android:parentActivityName=".taskCalendar.TaskCalendarHomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity" />
+        </activity>
     </application>
 
 </manifest>
