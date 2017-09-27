@@ -65,10 +65,22 @@
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/main_list"
         android:layout_below="@+id/textView9"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_height="350dp" />
+
+    <Button
+        android:text="Silent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button4"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/button_draw"
+        android:textStyle="normal|bold"
+        android:textColor="@color/cardview_light_background"/>
 
 </RelativeLayout>
