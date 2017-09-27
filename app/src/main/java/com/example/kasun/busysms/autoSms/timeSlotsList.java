@@ -12,6 +12,10 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -24,12 +28,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 public class timeSlotsList extends AppCompatActivity {
     Database_Helper mydb;
     ListView mylist1;
-
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
+    SimpleCursorAdapter simpleCursorAdapter;
     private GoogleApiClient client;
 
     @Override
@@ -40,6 +39,7 @@ public class timeSlotsList extends AppCompatActivity {
         mydb = new Database_Helper(this);
         mydb.open();
         populatelistView1();
+
         mylist1.setOnItemClickListener(onItemClickListener);
        //registerForContextMenu(mylist1);
 
@@ -145,7 +145,7 @@ public class timeSlotsList extends AppCompatActivity {
         String[] fromfilednames = new String[]{Database_Helper.COL2, Database_Helper.COL3, Database_Helper.COL9,Database_Helper.COL5};
         int[] toviewIds = new int[]{R.id.textView3, R.id.textView12 ,R.id.textView7,R.id.textView4};
 
-        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.time_slot_item_list, cursor, fromfilednames, toviewIds, 0);
+        simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.time_slot_item_list, cursor, fromfilednames, toviewIds, 0);
 
         mylist1.setAdapter(simpleCursorAdapter);
         if (cursor == null) {
@@ -216,4 +216,58 @@ public class timeSlotsList extends AppCompatActivity {
     }
 */
 
+    public void populatelistViewSearch(String key) {
+
+        //  Toast.makeText(this, "Call From:", Toast.LENGTH_LONG).show();
+        Cursor cursor = mydb.searchData(key);
+
+        // startManagingCursor(cursor);
+        String[] fromfilednames = new String[]{Database_Helper.COL2, Database_Helper.COL3, Database_Helper.COL9,Database_Helper.COL5};
+        int[] toviewIds = new int[]{R.id.textView3, R.id.textView12 ,R.id.textView7,R.id.textView4};
+
+        simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.time_slot_item_list, cursor, fromfilednames, toviewIds, 0);
+
+        mylist1.setAdapter(simpleCursorAdapter);
+        if (cursor == null) {
+            // wordtest1.setText("null");
+            // Toast.makeText(this, "Call From: null", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (cursor.getCount() == 0) {
+            Toast.makeText(this, "No Any SMS Record To Display", Toast.LENGTH_LONG).show();
+
+            //  wordtest1.setText("zero");
+            return;
+        }
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_menu, menu);
+        MenuItem item=menu.findItem(R.id.search);
+        SearchView searchView=(SearchView)item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                populatelistViewSearch(newText);
+               // simpleCursorAdapter.getFilter().filter(newText);
+                //simpleCursorAdapter.notifyDataSetChanged();
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
 }

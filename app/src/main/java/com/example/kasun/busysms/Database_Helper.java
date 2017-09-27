@@ -108,5 +108,9 @@ public class Database_Helper extends SQLiteOpenHelper {
         return true;
     }
 
-
+    public Cursor searchData(String key){
+        SQLiteDatabase db=this.getWritableDatabase();
+        Cursor c=db.rawQuery("select * from "+DATABASE_TABLE+" where "+COL4+" like '%"+key+"%'",null);
+        return  c;
+    }
 }
