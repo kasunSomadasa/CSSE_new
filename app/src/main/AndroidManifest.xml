@@ -94,6 +94,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity" />
         </activity>
+        <activity
+            android:name=".taskCalendar.AddTaskActivity"
+            android:label="@string/title_activity_add_task"
+            android:parentActivityName=".taskCalendar.TaskCalendarHomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity" />
+        </activity>
     </application>
 
 </manifest>
