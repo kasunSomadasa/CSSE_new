@@ -2,6 +2,7 @@ package com.example.kasun.busysms.autoSms;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.AudioManager;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +26,7 @@ public class autoSmsHome extends AppCompatActivity  {
     Database_Helper mydb;
     ListView mylist1;
 
-    Button btn2,btn3;
+    Button btn2,btn3,btn;
     TextView t1;
     AnalogClock clk;
 
@@ -45,6 +46,7 @@ public class autoSmsHome extends AppCompatActivity  {
 
         OnClickButtonListener1();
         OnClickButtonListener2();
+        OnClickButtonListener3();
         clk.animate();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
@@ -104,6 +106,22 @@ public class autoSmsHome extends AppCompatActivity  {
 
                         Intent intent = new Intent(autoSmsHome.this,addTimeSlot.class);
                         startActivity(intent);
+                    }
+                }
+        );
+
+    }
+
+    public void OnClickButtonListener3() {
+        btn = (Button) findViewById(R.id.silent_btn);
+        btn.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        AudioManager audioManager =(AudioManager)getSystemService(getApplicationContext().AUDIO_SERVICE);
+                        audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+
                     }
                 }
         );
