@@ -8,7 +8,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.example.kasun.busysms.autoSms.autoSmsHome;
+
+import com.example.kasun.busysms.autoSms.SmsHome;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class home extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 if(position == 0){
-                    Intent intent = new Intent(home.this,autoSmsHome.class);
+                    Intent intent = new Intent(home.this, SmsHome.class);
                     startActivity(intent);
                 }else if(position ==1){
                     Intent intent = new Intent(home.this,alarmHome.class);
@@ -63,32 +64,7 @@ public class home extends AppCompatActivity {
             }
         });
 
-      /*  GridView gridView=(GridView) findViewById(R.id.gridView);
-        gridView.setAdapter(new ImageAdapter(this));
 
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if(position == 0){
-                    Intent intent = new Intent(home.this,autoSmsHome.class);
-                    startActivity(intent);
-                }else if(position ==1){
-                    Intent intent = new Intent(home.this,alarmHome.class);
-                    startActivity(intent);
-                }else if(position ==2){
-                    Intent intent = new Intent(home.this,blockerHome.class);
-                    startActivity(intent);
-                }else{
-                    Intent intent = new Intent(home.this,calendarHome.class);
-                    startActivity(intent);
-                }
-            }
-        });
-
-
-*/
     }
 
 

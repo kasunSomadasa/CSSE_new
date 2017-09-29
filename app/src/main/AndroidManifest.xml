@@ -20,9 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".autoSms.autoSmsHome"
-            android:parentActivityName=".home" />
 
         <receiver android:name=".autoSms.mycallRecevier">
             <intent-filter>
@@ -70,9 +67,16 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".alarmHome" android:parentActivityName=".home" />
-        <activity android:name=".blockerHome" android:parentActivityName=".home" />
-        <activity android:name=".calendarHome" android:parentActivityName=".home"></activity>
+        <activity
+            android:name=".alarmHome"
+            android:parentActivityName=".home" />
+        <activity
+            android:name=".blockerHome"
+            android:parentActivityName=".home" />
+        <activity
+            android:name=".calendarHome"
+            android:parentActivityName=".home" />
+        <activity android:name=".autoSms.SmsHome"></activity>
     </application>
 
 </manifest>

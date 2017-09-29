@@ -1,5 +1,6 @@
 package com.example.kasun.busysms.autoSms;
 
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.AudioManager;
@@ -19,21 +20,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kasun.busysms.Database_Helper;
+
 import com.example.kasun.busysms.R;
 
-
-public class autoSmsHome extends AppCompatActivity  {
+public class SmsHome extends AppCompatActivity {
     Database_Helper mydb;
     ListView mylist1;
 
     Button btn2,btn3,btn;
     TextView t1;
     AnalogClock clk;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_auto_sms_home);
+        setContentView(R.layout.activity_sms_home);
 
         t1=(TextView)findViewById(R.id.textView9);
         t1.setVisibility(View.INVISIBLE);
@@ -43,16 +43,15 @@ public class autoSmsHome extends AppCompatActivity  {
         populatelistView1();
         mylist1.setOnItemClickListener(onItemClickListener);
         clk = (AnalogClock) findViewById(R.id.analogClock);
-
         OnClickButtonListener1();
         OnClickButtonListener2();
         OnClickButtonListener3();
         clk.animate();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
+        btn.setBackgroundResource(R.mipmap.ic_volume_up_white_24dp);
+    }
 
-
-   }
 
 
     @Override
@@ -72,11 +71,11 @@ public class autoSmsHome extends AppCompatActivity  {
         //noinspection SimplifiableIfStatement
         if (id == R.id.add_btn) {
 
-            Intent intent = new Intent(autoSmsHome.this,addTimeSlot.class);
+            Intent intent = new Intent(SmsHome.this,addTimeSlot.class);
             startActivity(intent);
             return true;
         }else if(id == R.id.log_btn){
-            Intent intent = new Intent(autoSmsHome.this,timeSlotsList.class);
+            Intent intent = new Intent(SmsHome.this,timeSlotsList.class);
             startActivity(intent);
             return true;
         }
@@ -90,7 +89,7 @@ public class autoSmsHome extends AppCompatActivity  {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(autoSmsHome.this,timeSlotsList.class);
+                        Intent intent = new Intent(SmsHome.this,timeSlotsList.class);
                         startActivity(intent);
                     }
                 }
@@ -104,7 +103,7 @@ public class autoSmsHome extends AppCompatActivity  {
                     @Override
                     public void onClick(View v) {
 
-                        Intent intent = new Intent(autoSmsHome.this,addTimeSlot.class);
+                        Intent intent = new Intent(SmsHome.this,addTimeSlot.class);
                         startActivity(intent);
                     }
                 }
@@ -120,8 +119,21 @@ public class autoSmsHome extends AppCompatActivity  {
                     public void onClick(View v) {
 
                         AudioManager audioManager =(AudioManager)getSystemService(getApplicationContext().AUDIO_SERVICE);
-                        audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 
+                        switch( audioManager.getRingerMode() ){
+                            case AudioManager.RINGER_MODE_NORMAL:
+                                btn.setBackgroundResource(R.mipmap.ic_vibration_white_24dp);
+                                audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+                                break;
+                            case AudioManager.RINGER_MODE_SILENT:
+                                btn.setBackgroundResource(R.mipmap.ic_volume_up_white_24dp);
+                                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                                break;
+                            case AudioManager.RINGER_MODE_VIBRATE:
+                                btn.setBackgroundResource(R.mipmap.ic_volume_off_white_24dp);
+                                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                                break;
+                        }
                     }
                 }
         );
@@ -142,12 +154,12 @@ public class autoSmsHome extends AppCompatActivity  {
         mylist1.setAdapter(simpleCursorAdapter);
         if (cursor == null) {
             // wordtest1.setText("null");
-           // Toast.makeText(this, "Call From: null", Toast.LENGTH_LONG).show();
+            // Toast.makeText(this, "Call From: null", Toast.LENGTH_LONG).show();
             return;
         }
         if (cursor.getCount() == 0) {
-           t1.setVisibility(View.VISIBLE);
-           t1.setText("No Any SMS Record To Display");
+            t1.setVisibility(View.VISIBLE);
+            t1.setText("No Any SMS Record To Display");
             Toast.makeText(this, "No Any SMS Record To Display ", Toast.LENGTH_LONG).show();
 
             //  wordtest1.setText("zero");
@@ -158,9 +170,7 @@ public class autoSmsHome extends AppCompatActivity  {
 
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(autoSmsHome.this, "Please Go To The LOG", Toast.LENGTH_LONG).show();
+            Toast.makeText(SmsHome.this, "Please Go To The LOG", Toast.LENGTH_LONG).show();
         }
     };
-
 }
-

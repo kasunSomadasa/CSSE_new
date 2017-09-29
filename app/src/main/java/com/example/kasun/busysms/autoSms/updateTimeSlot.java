@@ -287,7 +287,7 @@ public boolean checkIconShow(){
                                 Toast.makeText(updateTimeSlot.this, "Changers Are Not Saved", Toast.LENGTH_LONG).show();
                             }
 
-                            Intent i = new Intent(updateTimeSlot.this, autoSmsHome.class);
+                            Intent i = new Intent(updateTimeSlot.this, SmsHome.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
 

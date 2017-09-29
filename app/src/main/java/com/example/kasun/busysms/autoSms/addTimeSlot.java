@@ -233,7 +233,7 @@ private  TimePickerDialog.OnTimeSetListener tpikerListner1
                             } else {
                                 Toast.makeText(addTimeSlot.this, "Record Not Saved", Toast.LENGTH_LONG).show();
                             }
-                            Intent i = new Intent(addTimeSlot.this, autoSmsHome.class);
+                            Intent i = new Intent(addTimeSlot.this, SmsHome.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
                         } else {
