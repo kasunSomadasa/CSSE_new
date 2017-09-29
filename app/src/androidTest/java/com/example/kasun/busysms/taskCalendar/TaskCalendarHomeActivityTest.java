@@ -24,7 +24,6 @@ import static org.junit.Assert.assertNotNull;
 public class TaskCalendarHomeActivityTest {
     @Rule
     public ActivityTestRule<TaskCalendarHomeActivity> activityTestRule = new ActivityTestRule<TaskCalendarHomeActivity>(TaskCalendarHomeActivity.class);
-
     private TaskCalendarHomeActivity taskCalendarHomeActivity = null;
 
     @Before
