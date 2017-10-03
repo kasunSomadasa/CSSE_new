@@ -8,17 +8,14 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.kasun.busysms.alarmHome">
+    tools:context="com.example.kasun.busysms.alarm.alarmHome">
 
-    <TextView
-        android:text="sampath"
+    <Button
+        android:id="@+id/AddTimeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Alarm"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="131dp"
-        android:layout_marginStart="131dp"
-        android:layout_marginTop="90dp"
-        android:id="@+id/textView15" />
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
