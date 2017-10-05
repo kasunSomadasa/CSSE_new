@@ -85,7 +85,7 @@ public class setAlarm extends AppCompatActivity {
         sb.setMax(maxVolume);
         sb.setProgress(currVolume);
 
-       
+
         showTimeDialog();
         showDialogAlarmdays();
 

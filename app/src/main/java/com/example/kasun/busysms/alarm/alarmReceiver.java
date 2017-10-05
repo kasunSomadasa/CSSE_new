@@ -15,11 +15,6 @@ public class alarmReceiver extends BroadcastReceiver {
         // Toast.makeText(context,"Alarm is running.... ",Toast.LENGTH_LONG).show();
         Log.e("we are in the receiver","Hooo");
 
-        //start new intent when  alarm is triggering
-        Intent alarmTrggerIntent = new Intent();
-        alarmTrggerIntent.setClassName("com.example.kasun.busysms.alarm","com.example.kasun.busysms.alarm.alarmFire");
-        alarmTrggerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(alarmTrggerIntent);
 
 
         //fetch extra strings from the intent
@@ -44,10 +39,15 @@ public class alarmReceiver extends BroadcastReceiver {
         service_intent.putExtra("ringtoneChoice",get_ringtone_choice);
 
 
-        //start the rington service
+        //start the ringtone service
         context.startService(service_intent);
 
 
+        //start new intent when  alarm is triggering
+        Intent alarmTrggerIntent = new Intent();
+        alarmTrggerIntent.setClass(context,alarmFire.class);
+        alarmTrggerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(alarmTrggerIntent);
 
     }
 }
