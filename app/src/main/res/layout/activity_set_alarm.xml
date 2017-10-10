@@ -101,7 +101,7 @@
         android:text="Sound and Volume"
         android:textSize="17dp"
         android:textStyle="bold"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="@android:color/holo_red_dark"
         android:layout_below="@+id/view"
         android:layout_centerHorizontal="true" />
 
@@ -119,12 +119,14 @@
 
     <Spinner
         android:id="@+id/RingToneSpinner"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView21"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView21"
         android:layout_marginTop="5dp"
-        android:layout_alignParentStart="true" />
+        android:layout_toLeftOf="@+id/silent_on_off"
+        android:layout_toStartOf="@+id/silent_on_off" />
 
     <View
         android:id="@+id/view1"
@@ -164,15 +166,31 @@
         android:background="@android:color/darker_gray" />
 
     <TextView
-        android:id="@+id/snooze_times"
+        android:id="@+id/silent_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="21dp"
-        android:text="Snooze Duration"
-        android:layout_below="@+id/view2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/view2"
+        android:layout_marginTop="21dp"
+        android:text="Vibration"
         android:textSize="20dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
+
+    <Switch
+        android:id="@+id/silent_on_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/silent_mode"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <CheckBox
+        android:id="@+id/check_sound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView21" />
 
 </RelativeLayout>

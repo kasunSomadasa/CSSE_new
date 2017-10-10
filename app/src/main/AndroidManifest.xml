@@ -7,6 +7,13 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--<uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>-->
+    <!--<uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />-->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -88,8 +95,8 @@
         <receiver android:name=".alarm.alarmReceiver">
             <intent-filter>
                 <action android:name="com.example.kasun.busysms.alarm.alarmFire"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
         </receiver>
 
         <service
@@ -103,6 +110,7 @@
         <activity
             android:name=".calendarHome"
             android:parentActivityName=".home" />
+
         <activity android:name=".alarm.alarmFire"></activity>
     </application>
 

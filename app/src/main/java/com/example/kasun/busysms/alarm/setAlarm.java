@@ -6,9 +6,11 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
@@ -18,8 +20,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -38,12 +43,14 @@ public class setAlarm extends AppCompatActivity {
     AlarmManager alarm_Manager;
     AlertDialog ad;
     Context context;
-    int Cal_hour,Cal_minute;
+    int Cal_hour,Cal_minute,Cal_sec,Cal_day;
     String hour,min;
     int choose_ringtone;
     SeekBar sb;
     MediaPlayer mp;
     AudioManager am;
+    Switch switch_silent;
+    CheckBox checkSound;
 
 
     @Override
@@ -62,8 +69,13 @@ public class setAlarm extends AppCompatActivity {
 
         //create calendar instance
         final Calendar calendar = Calendar.getInstance();
+
         Cal_hour = calendar.get(Calendar.HOUR_OF_DAY);
         Cal_minute = calendar.get(Calendar.MINUTE);
+        Cal_sec = calendar.get(Calendar.SECOND);
+        Cal_day = calendar.get(Calendar.DAY_OF_WEEK); //sunday =1 , saturday =7
+
+
 
 
         //create an intent to the alam receiver class
@@ -80,14 +92,36 @@ public class setAlarm extends AppCompatActivity {
         //set volume seekbar value
         sb = (SeekBar) findViewById(R.id.seekBar);
         am = (AudioManager) getSystemService(AUDIO_SERVICE);
-        int maxVolume = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        final int maxVolume = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         int currVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
         sb.setMax(maxVolume);
         sb.setProgress(currVolume);
 
+//        preview sound
+        checkSound = (CheckBox) findViewById(R.id.check_sound);
 
+
+//        switch button set
+        switch_silent = (Switch) findViewById(R.id.silent_on_off);
+
+//        display time picker dialog and repeat days checkbox
         showTimeDialog();
         showDialogAlarmdays();
+
+//        switch method to enable silent mode or not
+        switch_silent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+//                    Toast.makeText(setAlarm.this,"Silent mode on",Toast.LENGTH_SHORT).show();
+                    am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+                }else{
+//                    Toast.makeText(setAlarm.this,"Silent mode off",Toast.LENGTH_SHORT).show();
+                    am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                }
+            }
+        });
+
 
         //start alarm
         Button alarm_start = (Button) findViewById(R.id.alarm_on);
@@ -97,6 +131,7 @@ public class setAlarm extends AppCompatActivity {
             public void onClick(View v) {
                 //Toast.makeText(setAlarm.this,hour+" : "+min, Toast.LENGTH_SHORT).show();
 
+                //celender set time
                 calendar.set(Calendar.HOUR_OF_DAY,Cal_hour);
                 calendar.set(Calendar.MINUTE,Cal_minute);
 
@@ -117,6 +152,12 @@ public class setAlarm extends AppCompatActivity {
                 //set the alarm manager
                 alarm_Manager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),
                         pending_intent);
+
+             //   alarm_Manager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pending_intent);
+
+
+
+
 
                 Toast.makeText(setAlarm.this,"Alarm is set...!", Toast.LENGTH_SHORT).show();
                 finish();
@@ -145,14 +186,14 @@ public class setAlarm extends AppCompatActivity {
 
                 //cancel the ringtone service
                 sendBroadcast(Alarm_intent);
-
                 finish();
+
             }
         });
 
 
         //create the spinner to get ringtone elements
-        Spinner spinner = (Spinner) findViewById(R.id.RingToneSpinner);
+        final Spinner spinner = (Spinner) findViewById(R.id.RingToneSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.ringtone_array, android.R.layout.simple_spinner_item);
@@ -168,41 +209,36 @@ public class setAlarm extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 choose_ringtone = (int) id;
                // Toast.makeText(setAlarm.this,"The selected choice is "+ id,Toast.LENGTH_SHORT).show();
-
                 String ringtSound = String.valueOf(parent.getItemAtPosition(position));
+
+//                check whether media player working or not
+                if (mp != null && mp.isPlaying()) {
+                    mp.stop();
+                }
                 //set ringtone options
                 switch (ringtSound) {
                     case "alarm Sound 1":
-                         mp = MediaPlayer.create(setAlarm.this, R.raw.wake_up);
+                        mp = MediaPlayer.create(setAlarm.this, R.raw.wake_up);
                         break;
                     case "alarm Sound 2":
-                        // mp.release();
                         mp = MediaPlayer.create(setAlarm.this, R.raw.alarm);
                         break;
                     case "alarm Sound 3":
-                        //mp.release();
                         mp = MediaPlayer.create(setAlarm.this, R.raw.wake_up_tone);
-
                         break;
                     case "alarm Sound 4":
-                        //mp.release();
                         mp = MediaPlayer.create(setAlarm.this, R.raw.sweet_alarm);
-
                         break;
                     case "alarm Sound 5":
-                        //mp.release();
                         mp = MediaPlayer.create(setAlarm.this, R.raw.morning_alarm);
-
                         break;
                     default:
                         break;
 
-                }if(mp != null ){
-                        mp.start();
-                    }
-
-
-
+//                    here ringtone start
+                }
+                if(mp!=null)
+                    mp.start();
             }
 
             @Override
@@ -211,24 +247,39 @@ public class setAlarm extends AppCompatActivity {
             }
         });
 
-    //seekbar methods for control volumes
-    sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            am.setStreamVolume(AudioManager.STREAM_MUSIC,progress,0);
-            //Toast.makeText(setAlarm.this,progress+"",Toast.LENGTH_SHORT).show();
-        }
+            //seekbar methods for control volumes
+            sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                am.setStreamVolume(AudioManager.STREAM_MUSIC,progress,0);
+                //Toast.makeText(setAlarm.this,progress+"",Toast.LENGTH_SHORT).show();
+            }
 
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-            //Toast.makeText(setAlarm.this,progess_value+"",Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //Toast.makeText(setAlarm.this,progess_value+"",Toast.LENGTH_SHORT).show();
+            }
 
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
 
-        }
-    });
+            }
+        });
+
+        checkSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+//                    Toast.makeText(setAlarm.this,"checked",Toast.LENGTH_SHORT).show();
+                    mp.stop();
+                    spinner.setEnabled(false);
+                }else{
+//                    Toast.makeText(setAlarm.this,"Unchecked",Toast.LENGTH_SHORT).show();
+                   // mp.stop();
+                    spinner.setEnabled(true);
+                }
+            }
+        });
 
 
 
@@ -331,9 +382,9 @@ public class setAlarm extends AppCompatActivity {
                 if(selections.equals("")){
                     showRepeatTxt.setText("Choose your days");
                 }else{
-                    showRepeatTxt.setText(selections);
+                   // showRepeatTxt.setText(selections);
                 }
-
+                   //Toast.makeText(setAlarm.this,selections, Toast.LENGTH_LONG).show();
             }
         });
         builder .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

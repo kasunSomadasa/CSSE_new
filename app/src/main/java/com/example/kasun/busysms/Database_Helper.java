@@ -24,6 +24,16 @@ public class Database_Helper extends SQLiteOpenHelper {
     public static final String COL9="ACTIVATION";
     public static final String[] allcol=new String[] {COL1,COL2,COL3,COL4,COL5,COL6,COL7,COL8,COL9};
 
+//    //    alarm table
+//    public static final String DATABASE_TABLE_ALARM ="Busy_alarm_info";
+//    public static final String ALARM_ID_COL="ID";
+//    public static final String ALARM_TIME_COL ="ALARM_TIME";
+//    public static final String ALARM_REPEAT_COL="ALARM_REPEAT";
+//    public static final String ALARM_SOUND_COL="ALARM_SOUND";
+//    public static final String ALARM_VOLUME_COL="ALARM_VOL";
+//    public static final String ALARM_SNOOZE_COL="ALARM_SNZ";
+
+
     public Database_Helper(Context context) {
         super(context, DATABASE_NAME, null, 3);
 
@@ -33,12 +43,20 @@ public class Database_Helper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE Busy_info (_id INTEGER PRIMARY KEY AUTOINCREMENT,TIME_FROM TEXT,TIME_TO TEXT,TYPE TEXT," +
                 "DAY TEXT,MSG TEXT,CALL_T TEXT,SMS_T TEXT,ACTIVATION TEXT)");
+//        create alarm_info table
+//        db.execSQL("CREATE TABLE Busy_alarm_info(ID INTEGER PRIMARY KEY AUTOINCREMENT, ALARM_TIME TEXT, ALARM_REPEAT TEXT, ALARM_SOUND TEXT, ALARM_VOL TEXT, ALARM_SNZ TEXT)");
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE);
         onCreate(db);
+
+//        check db is create is or not
+//        db.execSQL("DROP TABLE IF EXISTS" + DATABASE_TABLE_ALARM);
+//        onCreate(db);
+
     }
 
     public boolean insertData(String w1,String w2,String w3,String w4,String w5,String w6,String w7,String w8){

@@ -171,6 +171,7 @@ public class ringtonPlayingService extends Service {
 
         //set up an intent that goes to the setAlarm activity
         Intent notifyIntent = new Intent(this,setAlarm.class);
+//        Intent notifyIn = new Intent(this,alarmFire.class);
 
         //set up a pending intent
         PendingIntent pending_setAlarm_activity;
