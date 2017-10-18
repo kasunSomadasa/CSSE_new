@@ -13,47 +13,37 @@
 
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LOG"
         android:id="@+id/button2"
-        android:layout_below="@+id/analogClock"
-        android:layout_toLeftOf="@+id/button3"
-        android:layout_toStartOf="@+id/button3"
-        android:layout_marginRight="54dp"
-        android:layout_marginEnd="54dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/button_draw"
+        android:text="LOG"
+        android:textColor="@color/cardview_light_background"
         android:textStyle="normal|bold"
-        android:textColor="@color/cardview_light_background" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NEW"
-        android:id="@+id/button3"
-        android:background="@drawable/button_draw"
-        android:layout_below="@+id/analogClock"
-        android:layout_toLeftOf="@+id/textView8"
-        android:layout_toStartOf="@+id/textView8"
-        android:textStyle="normal|bold"
-        android:textColor="@color/cardview_light_background" />
-
-    <AnalogClock
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/analogClock"
-        android:layout_alignTop="@+id/textView8"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="KRS.App"
-        android:id="@+id/textView8"
         android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/textView9"
+        android:layout_alignStart="@+id/textView9"
+        android:layout_marginLeft="56dp"
+        android:layout_marginStart="56dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_draw"
+        android:text="NEW"
+        android:textColor="@color/cardview_light_background"
+        android:textStyle="normal|bold"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/textView9"
+        android:layout_alignEnd="@+id/textView9"
+        android:layout_marginRight="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -61,26 +51,33 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/textView9"
-        android:layout_below="@+id/button2"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/silent_btn"
         android:layout_centerHorizontal="true" />
 
     <ListView
         android:layout_width="wrap_content"
         android:id="@+id/main_list"
+        android:layout_height="match_parent"
+        android:paddingTop="5dp"
         android:layout_below="@+id/textView9"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_height="match_parent" />
+        android:layout_alignParentStart="true" />
+
 
     <Button
-        android:text=""
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/silent_btn"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentStart="false"
-        android:paddingTop="5dp"
-        android:paddingLeft="5dp" />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="silent"
+        android:padding="5dp"
+        android:drawableLeft="@mipmap/ic_vibration_white_24dp"
+        android:background="@drawable/button_draw"
+        android:textColor="@color/cardview_light_background"
+        android:layout_below="@+id/button2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="11dp"
+        android:textStyle="normal|bold"/>
 
 </RelativeLayout>

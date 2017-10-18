@@ -29,7 +29,7 @@ public class SmsHome extends AppCompatActivity {
 
     Button btn2,btn3,btn;
     TextView t1;
-    AnalogClock clk;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,14 +42,15 @@ public class SmsHome extends AppCompatActivity {
         mydb.open();
         populatelistView1();
         mylist1.setOnItemClickListener(onItemClickListener);
-        clk = (AnalogClock) findViewById(R.id.analogClock);
+
         OnClickButtonListener1();
         OnClickButtonListener2();
         OnClickButtonListener3();
-        clk.animate();
+        changeVolumeMode();
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
-        btn.setBackgroundResource(R.mipmap.ic_volume_up_white_24dp);
+
     }
 
 
@@ -111,29 +112,36 @@ public class SmsHome extends AppCompatActivity {
 
     }
 
+    public void changeVolumeMode(){
+        AudioManager audioManager =(AudioManager)getSystemService(getApplicationContext().AUDIO_SERVICE);
+
+        switch( audioManager.getRingerMode() ){
+            case AudioManager.RINGER_MODE_NORMAL:
+                btn.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_vibration_white_24dp, 0, 0, 0);
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+                btn.setText("VIBRATE");
+                break;
+            case AudioManager.RINGER_MODE_SILENT:
+                btn.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_volume_up_white_24dp, 0, 0, 0);
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                btn.setText("NORMAL");
+                break;
+            case AudioManager.RINGER_MODE_VIBRATE:
+                btn.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_volume_off_white_24dp, 0, 0, 0);
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                btn.setText("SILENT");
+                break;
+        }
+    }
+
     public void OnClickButtonListener3() {
         btn = (Button) findViewById(R.id.silent_btn);
         btn.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        changeVolumeMode();
 
-                        AudioManager audioManager =(AudioManager)getSystemService(getApplicationContext().AUDIO_SERVICE);
-
-                        switch( audioManager.getRingerMode() ){
-                            case AudioManager.RINGER_MODE_NORMAL:
-                                btn.setBackgroundResource(R.mipmap.ic_vibration_white_24dp);
-                                audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-                                break;
-                            case AudioManager.RINGER_MODE_SILENT:
-                                btn.setBackgroundResource(R.mipmap.ic_volume_up_white_24dp);
-                                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-                                break;
-                            case AudioManager.RINGER_MODE_VIBRATE:
-                                btn.setBackgroundResource(R.mipmap.ic_volume_off_white_24dp);
-                                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-                                break;
-                        }
                     }
                 }
         );

@@ -13,6 +13,8 @@ import android.database.Cursor;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -41,7 +43,7 @@ public class updateTimeSlot extends AppCompatActivity {
     Database_Helper mydb;
     AlertDialog ad;
     CheckBox c_call, c_sms;
-    Switch sw1;
+  //  Switch sw1;
 
 
     String txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9;
@@ -61,7 +63,7 @@ public class updateTimeSlot extends AppCompatActivity {
         tx2 = (TextView) findViewById(R.id.time_to);
         tx3 = (TextView) findViewById(R.id.repeat);
         btn = (Button) findViewById(R.id.updateTimeSlot);
-        sw1 = (Switch) findViewById(R.id.enableSwitch);
+      //  sw1 = (Switch) findViewById(R.id.enableSwitch);
         showDialogTime1();
         showDialogTime2();
         showDialogdays();
@@ -85,7 +87,7 @@ public class updateTimeSlot extends AppCompatActivity {
         e2.setText(txt4);
         e1.setText(txt6);
         setCheck();
-        Switch_test();
+      //  Switch_test();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -115,7 +117,7 @@ public boolean checkIconShow(){
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)//R.mipmap.ic_launcher-->for app icon
-                .setContentTitle("Busy SMS Activated");
+                .setContentTitle("Auto SMS Activated");
         Intent resultIntent = new Intent(this, addTimeSlot.class);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 this,
@@ -314,7 +316,7 @@ public boolean checkIconShow(){
             c_sms.setChecked(false);
             checksms = "false";
         }
-
+/*
         if(txt9.equals("Active")){
             sw1.setChecked(true);
             checkactive="Active";
@@ -322,6 +324,8 @@ public boolean checkIconShow(){
             sw1.setChecked(false);
             checkactive="Deactive";
         }
+
+        */
     }
 
     public void addListenerOnChkIos() {
@@ -357,6 +361,7 @@ public boolean checkIconShow(){
         });
 
     }
+    /*
     public void Switch_test() {
         sw1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -376,6 +381,38 @@ public boolean checkIconShow(){
         });
 
     }
+    */
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.switch_menu,menu);
+
+        MenuItem menuItem =menu.findItem(R.id.switchView);
+        menuItem.setActionView(R.layout.use_switch);
+       final Switch sw= (Switch) menu.findItem(R.id.switchView).getActionView().findViewById(R.id.action_switch);
 
 
+        if(txt9.equals("Active")){
+            sw.setChecked(true);
+            checkactive="Active";
+        }else {
+            sw.setChecked(false);
+            checkactive="Deactive";
+        }
+
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    checkactive="Active";
+                    Toast.makeText(updateTimeSlot.this, "Active", Toast.LENGTH_LONG).show();
+                } else {
+                    checkactive="Deactive";
+                    Toast.makeText(updateTimeSlot.this, "Deactive", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        return true;
+    }
 }
