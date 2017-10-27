@@ -12,6 +12,7 @@ import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getDateOfDate
 import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getDateOfTime;
 import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getDateString;
 import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getDayOf;
+import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getFormatedTimeString;
 import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getFormattedDateString;
 import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getMonthOf;
 import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getTimeString;
@@ -142,7 +143,7 @@ public class DateExTest {
 
     @Test
     public void testGetFormatedTimeString() throws Exception {
-        assertEquals("08:02", getFormattedDateString("8:2"));
+        assertEquals("08:02", getFormatedTimeString("8:2"));
     }
 
 }
