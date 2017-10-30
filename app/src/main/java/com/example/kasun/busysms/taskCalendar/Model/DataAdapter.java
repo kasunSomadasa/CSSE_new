@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.kasun.busysms.R;
-import com.example.kasun.busysms.taskCalendar.Database.TaskDB;
 import com.example.kasun.busysms.taskCalendar.Helper.DateEx;
 import com.example.kasun.busysms.taskCalendar.Helper.ReminderActivator;
 import com.example.kasun.busysms.taskCalendar.UpdateTaskActivity;
@@ -49,7 +48,6 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder>{
         holder.txtTaskLocation.setText(task.getTask_location());
         holder.txtTaskDate.setText(task.getTask_date().toString());
         holder.txtTaskStartTime.setText(task.getTask_start().toString());
-        final String taskName = task.getTask_name();
         final int taskId = task.getTask_id();
 
         holder.view.setOnClickListener(new View.OnClickListener() {
@@ -100,8 +98,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder>{
                             context.startActivity(intent);
                             notifyItemChanged(holder.getAdapterPosition());
                         }else if(item.getItemId() == R.id.menuItem_removeTask){
-                            TaskDB taskDB = new TaskDB(context);
-                            if(taskDB.delete(taskId)){
+                            if(Task.removeTaskFromDB(context, taskId)){
                                 ReminderActivator.suspendReminder(context, tasks.get(holder.getAdapterPosition()));
                                 tasks.remove(holder.getAdapterPosition());
                                 notifyItemRemoved(holder.getAdapterPosition());

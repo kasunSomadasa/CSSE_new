@@ -23,7 +23,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.kasun.busysms.R;
-import com.example.kasun.busysms.taskCalendar.Database.TaskDB;
 import com.example.kasun.busysms.taskCalendar.Helper.DateEx;
 import com.example.kasun.busysms.taskCalendar.Helper.ReminderActivator;
 import com.example.kasun.busysms.taskCalendar.Model.Task;
@@ -273,8 +272,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     Snackbar.make(view, "Cannot set reminders for past events", Snackbar.LENGTH_LONG)
                             .setAction("OK", null).show();
                 }else{
-                    TaskDB taskDB = new TaskDB(AddTaskActivity.this);
-                    if(taskDB.insert(task)){
+                    if(Task.addTaskToDB(AddTaskActivity.this, task)){
                         ReminderActivator.runActivator(AddTaskActivity.this, task);
                         Toast.makeText(AddTaskActivity.this, "Reminder added successfully", Toast.LENGTH_SHORT).show();
                         finish();

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.example.kasun.busysms.taskCalendar.Database.TaskDB;
+import com.example.kasun.busysms.Database_Helper;
 import com.example.kasun.busysms.taskCalendar.Helper.DateEx;
 
 import java.io.Serializable;
@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Created by Nishan on 9/27/2017.
- * @version 4.0
+ * @version 4.5
  * @author Nishan
  */
 
@@ -153,8 +153,8 @@ public class Task implements Serializable{
 
     public static List<Task> getAllTasks(Context context){
         List<Task> tasks = new ArrayList<>();
-        TaskDB taskDB = new TaskDB(context);
-        Cursor cursor = taskDB.selectAll();
+        Database_Helper taskDB = new Database_Helper(context);
+        Cursor cursor = taskDB.task_selectAll();
         while (cursor.moveToNext()) {
             Task tempTask = new Task();
             tempTask.setTask_id(cursor.getInt(0));
@@ -182,8 +182,8 @@ public class Task implements Serializable{
 
     public static Task getTaskById(int taskId, Context context){
         Task tempTask = new Task();
-        TaskDB taskDB = new TaskDB(context);
-        Cursor cursor = taskDB.selectByTaskId(taskId);
+        Database_Helper taskDB = new Database_Helper(context);
+        Cursor cursor = taskDB.task_selectByTaskId(taskId);
         while (cursor.moveToNext()) {
             tempTask.setTask_id(cursor.getInt(0));
             tempTask.setTask_name(cursor.getString(1));
@@ -206,8 +206,8 @@ public class Task implements Serializable{
 
     public static List<Task> getTasksByDate(Context context, String dateString){
         List<Task> tasks = new ArrayList<>();
-        TaskDB taskDB = new TaskDB(context);
-        Cursor cursor = taskDB.selectByDate(dateString);
+        Database_Helper taskDB = new Database_Helper(context);
+        Cursor cursor = taskDB.task_selectByDate(dateString);
         while (cursor.moveToNext()) {
             Task tempTask = new Task();
             tempTask.setTask_id(cursor.getInt(0));
@@ -233,8 +233,8 @@ public class Task implements Serializable{
 
     public static List<Task> getTasksByDateRange(Context context, String startDateString, String endDateString){
         List<Task> tasks = new ArrayList<>();
-        TaskDB taskDB = new TaskDB(context);
-        Cursor cursor = taskDB.selectBetweenDate(startDateString, endDateString);
+        Database_Helper taskDB = new Database_Helper(context);
+        Cursor cursor = taskDB.task_selectBetweenDate(startDateString, endDateString);
         while (cursor.moveToNext()) {
             Task tempTask = new Task();
             tempTask.setTask_id(cursor.getInt(0));
@@ -255,5 +255,20 @@ public class Task implements Serializable{
             tasks.add(tempTask);
         }
         return tasks;
+    }
+
+    public static boolean updateTaskInDB(Context context, Task newTask, int oldTaskId){
+        Database_Helper taskDB = new Database_Helper(context);
+        return taskDB.task_update(newTask, oldTaskId);
+    }
+
+    public static boolean addTaskToDB(Context context, Task task){
+        Database_Helper taskDB = new Database_Helper(context);
+        return taskDB.task_insert(task);
+    }
+
+    public static boolean removeTaskFromDB(Context context, int taskId){
+        Database_Helper taskDB = new Database_Helper(context);
+        return taskDB.task_delete(taskId);
     }
 }

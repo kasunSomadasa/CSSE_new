@@ -16,7 +16,7 @@ import com.example.kasun.busysms.taskCalendar.Model.Task;
  * @author Nishan
  */
 
-public class TaskDB extends SQLiteOpenHelper {
+public abstract class TaskDB extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Tasks.db";
     private static final String TABLE_NAME = "Tasks";
     private static final String COL_1 = "task_id";
