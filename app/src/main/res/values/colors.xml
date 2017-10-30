@@ -3,4 +3,8 @@
     <color name="colorPrimary">#323339</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#ac6a81</color>
+    <color name="fab_plus_color">#3787ce</color>
+    <color name="fab_cont_list_color">#ce6737</color>
+    <color name="fab_log_color">#215cf2</color>
+    <color name="fab_add_color">#38b559</color>
 </resources>

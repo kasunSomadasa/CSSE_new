@@ -4,19 +4,19 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Bundle;
-
-import java.util.ArrayList;
 
 /**
  * Created by Kasun on 11/16/2016.
  */
 public class Database_Helper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME="BUSY.db";
-    public static final String DATABASE_TABLE="Busy_info";
+    private static final String DATABASE_NAME="BUSY.db";
+    private static final String DATABASE_TABLE="Busy_info";
+    private static final String CALLBLOCKER_TABLE = "CALLBLOCKER";
+    private static final String CALLBLOCKER_HISTORY_TABLE = "CALLBLOCKERHISTORY";
+
+    //auto sms table columns
     public static final String COL1="_id";
     public static final String COL2="TIME_FROM";
     public static final String COL3="TIME_TO";
@@ -26,18 +26,22 @@ public class Database_Helper extends SQLiteOpenHelper {
     public static final String COL7="CALL_T";
     public static final String COL8="SMS_T";
     public static final String COL9="ACTIVATION";
+
+    //callblocker table columns
+    private static final String COL_NAME = "_name";
+    private static final String COL_NUMBER = "_number";
+    private static final String COL_MSG = "_msg";
+    private static final String COL_CALL = "_call";
+
+    //call blocker history table
+    private static final String COL_BLOCKED_NUMBER = "_blockedNumber";
+    private static final String COL_BLOCKED_DATE = "_blockedDate";
+
+    private SQLiteDatabase db;
+
     public static final String[] allcol=new String[] {COL1,COL2,COL3,COL4,COL5,COL6,COL7,COL8,COL9};
-
-    //call blocker
-    public static final String COL_ID = "_id";
-    public static final String COL_NUM = "NUMBER";
-    public static final String COL_MSG = "MESSAGE";
-    public static final String COL_CALL = "CALL";
-    private static final String CALL_BLOCKER_DATABASE_TABLE = "callBlockTB";
-
-    private Database_Helper Helper;
-    private SQLiteDatabase mainDB;
-    public ArrayList<Bundle> result;
+    public static final String[] callBlockerCol = new String[]{COL_NAME, COL_NUMBER, COL_MSG, COL_CALL};
+    public static final String[] callBlockerHistoryCol = new String[]{COL_BLOCKED_NUMBER, COL_BLOCKED_DATE};
 
     public Database_Helper(Context context) {
         super(context, DATABASE_NAME, null, 3);
@@ -47,14 +51,25 @@ public class Database_Helper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE Busy_info (_id INTEGER PRIMARY KEY AUTOINCREMENT,TIME_FROM TEXT,TIME_TO TEXT,TYPE TEXT," +
                 "DAY TEXT,MSG TEXT,CALL_T TEXT,SMS_T TEXT,ACTIVATION TEXT)");
-        db.execSQL("CREATE TABLE "+CALL_BLOCKER_DATABASE_TABLE+" ("+ COL_ID +" INTEGER PRIMARY KEY AUTOINCREMENT,"+ COL_NUM +
-                " TEXT,"+ COL_MSG +" BOOLEAN,"+ COL_CALL +" BOOLEAN)");
+        db.execSQL("CREATE TABLE " + CALLBLOCKER_TABLE + " (" +
+                COL_NAME + " TEXT, " +
+                COL_NUMBER + " TEXT PRIMARY KEY, " +
+                COL_MSG + " BOOLEAN, " +
+                COL_CALL + " BOOLEAN );"
+        );
+
+        db.execSQL("CREATE TABLE " + CALLBLOCKER_HISTORY_TABLE + " (" +
+                COL_BLOCKED_NUMBER + " TEXT, " +
+                COL_BLOCKED_DATE + " TEXT );"
+
+        );
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS "+CALL_BLOCKER_DATABASE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CALLBLOCKER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CALLBLOCKER_HISTORY_TABLE);
         onCreate(db);
     }
 
@@ -129,59 +144,100 @@ public class Database_Helper extends SQLiteOpenHelper {
         return  c;
     }
 
-    /*
-     *
-     * CallBlocker methods
-     *
+/*
+     ***************************
+     * call blocker methods
+     ***************************
      */
 
-    public void close(){
-        Helper.close();
-    }
-
-    public void createEntry(String number, boolean msg, boolean call){
-        System.out.println(call);
+    public boolean insertDataToCallBlocker(String w1, String w2, boolean w3, boolean w4) {
+        db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COL_NUM, number);
-        cv.put(COL_MSG, msg);
-        cv.put(COL_CALL, call);
-        mainDB.insert(CALL_BLOCKER_DATABASE_TABLE, null, cv);
+
+        cv.put(COL_NAME, w1);
+        cv.put(COL_NUMBER, w2);
+        cv.put(COL_MSG, w3);
+        cv.put(COL_CALL, w4);
+
+        long result = db.insert(CALLBLOCKER_TABLE, null, cv);
+
+        return result != -1;
     }
 
-    public String getCallBlockerDbTableName(){
-        return CALL_BLOCKER_DATABASE_TABLE;
+    public Cursor getDataCallBlocker() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("select * from " + CALLBLOCKER_TABLE, null);
     }
 
-    public String[] CallBlockercolumnName(){
-        return new String[]{COL_NUM, COL_MSG, COL_CALL};
+    public boolean isBlocked(String number){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = db.rawQuery("select * from " + CALLBLOCKER_TABLE + " where "+ COL_NUMBER +" = '"+number+"'", null);
+
+        if (c != null) {
+            c.moveToFirst();
+            return true;
+        } else {
+            return false;
+        }
     }
+/*
+    public Cursor getlistofDataCallBlocker() {
+        db = this.getReadableDatabase();
+        Cursor c = db.query(true, CALLBLOCKER_TABLE, callBlockerCol, null, null, null, null, null, null);
 
-    public Cursor getCallBlockerData() {
-        String[] columns = new String[]{COL_NUM, COL_MSG, COL_CALL};
-        Cursor c = mainDB.query(CALL_BLOCKER_DATABASE_TABLE, columns, null, null, null, null, null);
-        return c;
+        if (c != null) {
+            c.moveToFirst();
+            return c;
+        } else {
+            return null;
+        }
+    }*/
+
+    public void DeleteDataCallBlocker(String num) {
+        db = this.getWritableDatabase();
+        db.delete(CALLBLOCKER_TABLE, COL_NUMBER + "='" + num+"'", null);
+
     }
-
-    public void deleteCallBlockerAll(){
-        mainDB.delete(CALL_BLOCKER_DATABASE_TABLE, null, null);
-    }
-
-    public void DeleteCallBlockerData(String num) {
-        //System.out.println(num);
-        mainDB.delete(CALL_BLOCKER_DATABASE_TABLE, COL_NUM + "=" + num, null);
-
-    }
-
-    public void EditCallBlockerMSG(String num, Boolean msg) {
+    /*
+        public boolean updateDataCallBlocker(String t1, String t2, String t3, String t4) {
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(COL_NAME, t1);
+            cv.put(COL_NUMBER, t2);
+            cv.put(COL_MSG, t3);
+            cv.put(COL_CALL, t4);
+            db.update(CALLBLOCKER_TABLE, cv, "_id=?", new String[]{t1});
+            return true;
+        }
+    */
+    public void EditMSG(String num, boolean msg) {
+        db = this.getWritableDatabase();
         ContentValues cvUpdate = new ContentValues();
-        cvUpdate.put(COL_NUM, msg);
-        mainDB.update(CALL_BLOCKER_DATABASE_TABLE, cvUpdate, COL_NUM + "=" + num, null);
+        cvUpdate.put(COL_MSG, msg);
+        db.update(CALLBLOCKER_TABLE, cvUpdate, COL_NUMBER + "='" + num+"'", null);
     }
 
-    public void EditCallBlockerCALL(String num, Boolean call) {
+    public void EditCALL(String num, boolean call) {
+        db = this.getWritableDatabase();
         ContentValues cvUpdate = new ContentValues();
-        cvUpdate.put(COL_NUM, call);
-        mainDB.update(CALL_BLOCKER_DATABASE_TABLE, cvUpdate, COL_NUM + "=" + num, null);
+        cvUpdate.put(COL_CALL, call);
+        db.update(CALLBLOCKER_TABLE, cvUpdate, COL_NUMBER + "='" + num+"'", null);
+    }
+
+    public String[] columnName() {
+        return new String[]{COL_NAME, COL_NUMBER, COL_MSG, COL_CALL};
+    }
+
+    public boolean insertDataToCallBlockerHistory(String w1, String w2) {
+        db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COL_BLOCKED_NUMBER, w1);
+        cv.put(COL_BLOCKED_DATE, w2);
+
+        long result = db.insert(CALLBLOCKER_HISTORY_TABLE, null, cv);
+
+        return result != -1;
     }
 
 }

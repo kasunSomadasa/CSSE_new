@@ -41,6 +41,19 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".callBlock.callReceiver" >
+            <intent-filter android:priority="99999999" >
+                <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".callBlock.messageReceiver" >
+            <intent-filter android:priority="100" >
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".autoSms.timeSlotsList"
             android:parentActivityName=".home">
@@ -78,7 +91,13 @@
 
         <activity android:name=".alarmHome" android:parentActivityName=".home" />
         <activity android:name=".blockerHome" android:parentActivityName=".home" />
-        <activity android:name=".calendarHome" android:parentActivityName=".home"></activity>
+        <activity android:name=".calendarHome" android:parentActivityName=".home" />
+        <activity
+            android:name=".callBlock.callBlockerHome"
+            android:label="@string/title_activity_call_blocker_home"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>
