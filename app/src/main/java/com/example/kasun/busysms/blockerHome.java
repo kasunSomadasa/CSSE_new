@@ -10,5 +10,6 @@ public class blockerHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blocker_home);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 }
