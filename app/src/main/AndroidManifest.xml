@@ -6,13 +6,11 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!--<uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>-->
-    <!--<uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />-->
+    <!-- <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" /> -->
     <uses-permission android:name="android.permission.VIBRATE" />
-
 
     <application
         android:allowBackup="true"
@@ -91,17 +89,20 @@
             </intent-filter>
         </activity>
 
-
-        <receiver android:name=".alarm.alarmReceiver">
+        <receiver
+            android:name=".alarm.alarmReceiver"
+            android:enabled="true">
             <intent-filter>
-                <action android:name="com.example.kasun.busysms.alarm.alarmFire"/>
-            </intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
 
+                <action android:name="com.example.kasun.busysms.alarm.alarmFire" />
+            </intent-filter>
         </receiver>
 
         <service
             android:name=".alarm.ringtonPlayingService"
-            android:enabled="true"></service>
+            android:enabled="true" />
         <!-- ///////////////////////////////////////////////////////////////// -->
 
         <activity
@@ -110,8 +111,7 @@
         <activity
             android:name=".calendarHome"
             android:parentActivityName=".home" />
-
-        <activity android:name=".alarm.alarmFire"></activity>
+        <activity android:name=".alarm.alarmFire" />
     </application>
 
 </manifest>

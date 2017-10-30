@@ -1,5 +1,6 @@
 package com.example.kasun.busysms.alarm;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -13,6 +14,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +33,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.kasun.busysms.R;
+import com.example.kasun.busysms.home;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,6 +53,7 @@ public class setAlarm extends AppCompatActivity {
     SeekBar sb;
     MediaPlayer mp;
     AudioManager am;
+    PowerManager pm;
     Switch switch_silent;
     CheckBox checkSound;
 
@@ -75,8 +80,8 @@ public class setAlarm extends AppCompatActivity {
         Cal_sec = calendar.get(Calendar.SECOND);
         Cal_day = calendar.get(Calendar.DAY_OF_WEEK); //sunday =1 , saturday =7
 
-
-
+        final String day = String.valueOf(Cal_day);
+        Log.e("Day of the week",day);
 
         //create an intent to the alam receiver class
         final Intent Alarm_intent = new Intent(this.context,alarmReceiver.class);
@@ -127,40 +132,186 @@ public class setAlarm extends AppCompatActivity {
         Button alarm_start = (Button) findViewById(R.id.alarm_on);
 
         alarm_start.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                //Toast.makeText(setAlarm.this,hour+" : "+min, Toast.LENGTH_SHORT).show();
+//               Toast.makeText(setAlarm.this,day,Toast.LENGTH_SHORT).show();
 
-                //celender set time
-                calendar.set(Calendar.HOUR_OF_DAY,Cal_hour);
-                calendar.set(Calendar.MINUTE,Cal_minute);
+                if(mSelectedItems.isEmpty()){
+                    Toast.makeText(setAlarm.this,"Alarm not set !!!!!\n Select the days",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    for (String s : mSelectedItems) {
+                        if (s.equals("Sunday")) {
+                            String sunday = String.valueOf(Calendar.SUNDAY);
+                            if (sunday.equals(day)) {
+                                //                          Toast.makeText(setAlarm.this,"Today is Sunday", Toast.LENGTH_SHORT).show();
 
-                //put extra string into Alarm_intent
-                //tells the clock that you pressed the 'OK' button
-                Alarm_intent.putExtra("extra","on");
+                                //check the date is equal
+                                Log.e("Today is ", "Sunday");
 
-                //put extra int into Alarm_intent
-                //tells the clock that you want to certain value from spinner
-                Alarm_intent.putExtra("ringtoneChoice",choose_ringtone);
+                                //celender set time
+                                calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
+                                calendar.set(Calendar.MINUTE, Cal_minute);
 
-                Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
+                                //put extra string into Alarm_intent
+                                //tells the clock that you pressed the 'OK' button
+                                Alarm_intent.putExtra("extra", "on");
 
-                //create a pending intent that delay the intent until the specified calendar time
-                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(),0,
-                        Alarm_intent,pending_intent.FLAG_UPDATE_CURRENT);
-
-                //set the alarm manager
-                alarm_Manager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),
-                        pending_intent);
-
-             //   alarm_Manager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pending_intent);
+                                //put extra int into Alarm_intent
+                                //tells the clock that you want to certain value from spinner
+                                Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
+                                Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
 
 
+                                //create a pending intent that delay the intent until the specified calendar time
+                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 0,
+                                        Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
 
 
+                                //set the alarm manager
+                                //                            alarm_Manager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),
+                                //                            pending_intent);
 
-                Toast.makeText(setAlarm.this,"Alarm is set...!", Toast.LENGTH_SHORT).show();
-                finish();
+                                //                            alarm_Manager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),
+                                //                                    AlarmManager.INTERVAL_DAY * 7,pending_intent);
+
+                                alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                                        pending_intent);
+
+                            }
+
+                        }
+                        if (s.equals("Monday")) {
+                            String monday = String.valueOf(Calendar.MONDAY);
+                            if (monday.equals(day)) {
+                                Log.e("Today is ", "Monday");//2
+
+                                //celender set time
+                                calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
+                                calendar.set(Calendar.MINUTE, Cal_minute);
+
+                                Alarm_intent.putExtra("extra", "on");
+                                Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
+                                Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
+
+                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 1,
+                                        Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
+
+                                alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                                        pending_intent);
+
+
+                            }
+                        }
+                        if (s.equals("Tuesday")) {
+                            String tuesday = String.valueOf(Calendar.TUESDAY);
+                            if (tuesday.equals(day)) {
+                                Log.e("Today is ", "Tuesday");//3
+
+                                //celender set time
+                                calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
+                                calendar.set(Calendar.MINUTE, Cal_minute);
+
+                                Alarm_intent.putExtra("extra", "on");
+                                Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
+                                Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
+
+                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 2,
+                                        Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
+
+                                alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                                        pending_intent);
+
+                            }
+
+                        }
+                        if (s.equals("Wednesday")) {
+                            String wednesday = String.valueOf(Calendar.WEDNESDAY);
+                            if (wednesday.equals(day)) {
+                                Log.e("Today is ", "Wendesday");//4
+
+                                //celender set time
+                                calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
+                                calendar.set(Calendar.MINUTE, Cal_minute);
+
+                                Alarm_intent.putExtra("extra", "on");
+                                Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
+                                Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
+
+                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 3,
+                                        Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
+
+                                alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                                        pending_intent);
+
+                            }
+                        }
+                        if (s.equals("Thursday")) {
+                            String thursday = String.valueOf(Calendar.THURSDAY);
+                            if (thursday.equals(day)) {
+                                Log.e("Today is ", "Thursday");
+
+                                //celender set time
+                                calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
+                                calendar.set(Calendar.MINUTE, Cal_minute);
+
+                                Alarm_intent.putExtra("extra", "on");
+                                Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
+                                Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
+
+                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 4,
+                                        Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
+
+                                alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                                        pending_intent);
+                            }
+                        }
+                        if (s.equals("Friday")) {
+                            String friday = String.valueOf(Calendar.FRIDAY);
+                            if (friday.equals(day)) {
+                                Log.e("Today is ", "friday");
+
+                                //celender set time
+                                calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
+                                calendar.set(Calendar.MINUTE, Cal_minute);
+
+                                Alarm_intent.putExtra("extra", "on");
+                                Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
+                                Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
+
+                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 5,
+                                        Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
+
+                                alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                                        pending_intent);
+
+                            }
+                        }
+                        if (s.equals("Saturday")) {
+                            String saturday = String.valueOf(Calendar.SATURDAY);
+                            if (saturday.equals(day)) {
+                                Log.e("Today is ", "saturday");
+
+                                //celender set time
+                                calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
+                                calendar.set(Calendar.MINUTE, Cal_minute);
+
+                                Alarm_intent.putExtra("extra", "on");
+                                Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
+                                Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
+
+                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 6,
+                                        Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
+
+                                alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                                        pending_intent);
+                            }
+                        }
+                    }
+                    Toast.makeText(setAlarm.this, "Alarm set..!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
         });
 
@@ -175,6 +326,7 @@ public class setAlarm extends AppCompatActivity {
                 //cancel the alarm
                 alarm_Manager.cancel(pending_intent);
 
+
                 //put extra string into ALarm_intent
                 //tells the clock that you pressed the 'cancel' button
                 Alarm_intent.putExtra("extra","off");
@@ -186,8 +338,9 @@ public class setAlarm extends AppCompatActivity {
 
                 //cancel the ringtone service
                 sendBroadcast(Alarm_intent);
-                finish();
 
+                Intent intent = new Intent(setAlarm.this,alarmHome.class);
+                startActivity(intent);
             }
         });
 
@@ -322,7 +475,6 @@ public class setAlarm extends AppCompatActivity {
             }if(Cal_minute < 10){
                 min = "0"+String.valueOf(Cal_minute);
             }
-            //show_timetxt.setText(hour+":"+min);
 
             set_Alarm_status(hour+":"+min);
             //Toast.makeText(setAlarm.this,hour+":"+minut, Toast.LENGTH_SHORT).show();
@@ -378,11 +530,11 @@ public class setAlarm extends AppCompatActivity {
                     }
 
                 }
-                //   Toast.makeText(addTimeSlot.this,selections, Toast.LENGTH_LONG).show();
+                //   Toast.makeText(setAlarm.this,selections, Toast.LENGTH_LONG).show();
                 if(selections.equals("")){
                     showRepeatTxt.setText("Choose your days");
                 }else{
-                   // showRepeatTxt.setText(selections);
+                    showRepeatTxt.setText(selections);
                 }
                    //Toast.makeText(setAlarm.this,selections, Toast.LENGTH_LONG).show();
             }
@@ -390,7 +542,7 @@ public class setAlarm extends AppCompatActivity {
         builder .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-
+                showRepeatTxt.setText("No Repeat");
             }
         });
 

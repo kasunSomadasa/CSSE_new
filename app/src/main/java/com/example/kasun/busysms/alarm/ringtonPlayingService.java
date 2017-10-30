@@ -38,7 +38,8 @@ public class ringtonPlayingService extends Service {
         Log.i("LocalService", "Received start id " + startId + ": " + intent);
 
         //fetch the extra strings from the on/off values
-        String state = intent.getExtras().getString("extra");
+        String state = null;
+            state = intent.getExtras().getString("extra");
 
         //fetch the extra integer
         int ringtone_sound_choice = intent.getExtras().getInt("ringtoneChoice");
@@ -164,6 +165,7 @@ public class ringtonPlayingService extends Service {
 
         super.onDestroy();
         this.isRunning = false;
+//        cancelAlarmNotify();
     }
 
     //notification on when alarm is triggring.
@@ -184,12 +186,13 @@ public class ringtonPlayingService extends Service {
                 .setAutoCancel(true);
         notifyAlarmBuilder.setContentIntent(pending_setAlarm_activity);
         Notification alarm_notification = notifyAlarmBuilder.build();
-        //alarm_notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
+//        alarm_notification.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_ONGOING_EVENT;
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0,alarm_notification);
 
     }
+
 
 
 }

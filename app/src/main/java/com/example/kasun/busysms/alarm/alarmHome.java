@@ -6,8 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextClock;
+import android.widget.TextView;
 
 import com.example.kasun.busysms.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class alarmHome extends AppCompatActivity {
     private static Button btnAddTime;
@@ -16,6 +21,15 @@ public class alarmHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_home);
+
+        TextClock tclock1 = (TextClock) findViewById(R.id.textClock1);
+        TextClock tclock2 = (TextClock) findViewById(R.id.textClock2);
+        TextView dateView = (TextView) findViewById(R.id.textday);
+        long date = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd");
+        String dateString = sdf.format(date);
+        dateView.setText(dateString);
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         OnClickBtnListner();

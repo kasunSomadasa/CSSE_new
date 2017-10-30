@@ -2,6 +2,8 @@ package com.example.kasun.busysms.alarm;
 
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +19,12 @@ public class alarmFire extends AppCompatActivity {
 
     AlarmManager alarm_Manager;
 
+
+    public void cancelAlarmNotify() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,28 +32,24 @@ public class alarmFire extends AppCompatActivity {
 
         ImageButton alarmOffImg = (ImageButton) findViewById(R.id.imageButton_AlarmOff);
 
-        alarm_Manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        final Intent Alarm_intent = new Intent(this,alarmReceiver.class);
-
-
         alarmOffImg.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-//                Toast.makeText(alarmFire.this,"Alarm Off!!!!",Toast.LENGTH_SHORT).show();
-//                Alarm_intent.putExtra("extra","off");
-//                sendBroadcast(Alarm_intent);
+//                alarm_Manager.cancel(pending_intent);
 
-                Intent intent = new Intent(alarmFire.this,home.class);
-                startActivity(intent);
 
                 android.os.Process.killProcess(android.os.Process.myPid());
 //               cancel the activity
 //                System.exit(0);
+                cancelAlarmNotify();
+
                 finishAffinity();
                // finish();
     //
             }
         });
     }
+
+
 }
