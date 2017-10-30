@@ -16,6 +16,8 @@ import com.example.kasun.busysms.taskCalendar.ReminderActivity;
 
 /**
  * Created by Nishan on 10/27/2017.
+ * @author Nishan
+ * @version 1.0
  */
 
 public class NotificationReciever extends BroadcastReceiver {
@@ -28,7 +30,7 @@ public class NotificationReciever extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                 uiIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         String soundName = task.getTask_notification_sound();
-        Uri soundUri = Uri.parse("android.resource://"+context.getPackageName()+"/raw/"+"buzz");
+        Uri soundUri = null;
         switch (soundName){
             case "Buzz" :
                 soundUri = Uri.parse("android.resource://"+context.getPackageName()+"/raw/"+"buzz");
@@ -47,6 +49,9 @@ public class NotificationReciever extends BroadcastReceiver {
                 break;
             case "System Fault" :
                 soundUri = Uri.parse("android.resource://"+context.getPackageName()+"/raw/"+"system_fault");
+                break;
+            default:
+                soundUri = Uri.parse("android.resource://"+context.getPackageName()+"/raw/"+"buzz");
                 break;
         }
 

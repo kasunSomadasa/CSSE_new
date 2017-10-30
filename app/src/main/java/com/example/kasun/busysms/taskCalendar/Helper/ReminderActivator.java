@@ -4,17 +4,17 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.example.kasun.busysms.taskCalendar.Model.Task;
 import com.example.kasun.busysms.taskCalendar.ReminderActivity;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Nishan on 10/27/2017.
+ * @author Nishan
+ * @version 1.0
  */
 
 public abstract class ReminderActivator {
@@ -65,15 +65,6 @@ public abstract class ReminderActivator {
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
-    //TODO runActivatorTEST
-    public static void runActivatorTEST(Context context){
-        Intent intent = new Intent(context, NotificationReciever.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
-
-        AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, new Date().getTime()+(5*1000), pendingIntent);
-        Toast.makeText(context, "Alarm set to 5 seconds", Toast.LENGTH_SHORT).show();
-    }
 
     public static void suspendReminder(Context context, Task task){
         Intent intent = new Intent(context, NotificationReciever.class);

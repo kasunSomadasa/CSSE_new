@@ -23,6 +23,8 @@ import java.util.List;
 
 /**
  * Created by Nishan on 10/27/2017.
+ * @author Nishan
+ * @version 2.3
  */
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder>{

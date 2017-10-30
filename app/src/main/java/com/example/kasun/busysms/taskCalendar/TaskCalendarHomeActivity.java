@@ -42,6 +42,15 @@ public class TaskCalendarHomeActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        btnViewTask.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intentViewTask = new Intent(TaskCalendarHomeActivity.this, ViewTaskActivity.class);
+                startActivity(intentViewTask);
+                return false;
+            }
+        });
     }
 
     public void showToday(View view){
@@ -49,8 +58,8 @@ public class TaskCalendarHomeActivity extends AppCompatActivity {
     }
 
     public void viewTask(View view){
-        Intent intent = new Intent(TaskCalendarHomeActivity.this, ViewTaskActivity.class);
-        startActivity(intent);
+        Intent intentViewTask = new Intent(TaskCalendarHomeActivity.this, ViewTaskActivity.class);
+        intentViewTask.putExtra("selectedDate", calendarView_main.getDate());
+        startActivity(intentViewTask);
     }
-
 }
