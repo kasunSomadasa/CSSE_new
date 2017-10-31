@@ -22,7 +22,7 @@ public class Database_Helper extends SQLiteOpenHelper {
     public static final String COL7="CALL_T";
     public static final String COL8="SMS_T";
     public static final String COL9="ACTIVATION";
-    public static final String[] allcol=new String[] {COL1,COL2,COL3,COL4,COL5,COL6,COL7,COL8,COL9};
+    public static final String[] allColumn=new String[] {COL1,COL2,COL3,COL4,COL5,COL6,COL7,COL8,COL9};
 
     public Database_Helper(Context context) {
         super(context, DATABASE_NAME, null, 3);
@@ -41,17 +41,17 @@ public class Database_Helper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String w1,String w2,String w3,String w4,String w5,String w6,String w7,String w8){
+    public boolean insertData(String from,String to,String type,String day,String msg,String call,String sms,String active){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues cv=new ContentValues();
-        cv.put(COL2,w1);
-        cv.put(COL3,w2);
-        cv.put(COL4,w3);
-        cv.put(COL5,w4);
-        cv.put(COL6,w5);
-        cv.put(COL7,w6);
-        cv.put(COL8,w7);
-        cv.put(COL9,w8);
+        cv.put(COL2,from);
+        cv.put(COL3,to);
+        cv.put(COL4,type);
+        cv.put(COL5,day);
+        cv.put(COL6,msg);
+        cv.put(COL7,call);
+        cv.put(COL8,sms);
+        cv.put(COL9,active);
         long result=db.insert(DATABASE_TABLE,null,cv);
         if(result == -1){
             return false;
@@ -74,7 +74,7 @@ public class Database_Helper extends SQLiteOpenHelper {
         SQLiteDatabase db=this.getReadableDatabase();
 
         String where=null;
-        Cursor c=db.query(true,DATABASE_TABLE,allcol,null,null,null,null,null,null);
+        Cursor c=db.query(true,DATABASE_TABLE,allColumn,null,null,null,null,null,null);
 
         if (c != null) {
             c.moveToFirst();
@@ -92,19 +92,19 @@ public class Database_Helper extends SQLiteOpenHelper {
         return  db.delete(DATABASE_TABLE,"_id =?",new String[]{id});
     }
 
-    public boolean updateData(String t1,String t2,String t3,String t4,String t5,String t6,String t7,String t8,String t9){
+    public boolean updateData(String id,String from,String to,String type,String day,String msg,String call,String sms,String active){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues cv=new ContentValues();
-        cv.put(COL1,t1);
-        cv.put(COL2,t2);
-        cv.put(COL3,t3);
-        cv.put(COL4,t4);
-        cv.put(COL5,t5);
-        cv.put(COL6,t6);
-        cv.put(COL7,t7);
-        cv.put(COL8,t8);
-        cv.put(COL9,t9);
-        db.update(DATABASE_TABLE,cv,"_id=?",new  String[]{t1});
+        cv.put(COL1,id);
+        cv.put(COL2,from);
+        cv.put(COL3,to);
+        cv.put(COL4,type);
+        cv.put(COL5,day);
+        cv.put(COL6,msg);
+        cv.put(COL7,call);
+        cv.put(COL8,sms);
+        cv.put(COL9,active);
+        db.update(DATABASE_TABLE,cv,"_id=?",new  String[]{id});
         return true;
     }
 

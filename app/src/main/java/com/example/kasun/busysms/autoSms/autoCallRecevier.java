@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 /**
  * Created by Kasun on 11/15/2016.
  */
-public class mycallRecevier extends BroadcastReceiver {
+public class autoCallRecevier extends BroadcastReceiver {
 
     Calendar now = Calendar.getInstance();
 
@@ -59,16 +59,16 @@ public class mycallRecevier extends BroadcastReceiver {
         }
     }
 
-    public String getDayofWeek(){
-    SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
-    Date d = new Date();
-    String dayOfTheWeek = sdf.format(d);
+    public String getDayOfWeek(){
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
+    Date date = new Date();
+    String dayOfTheWeek = simpleDateFormat.format(date);
     return dayOfTheWeek;
     }
 
     public void onReceive(Context context,Intent intent) {
-        Database_Helper mydb = new Database_Helper(context);
-        Cursor c = mydb.getData();
+        Database_Helper db = new Database_Helper(context);
+        Cursor c = db.getData();
 
         if (c.getCount() == 0) {
 
@@ -79,26 +79,27 @@ public class mycallRecevier extends BroadcastReceiver {
                 String incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
 
                 while (c.moveToNext()) {
-                    String from_t = c.getString(1);
-                    String to_t = c.getString(2);
-                    String day_t = c.getString(4);
-                    String msg_t = c.getString(5);
-                    String call_t = c.getString(6);
-                    String act_t = c.getString(8);
+
+                    String getdb_from = c.getString(1);
+                    String getdb_to = c.getString(2);
+                    String getdb_day = c.getString(4);
+                    String getdb_msg = c.getString(5);
+                    String getdb_call = c.getString(6);
+                    String getdb_activation = c.getString(8);
 
 
-                    if (call_t.equals("true") && act_t.equals("Active") && day_t.equals(getDayofWeek())) {
+                    if (getdb_call.equals("true") && getdb_activation.equals("Active") && getdb_day.equals(getDayOfWeek())) {
 
-                        Date dateCompareOne = parseDate(from_t);
-                        Date dateCompareTwo = parseDate(to_t);
-                        Toast.makeText(context, "Call From: " + from_t, Toast.LENGTH_LONG).show();
-                        Toast.makeText(context, "Call To: " + to_t, Toast.LENGTH_LONG).show();
+                        Date dateCompareOne = parseDate(getdb_from);
+                        Date dateCompareTwo = parseDate(getdb_to);
+                        Toast.makeText(context, "Call From: " + getdb_from, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Call To: " + getdb_to, Toast.LENGTH_LONG).show();
 
                         if (isBetweenValidTime(dateCompareOne, dateCompareTwo, date) && incomingNumber.length()==10) {
 
                             Toast.makeText(context, "Call From: " + incomingNumber, Toast.LENGTH_LONG).show();
                             SmsManager smsManager=SmsManager.getDefault();
-                            smsManager.sendTextMessage(incomingNumber,null,msg_t,null,null);
+                            smsManager.sendTextMessage(incomingNumber,null,getdb_msg,null,null);
 
                         }
 

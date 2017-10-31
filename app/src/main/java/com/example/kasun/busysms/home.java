@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 
-import com.example.kasun.busysms.autoSms.SmsHome;
+import com.example.kasun.busysms.autoSms.smsHome;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +49,7 @@ public class home extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 if(position == 0){
-                    Intent intent = new Intent(home.this, SmsHome.class);
+                    Intent intent = new Intent(home.this, smsHome.class);
                     startActivity(intent);
                 }else if(position ==1){
                     Intent intent = new Intent(home.this,alarmHome.class);
