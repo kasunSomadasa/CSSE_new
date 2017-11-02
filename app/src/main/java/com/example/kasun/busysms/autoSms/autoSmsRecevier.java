@@ -55,7 +55,7 @@ public class autoSmsRecevier extends BroadcastReceiver {
         return validTimeFlag;
     }
 
-    private Date parseDate(String date) {
+    public Date parseDate(String date) {
 
         final String inputFormat = "HH:mm:ss";
         SimpleDateFormat inputParser = new SimpleDateFormat(inputFormat, Locale.UK);
@@ -68,8 +68,8 @@ public class autoSmsRecevier extends BroadcastReceiver {
 
 
     public void onReceive(Context context,Intent intent) {
-        Database_Helper mydb = new Database_Helper(context);
-        Cursor c = mydb.getData();
+        Database_Helper db = new Database_Helper(context);
+        Cursor c = db.getData();
 
         if (c.getCount() == 0) {
 

@@ -17,12 +17,11 @@ import java.util.HashMap;
 public class home extends AppCompatActivity {
 
     ListView simpleListView;
-    String[] animalName={"Lion","Tiger","Monkey","Dog","Cat","Elephant"};//animal names array
     int[] animalImages={
             R.drawable.function1,
             R.drawable.function2,
             R.drawable.function3,
-            R.drawable.function4};//animal images array
+            R.drawable.fnew};//animal images array
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

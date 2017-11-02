@@ -48,8 +48,6 @@ public class timeSlotsList extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                                            final int position, long id) {
 
-
-
                 final Cursor cursor = (Cursor) dataList.getItemAtPosition(position);
 
                 new AlertDialog.Builder(timeSlotsList.this)
@@ -59,7 +57,7 @@ public class timeSlotsList extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
 
                                 String code1 = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
-                                Integer value=db.DeleteData(code1);
+                                Integer value=db.deleteData(code1);
 
                                 if(checkIconShow()){
                                     showIcon();
@@ -135,7 +133,7 @@ public class timeSlotsList extends AppCompatActivity {
 
     public void populateListView() {
 
-        Cursor cursor = db.getlistofData();
+        Cursor cursor = db.getListOfData();
 
         String[] fromFiledNames = new String[]{Database_Helper.COL2, Database_Helper.COL3, Database_Helper.COL9,Database_Helper.COL5};
         int[] toViewIds = new int[]{R.id.from, R.id.to ,R.id.activate,R.id.day};
@@ -156,7 +154,9 @@ public class timeSlotsList extends AppCompatActivity {
 
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
             Cursor cursor = (Cursor) dataList.getItemAtPosition(position);
+
             String code = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
             String table_from = cursor.getString(cursor.getColumnIndexOrThrow("TIME_FROM"));
             String table_to = cursor.getString(cursor.getColumnIndexOrThrow("TIME_TO"));

@@ -48,7 +48,7 @@ public class autoCallRecevier extends BroadcastReceiver {
         return validTimeFlag;
     }
 
-    private Date parseDate(String date) {
+    public Date parseDate(String date) {
 
         final String inputFormat = "HH:mm:ss";
         SimpleDateFormat inputParser = new SimpleDateFormat(inputFormat, Locale.UK);

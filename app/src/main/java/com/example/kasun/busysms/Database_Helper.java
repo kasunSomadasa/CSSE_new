@@ -70,23 +70,8 @@ public class Database_Helper extends SQLiteOpenHelper {
         Cursor c=db.rawQuery("select * from "+DATABASE_TABLE,null);
         return  c;
     }
-    public Cursor getlistofData(){
-        SQLiteDatabase db=this.getReadableDatabase();
 
-        String where=null;
-        Cursor c=db.query(true,DATABASE_TABLE,allColumn,null,null,null,null,null,null);
-
-        if (c != null) {
-            c.moveToFirst();
-            return  c;
-        }else{
-            return  null;
-        }
-
-    }
-
-
-    public Integer DeleteData(String id){
+    public Integer deleteData(String id){
         SQLiteDatabase db=this.getWritableDatabase();
 
         return  db.delete(DATABASE_TABLE,"_id =?",new String[]{id});
@@ -108,6 +93,20 @@ public class Database_Helper extends SQLiteOpenHelper {
         return true;
     }
 
+    public Cursor getListOfData(){
+        SQLiteDatabase db=this.getReadableDatabase();
+
+        String where=null;
+        Cursor c=db.query(true,DATABASE_TABLE,allColumn,null,null,null,null,null,null);
+
+        if (c != null) {
+            c.moveToFirst();
+            return  c;
+        }else{
+            return  null;
+        }
+
+    }
     public Cursor searchData(String key){
         SQLiteDatabase db=this.getWritableDatabase();
         Cursor c=db.rawQuery("select * from "+DATABASE_TABLE+" where "+COL4+" like '%"+key+"%'",null);

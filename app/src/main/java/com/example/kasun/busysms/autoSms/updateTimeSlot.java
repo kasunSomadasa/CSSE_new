@@ -115,7 +115,7 @@ public boolean checkIconShow(){
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)//R.mipmap.ic_launcher-->for app icon
                 .setContentTitle("Auto SMS Activated");
-        Intent resultIntent = new Intent(this, addTimeSlot.class);
+        Intent resultIntent = new Intent(this, smsHome.class);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 this,
                 0,
@@ -352,7 +352,7 @@ public boolean checkIconShow(){
 
         MenuItem menuItem =menu.findItem(R.id.switchView);
         menuItem.setActionView(R.layout.use_switch);
-       final Switch sw= (Switch) menu.findItem(R.id.switchView).getActionView().findViewById(R.id.action_switch);
+        final Switch sw= (Switch) menu.findItem(R.id.switchView).getActionView().findViewById(R.id.action_switch);
 
 
         if(activation.equals("Active")){

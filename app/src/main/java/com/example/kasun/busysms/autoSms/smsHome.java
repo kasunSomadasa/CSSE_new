@@ -49,6 +49,7 @@ public class smsHome extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -115,9 +116,11 @@ public class smsHome extends AppCompatActivity {
     }
 
     public void changeVolumeMode(){
+
         AudioManager audioManager =(AudioManager)getSystemService(getApplicationContext().AUDIO_SERVICE);
 
         switch( audioManager.getRingerMode() ){
+
             case AudioManager.RINGER_MODE_NORMAL:
                 soundBtn.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_vibration_white_24dp, 0, 0, 0);
                 audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
@@ -143,7 +146,6 @@ public class smsHome extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         changeVolumeMode();
-
                     }
                 }
         );
@@ -153,7 +155,7 @@ public class smsHome extends AppCompatActivity {
     public void populatelistView() {
 
 
-        Cursor cursor = db.getlistofData();
+        Cursor cursor = db.getListOfData();
 
         String[] fromFiledNames = new String[]{Database_Helper.COL2, Database_Helper.COL3, Database_Helper.COL9,Database_Helper.COL5};
         int[] toViewIds = new int[]{R.id.from, R.id.to ,R.id.activate,R.id.day};
