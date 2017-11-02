@@ -106,7 +106,7 @@ public class autoSmsRecevier extends BroadcastReceiver {
                         Toast.makeText(context, "Message From: " + getdb_from, Toast.LENGTH_LONG).show();
                         Toast.makeText(context, "Message To: " + getdb_to, Toast.LENGTH_LONG).show();
 
-                        if (isBetweenValidTime(dateCompareOne, dateCompareTwo, date)&& sendernumber.length()==10) {
+                        if (isBetweenValidTime(dateCompareOne, dateCompareTwo, date)&& sendernumber.length()<=10) {
                             SmsManager smsManager = SmsManager.getDefault();
                             smsManager.sendTextMessage(sendernumber, null, getdb_msg, null, null);
 

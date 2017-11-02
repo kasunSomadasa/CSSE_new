@@ -1,9 +1,13 @@
 package com.example.kasun.busysms.autoSms;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.AudioManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +30,7 @@ public class smsHome extends AppCompatActivity {
     Database_Helper db;
     ListView homeLogList;
 
+    private static final int PERMISSION_REQUEST_CODE =123;
     Button newBtn,logBtn,soundBtn;
     TextView dbStatus;
 
@@ -33,6 +38,10 @@ public class smsHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms_home);
+
+        if(!hasPermissions()){
+            requestPermission();
+        }
 
         dbStatus=(TextView)findViewById(R.id.displayText);
         dbStatus.setVisibility(View.INVISIBLE);
@@ -182,4 +191,63 @@ public class smsHome extends AppCompatActivity {
             Toast.makeText(smsHome.this, "Please Go To The LOG", Toast.LENGTH_LONG).show();
         }
     };
+
+    private  boolean hasPermissions(){
+        int res=0;
+        String[] permissions = new String[]{
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.READ_SMS,
+                Manifest.permission.RECEIVE_SMS,
+        };
+
+        for (String permission : permissions){
+            res = checkCallingOrSelfPermission(permission);
+            if(!(res == PackageManager.PERMISSION_GRANTED)){
+                return  false;
+            }
+        }
+        return  true;
+    }
+
+    private  void  requestPermission(){
+        String[] permissions = new String[]{
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.READ_SMS,
+                Manifest.permission.RECEIVE_SMS,
+        };
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            requestPermissions(permissions,PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        boolean allow =true;
+
+        switch (requestCode){
+            case PERMISSION_REQUEST_CODE:
+                for(int res:grantResults){
+                    allow = allow && (res==PackageManager.PERMISSION_GRANTED);
+
+                }
+                break;
+            default:
+                allow = false;
+                break;
+        }
+        if(!allow){
+             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                 if(shouldShowRequestPermissionRationale(Manifest.permission.SEND_SMS)){
+                     Toast.makeText(this,"Permissions Denied.Your app is not working correctly",Toast.LENGTH_LONG).show();
+                 }
+             }
+        }
+    }
+
+
+
+
 }

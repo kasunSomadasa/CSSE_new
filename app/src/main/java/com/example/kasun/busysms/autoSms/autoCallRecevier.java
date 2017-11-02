@@ -95,7 +95,8 @@ public class autoCallRecevier extends BroadcastReceiver {
                         Toast.makeText(context, "Call From: " + getdb_from, Toast.LENGTH_LONG).show();
                         Toast.makeText(context, "Call To: " + getdb_to, Toast.LENGTH_LONG).show();
 
-                        if (isBetweenValidTime(dateCompareOne, dateCompareTwo, date) && incomingNumber.length()==10) {
+
+                        if (isBetweenValidTime(dateCompareOne, dateCompareTwo, date) && incomingNumber.length()<=10) {
 
                             Toast.makeText(context, "Call From: " + incomingNumber, Toast.LENGTH_LONG).show();
                             SmsManager smsManager=SmsManager.getDefault();

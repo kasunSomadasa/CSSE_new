@@ -6,10 +6,6 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission-sdk-23 android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission-sdk-23 android:name="android.permission.SEND_SMS" />
-    <uses-permission-sdk-23 android:name="android.permission.READ_SMS" />
-    <uses-permission-sdk-23 android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:allowBackup="true"
@@ -55,6 +51,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".autoSms.smsHome"
+            android:parentActivityName=".home">
+            <intent-filter>
+                <action android:name="com.example.kasun.busysms.sms_home" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".autoSms.updateTimeSlot"
             android:parentActivityName=".home">
             <intent-filter>
@@ -80,7 +85,7 @@
         <activity
             android:name=".calendarHome"
             android:parentActivityName=".home" />
-        <activity android:name=".autoSms.smsHome"></activity>
+
     </application>
 
 </manifest>
