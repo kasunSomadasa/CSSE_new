@@ -48,6 +48,7 @@ public class ringtonPlayingService extends Service {
         Log.e("silent mode in service",silent_string);
 
         //fetch the extra integer
+        //tt
         int ringtone_sound_choice = intent.getExtras().getInt("ringtoneChoice");
 
         Log.e("Rington state extra is ",state);

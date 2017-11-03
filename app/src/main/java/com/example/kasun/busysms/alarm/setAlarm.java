@@ -334,6 +334,10 @@ public class setAlarm extends AppCompatActivity {
                             }
                         }
                     }
+                    if(mp!=null){
+                        mp.stop();
+                    }
+
                     Toast.makeText(setAlarm.this, "Alarm set..!", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -367,6 +371,10 @@ public class setAlarm extends AppCompatActivity {
 
                 //cancel the ringtone service
                 sendBroadcast(Alarm_intent);
+
+                if(mp !=null) {
+                    mp.stop();
+                }
 
 //                // back to the previous activity
 //                finish();
