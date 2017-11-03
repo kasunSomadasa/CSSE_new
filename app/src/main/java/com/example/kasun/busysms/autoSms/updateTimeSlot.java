@@ -138,9 +138,11 @@ public boolean checkIconShow(){
         mNotifyMgr.notify(1, notification);
     }
     public void disapperIcon(){
+        /*
+         * Disapper notification with app icon on mobile notification bar
+         */
         ((NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(1);
     }
-
 
     public void showDialogTimeFrom() {
      /*

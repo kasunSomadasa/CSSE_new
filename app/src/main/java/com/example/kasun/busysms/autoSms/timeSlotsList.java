@@ -78,7 +78,9 @@ public class timeSlotsList extends AppCompatActivity {
                                 if(value>0){
                                     //after deleting item refresh listView
                                     Toast.makeText(getApplicationContext(), "Record Deleted", Toast.LENGTH_LONG).show();
+                                    //refresh listView
                                     populateListView();
+                                    //goto smsHome activity
                                     Intent i = new Intent(timeSlotsList.this, smsHome.class);
                                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(i);
@@ -145,6 +147,9 @@ public class timeSlotsList extends AppCompatActivity {
         mNotifyMgr.notify(1, notification);
     }
     public void disapperIcon(){
+        /*
+         * Disapper notification with app icon on mobile notification bar
+         */
         ((NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(1);
     }
 
