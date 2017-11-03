@@ -28,19 +28,17 @@ public class customAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     Database_Helper helper;
     Context context;
-    Tab1Fragment tab1Fragment;
-
-    public customAdapter(){}
+    com.example.kasun.busysms.callBlock.tab1Fragment tab1Fragment;
 
     public customAdapter(Context context, List<callBlockerModel> results) {
 
         list = results;
         mInflater = LayoutInflater.from(context);
-        helper=new Database_Helper(context);
+        helper = new Database_Helper(context);
         this.context = context;
     }
 
-    public void setFragment(Tab1Fragment tab1Fragment){
+    public void setFragment(com.example.kasun.busysms.callBlock.tab1Fragment tab1Fragment) {
         this.tab1Fragment = tab1Fragment;
     }
 
@@ -84,23 +82,23 @@ public class customAdapter extends BaseAdapter {
         mHolder.msg.setChecked(list.get(position).isCheckMsg());
         mHolder.call.setChecked(list.get(position).isCheckCall());
 
-        ImageButton deleteBtn =(ImageButton) convertView.findViewById(R.id.deleteBtn);
-        final CheckBox msgChkBox=(CheckBox) convertView.findViewById(R.id.msgChkBox);
-        CheckBox callChkBox=(CheckBox) convertView.findViewById(R.id.callChkBox);
+        ImageButton deleteBtn = (ImageButton) convertView.findViewById(R.id.deleteBtn);
+        final CheckBox msgChkBox = (CheckBox) convertView.findViewById(R.id.msgChkBox);
+        CheckBox callChkBox = (CheckBox) convertView.findViewById(R.id.callChkBox);
 
         deleteBtn.setOnClickListener(new CompoundButton.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                String number=list.get(position).getNumber();
+                String number = list.get(position).getNumber();
                 helper.DeleteDataCallBlocker(number);
 
                 list = GetlistData();
                 //lv.setAdapter(this);
                 notifyDataSetChanged();
 
-                Toast.makeText(v.getContext(),number+" deleted",Toast.LENGTH_LONG).show();
+                Toast.makeText(v.getContext(), number + " deleted", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -108,12 +106,12 @@ public class customAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                String number=list.get(position).getNumber();
-                boolean isMsgChk=isChecked;
+                String number = list.get(position).getNumber();
+                boolean isMsgChk = isChecked;
 
-                helper.EditMSG(number,isMsgChk);
+                helper.EditMSG(number, isMsgChk);
 
-                System.out.println("***********"+number+isMsgChk);
+                System.out.println("***********" + number + isMsgChk);
 
             }
         });
@@ -122,12 +120,12 @@ public class customAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                String number=list.get(position).getNumber();
-                boolean isCallChk=isChecked;
+                String number = list.get(position).getNumber();
+                boolean isCallChk = isChecked;
 
-                helper.EditCALL(number,isCallChk);
+                helper.EditCALL(number, isCallChk);
 
-                System.out.println("--------------"+number+isCallChk);
+                System.out.println("--------------" + number + isCallChk);
 
             }
         });
@@ -135,7 +133,7 @@ public class customAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private List<callBlockerModel> GetlistData(){
+    private List<callBlockerModel> GetlistData() {
         List<callBlockerModel> itemList = new ArrayList<>();
 
         callBlockerModel listItem;
@@ -143,7 +141,7 @@ public class customAdapter extends BaseAdapter {
 
         Cursor mCursor = dbHelper.getDataCallBlocker();
 
-        if(mCursor.getCount() != 0 ) {
+        if (mCursor.getCount() != 0) {
             for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()) {
                 listItem = new callBlockerModel();
                 String name = mCursor.getString(mCursor.getColumnIndex("_name"));
@@ -158,8 +156,8 @@ public class customAdapter extends BaseAdapter {
 
                 itemList.add(listItem);
             }
-        }else{
-            Toast.makeText(context,"No data in table",Toast.LENGTH_LONG);
+        } else {
+            Toast.makeText(context, "No data in table", Toast.LENGTH_LONG);
         }
         return itemList;
     }

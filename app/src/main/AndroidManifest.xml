@@ -12,6 +12,8 @@
     <uses-feature android:name="android.hardware.telephony" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -42,15 +44,15 @@
         </receiver>
 
         <receiver android:name=".callBlock.callReceiver" >
-            <intent-filter android:priority="99999999" >
+            <intent-filter android:priority="99999999">
                 <action android:name="android.intent.action.PHONE_STATE" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".callBlock.messageReceiver" >
-            <intent-filter android:priority="100" >
+        <receiver
+            android:name=".callBlock.messageReceiver">
+            <intent-filter android:priority="999999999" >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 

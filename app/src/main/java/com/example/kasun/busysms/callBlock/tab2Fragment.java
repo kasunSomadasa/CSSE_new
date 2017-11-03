@@ -21,37 +21,38 @@ import java.util.List;
  * Created by madupoorna on 10/22/17.
  */
 
-public class Tab1Fragment extends Fragment {
+public class tab2Fragment extends Fragment {
 
     Database_Helper dbHelper;
-    List<callBlockerModel> results;
-    customAdapter adapter;
+    List<callBlockerLogModel> results;
+    historyCustomAdapter adapter;
     Context superContext;
 
-    public Tab1Fragment(){
-
+    public tab2Fragment() {
     }
 
-    public void setContext(Context context){
+    public void setContext(Context context) {
         this.superContext = context;
     }
 
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view= inflater.inflate(R.layout.fragment_tab_1,container,false);
+        View view = inflater.inflate(R.layout.fragment_tab_2, container, false);
+
         dbHelper = new Database_Helper(this.getActivity());
         results = GetlistData();
-        ListView lv = (ListView)view.findViewById(R.id.blockedListView);
+
+        ListView lv = (ListView) view.findViewById(R.id.frag2ListView);
 
         //set listview scrollable
         setListViewHeightBasedOnChildren(lv);
-        
-        adapter=new customAdapter(this.getContext(),results);
+
+        adapter = new historyCustomAdapter(this.getContext(), results);
+
         lv.setAdapter(adapter);
 
-
         return view;
+
     }
 
     //method to make list view scrollable
@@ -79,32 +80,29 @@ public class Tab1Fragment extends Fragment {
     }
 
     //method to get data from table
-    private List<callBlockerModel> GetlistData(){
-        List<callBlockerModel> itemList = new ArrayList<>();
+    private List<callBlockerLogModel> GetlistData() {
+        List<callBlockerLogModel> itemList = new ArrayList<>();
 
-        callBlockerModel listItem;
+        callBlockerLogModel listItem;
         Database_Helper dbHelper = new Database_Helper(getContext());
 
-        Cursor mCursor = dbHelper.getDataCallBlocker();
+        Cursor mCursor = dbHelper.getDataCallBlockerHistory();
 
-        if(mCursor.getCount() != 0 ) {
+        if (mCursor.getCount() != 0) {
             for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()) {
-                listItem = new callBlockerModel();
-                String name = mCursor.getString(mCursor.getColumnIndex("_name"));
-                String number = mCursor.getString(mCursor.getColumnIndex("_number"));
-                boolean msg = mCursor.getInt(mCursor.getColumnIndex("_msg")) > 0;
-                boolean call = mCursor.getInt(mCursor.getColumnIndex("_call")) > 0;
+                listItem = new callBlockerLogModel();
+                String number = mCursor.getString(mCursor.getColumnIndex("_blockedNumber"));
+                String dateTime = mCursor.getString(mCursor.getColumnIndex("_blockedDate"));
 
-                listItem.setName(name);
                 listItem.setNumber(number);
-                listItem.setCheckMsg(msg);
-                listItem.setCheckCall(call);
+                listItem.setDateTime(dateTime);
 
                 itemList.add(listItem);
             }
-        }else{
-            Toast.makeText(getContext(),"No data in table",Toast.LENGTH_LONG);
+        } else {
+            Toast.makeText(getContext(), "No data in table", Toast.LENGTH_LONG);
         }
         return itemList;
     }
+
 }

@@ -1,12 +1,18 @@
 package com.example.kasun.busysms;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 
 import com.example.kasun.busysms.autoSms.autoSmsHome;
@@ -14,6 +20,7 @@ import com.example.kasun.busysms.callBlock.callBlockerHome;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class home extends AppCompatActivity {
 
@@ -24,9 +31,11 @@ public class home extends AppCompatActivity {
             R.drawable.function2,
             R.drawable.function3,
             R.drawable.function4};//animal images array
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -44,6 +53,7 @@ public class home extends AppCompatActivity {
         SimpleAdapter simpleAdapter=new SimpleAdapter(this,arrayList,R.layout.home_item_list,from,to);//Create object and set the parameters for simpleAdapter
         simpleListView.setAdapter(simpleAdapter);//sets the adapter for listView
 
+        checkAndRequestPermissions();
 
         //perform listView item click event
         simpleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,6 +78,43 @@ public class home extends AppCompatActivity {
 
     }
 
+    private  boolean checkAndRequestPermissions() {
+
+        int contacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
+        int readPhoneState = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+        int smsReceive = ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS);
+        int fileWitePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int fileReadPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int readCallLogPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG);
+
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (contacts != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_CONTACTS);
+        }
+        if (readPhoneState != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (smsReceive != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.RECEIVE_SMS);
+        }
+        if (fileWitePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (fileReadPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+        if (readCallLogPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_CALL_LOG);
+        }
+        if (!listPermissionsNeeded.isEmpty())
+        {
+            ActivityCompat.requestPermissions(this,listPermissionsNeeded.toArray
+                    (new String[listPermissionsNeeded.size()]),REQUEST_ID_MULTIPLE_PERMISSIONS);
+            return false;
+        }
+        return true;
+    }
 
 /*
     public class ImageAdapter extends BaseAdapter{

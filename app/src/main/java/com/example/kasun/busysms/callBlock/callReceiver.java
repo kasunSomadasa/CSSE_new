@@ -1,37 +1,32 @@
 package com.example.kasun.busysms.callBlock;
 
-import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.media.AudioManager;
-import android.support.v4.content.ContextCompat;
+import android.telephony.PhoneNumberUtils;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
-import com.android.Internal.telephony.ITelephony;
+import com.android.internal.telephony.ITelephony;
 import com.example.kasun.busysms.Database_Helper;
 
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-/**
- * Created by madupoorna on 10/19/17.
- */
-
+import java.util.TimeZone;
 
 public class callReceiver extends BroadcastReceiver {
 
-    Database_Helper dbHelper;
-    private static final int REQUEST_CALL = 1;
+    public static boolean inCall;
 
-    //@Override
+    @Override
     public void onReceive(Context context, Intent intent) {
-
-        dbHelper=new Database_Helper(context);
 
         TelephonyManager telephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         PhoneCallStateListener customPhoneListener = new PhoneCallStateListener(context);
@@ -42,7 +37,8 @@ public class callReceiver extends BroadcastReceiver {
     public class PhoneCallStateListener extends PhoneStateListener {
 
         private Context context;
-        Boolean block_number = false;
+        boolean block_number = false;
+        boolean isBetween=false;
 
         public PhoneCallStateListener(Context context) {
             this.context = context;
@@ -51,34 +47,46 @@ public class callReceiver extends BroadcastReceiver {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
 
-            if ( ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) !=
-                    PackageManager.PERMISSION_GRANTED) {
-
-
-            }
             switch (state) {
                 case TelephonyManager.CALL_STATE_RINGING:
 
-                    Toast.makeText(context, "phone is ringing "+ incomingNumber, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Ringing", Toast.LENGTH_LONG).show();
+
+                    inCall = false;
+
                     Database_Helper DC = new Database_Helper(context);
                     DC.open();
 
-                    if(DC.isBlocked(incomingNumber)){
-                        block_number = true;
-                    }else{
-                        block_number=false;
+                    Cursor timeCursor = DC.getCallBlockTimes();
+                    for (timeCursor.moveToFirst(); !timeCursor.isAfterLast(); timeCursor.moveToNext()) {
+                        String from=timeCursor.getString(timeCursor.getColumnIndex("_from"));
+                        String to=timeCursor.getString(timeCursor.getColumnIndex("_to"));
+
+                        if (isBetween(from,to)) {//block
+                            block_number = true;
+                            isBetween = true;
+                            break;
+                        }
+                        else{//check is in block list
+                            block_number = false;
+                        }
                     }
-                    /*
                     Cursor c = DC.getDataCallBlocker();
-                    int numberIndex = c.getColumnIndex(DC.columnName()[1]);
-                    int isCallIndex = c.getColumnIndex(DC.columnName()[3]);
+                    int indexNumber = c.getColumnIndex(DC.columnName()[1]);
+                    int indexCall = c.getColumnIndex(DC.columnName()[3]);
+
                     for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-                        if (c.getString(isCallIndex).equals("1") && PhoneNumberUtils.compare(incomingNumber, c.getString(numberIndex))) {
+
+                        if(isBetween == true){
+                            break;
+                        }
+
+                        if (c.getString(indexCall).equals("1") && PhoneNumberUtils.compare(incomingNumber, c.getString(indexNumber))) {
                             block_number = true;
                             break;
                         } else
                             block_number = false;
-                    }*/
+                    }
 
                     DC.close();
 
@@ -92,21 +100,55 @@ public class callReceiver extends BroadcastReceiver {
 
                     try {
 
-                        Class clazz = Class.forName(telephonyManager.getClass().getName());
-                        Method method = clazz.getDeclaredMethod("getITelephony");
+                        Class cls = Class.forName(telephonyManager.getClass().getName());
+                        Method method = cls.getDeclaredMethod("getITelephony");
                         method.setAccessible(true);
                         ITelephony telephonyService = (ITelephony) method.invoke(telephonyManager);
 
-                        if (block_number != false) {
+                        if (block_number == true) {
+
+                            Toast.makeText(context, "block number", Toast.LENGTH_LONG).show();
                             audioManager.setStreamMute(AudioManager.STREAM_RING, true);
                             telephonyService = (ITelephony) method.invoke(telephonyManager);
                             telephonyService.endCall();
                             audioManager.setStreamMute(AudioManager.STREAM_RING, false);
 
-                            //method to add number to call log
-                            Date currentTime = Calendar.getInstance().getTime();
-                            addtoBlockHistoryTable(incomingNumber,currentTime.toString());
+                            //add number to blocked call log history
+                            DateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+                            dateFormatter.setLenient(false);
+                            Date today = new Date();
+                            String dateTime = dateFormatter.format(today);
 
+                            DC.open();
+                            DC.insertDataToCallBlockerHistory(incomingNumber, dateTime);
+                            DC.close();
+
+                        } else {//if not blocked number
+
+                            //record call if in list
+                            if (inCall == true) {
+                                DC.open();
+                                Cursor numCursor = DC.getRecordNumbers(incomingNumber);
+                                int numIndex = numCursor.getColumnIndex(DC.columnName()[0]);
+                                for (numCursor.moveToFirst(); !numCursor.isAfterLast(); numCursor.moveToNext()) {
+                                    if (PhoneNumberUtils.compare(incomingNumber, c.getString(numIndex))) {
+
+                                        Toast.makeText(context, "no in list start recording", Toast.LENGTH_LONG).show();
+/*
+                                            audioRecorder recObj = new audioRecorder(context,incomingNumber);
+                                            if() {
+                                                recObj.startRecording();
+                                            }else{
+
+                                            }
+  */
+                                        break;
+                                    } else {
+                                        Toast.makeText(context, "no not in list not recording", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                                DC.close();
+                            }
                         }
                     } catch (Exception e) {
                         Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
@@ -117,16 +159,39 @@ public class callReceiver extends BroadcastReceiver {
                     audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
                     break;
 
-                case PhoneStateListener.LISTEN_CALL_STATE:
+                case TelephonyManager.CALL_STATE_IDLE:
+                    inCall = false;
+
+                case TelephonyManager.CALL_STATE_OFFHOOK:
+                    inCall = true;
+                    //Toast.makeText(context,"in a call",Toast.LENGTH_LONG).show();
+                    break;
             }
+
             super.onCallStateChanged(state, incomingNumber);
         }
 
-        private void addtoBlockHistoryTable(String number, String date) {
+        public boolean isBetween(String from, String to) {
 
-            dbHelper.open();
-            dbHelper.insertDataToCallBlockerHistory(number, date);
-            dbHelper.close();
+            try {
+                DateFormat dateformatter = new SimpleDateFormat("HH:mm");
+
+                Date startime = dateformatter.parse(from);
+                Date endtime = dateformatter.parse(to);
+
+                String cur_time = dateformatter.format(new Date());
+                Date current_time=dateformatter.parse(cur_time);
+
+                if (current_time.after(startime) && current_time.before(endtime)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return false;
         }
+
     }
 }

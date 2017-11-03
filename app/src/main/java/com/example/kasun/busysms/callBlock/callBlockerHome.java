@@ -1,12 +1,16 @@
 package com.example.kasun.busysms.callBlock;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -57,7 +61,8 @@ public class callBlockerHome extends AppCompatActivity {
     private final int PICK_CONTACTS = 1;
     Database_Helper dbObj;
 
-    Tab1Fragment tab1Fragment;
+    com.example.kasun.busysms.callBlock.tab1Fragment tab1Fragment;
+    com.example.kasun.busysms.callBlock.tab2Fragment tab2Fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +141,7 @@ public class callBlockerHome extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                //mViewPager.setCurrentItem(2);
+                getCallLogData(view);
 
             }
         });
@@ -145,11 +150,50 @@ public class callBlockerHome extends AppCompatActivity {
         fab_contact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,
+                Intent pickContact = new Intent(Intent.ACTION_PICK,
                         ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-                startActivityForResult(contactPickerIntent, PICK_CONTACTS);
+                startActivityForResult(pickContact, PICK_CONTACTS);
             }
         });
+    }
+
+    public void getCallLogData(View view){
+
+        String[] callLogFields = {android.provider.CallLog.Calls._ID,
+                                                        android.provider.CallLog.Calls.NUMBER,
+                                                        android.provider.CallLog.Calls.CACHED_NAME};
+
+        String viaOrder = android.provider.CallLog.Calls.DATE + " DESC";
+
+        String WHERE = android.provider.CallLog.Calls.NUMBER + " >0";
+
+        if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.READ_CALL_LOG)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        final Cursor callLog_cursor = view.getContext().getContentResolver().query(
+                android.provider.CallLog.Calls.CONTENT_URI, callLogFields,
+                WHERE, null, viaOrder);
+
+        AlertDialog.Builder callLogAlertDialog = new AlertDialog.Builder(
+                view.getContext());
+
+        android.content.DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int item) {
+                callLog_cursor.moveToPosition(item);
+                String numFromLog = callLog_cursor.getString(callLog_cursor
+                        .getColumnIndex(android.provider.CallLog.Calls.NUMBER));
+
+                openAddNumberPopUp("", numFromLog);
+
+                callLog_cursor.close();
+            }
+        };
+
+        callLogAlertDialog.setCursor(callLog_cursor, listener,android.provider.CallLog.Calls.NUMBER);
+        callLogAlertDialog.setTitle("Call Log");
+        callLogAlertDialog.create().show();
     }
 
     public void openAddNumberPopUp(final String conName, String conNumber) {
@@ -180,17 +224,19 @@ public class callBlockerHome extends AppCompatActivity {
                 boolean callSwitchState = callSwitch.isChecked();
                 boolean msgSwitchState = msgSwitch.isChecked();
 
-                if ((!number.getText().toString().isEmpty()) && (callSwitchState == true || msgSwitchState ==true)) {
-                    boolean isSuccess = addtoBlockTable(name.getText().toString(), number.getText().toString(), msgSwitchState, callSwitchState);
+                if ((!number.getText().toString().isEmpty()) && (callSwitchState == true || msgSwitchState == true)) {
+
+                    boolean isSuccess = addtoBlockTable(name.getText().toString(),
+                            number.getText().toString(), msgSwitchState, callSwitchState);
+
                     if (isSuccess == true) {
 
                         alertDialog.dismiss();
-                        //dbHelper = new Database_Helper(this.getActivity());
 
                         List<callBlockerModel> results = GetlistData();
-                        ListView lv = (ListView)tab1Fragment.getView().findViewById(R.id.blockedListView);
+                        ListView lv = (ListView) tab1Fragment.getView().findViewById(R.id.blockedListView);
 
-                        customAdapter adapter=new customAdapter(callBlockerHome.this, results);
+                        customAdapter adapter = new customAdapter(callBlockerHome.this, results);
                         adapter.setFragment(tab1Fragment);
                         lv.setAdapter(adapter);
 
@@ -207,7 +253,7 @@ public class callBlockerHome extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private List<callBlockerModel> GetlistData(){
+    private List<callBlockerModel> GetlistData() {
         List<callBlockerModel> itemList = new ArrayList<>();
 
         callBlockerModel listItem;
@@ -215,7 +261,7 @@ public class callBlockerHome extends AppCompatActivity {
 
         Cursor mCursor = dbHelper.getDataCallBlocker();
 
-        if(mCursor.getCount() != 0 ) {
+        if (mCursor.getCount() != 0) {
             for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()) {
                 listItem = new callBlockerModel();
                 String name = mCursor.getString(mCursor.getColumnIndex("_name"));
@@ -230,8 +276,8 @@ public class callBlockerHome extends AppCompatActivity {
 
                 itemList.add(listItem);
             }
-        }else{
-            Toast.makeText(getApplicationContext(),"No data in table",Toast.LENGTH_LONG);
+        } else {
+            Toast.makeText(getApplicationContext(), "No data in table", Toast.LENGTH_LONG);
         }
         return itemList;
     }
@@ -247,22 +293,6 @@ public class callBlockerHome extends AppCompatActivity {
 
         dbObj.close();
         return false;
-    }
-
-    private void getFromTable() {
-        Cursor cursor = dbObj.getDataCallBlocker();
-
-        String array[] = new String[cursor.getCount()];
-        int i = 0;
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            array[i] = cursor.getString(1);
-            i++;
-            cursor.moveToNext();
-        }
-
-        Toast.makeText(callBlockerHome.this, array.toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -370,17 +400,17 @@ public class callBlockerHome extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            switch(position){
+            switch (position) {
                 case 0:
-                    //Tab1Fragment tab1=new Tab1Fragment();
-                    tab1Fragment=new Tab1Fragment();
+                    tab1Fragment = new tab1Fragment();
                     tab1Fragment.setContext(getApplicationContext());
                     return tab1Fragment;
                 case 1:
-                    Tab2Fragment tab2=new Tab2Fragment();
-                    return tab2;
+                    tab2Fragment = new tab2Fragment();
+                    tab2Fragment.setContext(getApplicationContext());
+                    return tab2Fragment;
                 case 2:
-                    Tab3Fragment tab3=new Tab3Fragment();
+                    tab3Fragment tab3 = new tab3Fragment();
                     return tab3;
             }
             return null;
