@@ -21,7 +21,7 @@ public class home extends AppCompatActivity {
             R.drawable.function1,
             R.drawable.function2,
             R.drawable.function3,
-            R.drawable.fnew};//animal images array
+            R.drawable.fnew};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
