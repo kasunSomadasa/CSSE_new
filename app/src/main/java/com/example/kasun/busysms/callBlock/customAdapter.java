@@ -28,6 +28,8 @@ public class customAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     Database_Helper helper;
     Context context;
+    boolean isMsgChk=true;
+    boolean isCallChk =true;
     com.example.kasun.busysms.callBlock.tab1Fragment tab1Fragment;
 
     public customAdapter(Context context, List<callBlockerModel> results) {
@@ -36,6 +38,7 @@ public class customAdapter extends BaseAdapter {
         mInflater = LayoutInflater.from(context);
         helper = new Database_Helper(context);
         this.context = context;
+        checkIconShow();
     }
 
     public void setFragment(com.example.kasun.busysms.callBlock.tab1Fragment tab1Fragment) {
@@ -97,7 +100,9 @@ public class customAdapter extends BaseAdapter {
                 list = GetlistData();
                 //lv.setAdapter(this);
                 notifyDataSetChanged();
-
+                if(list.size() == 0){
+                    ((callBlockerHome)context).disapperIcon();
+                }
                 Toast.makeText(v.getContext(), number + " deleted", Toast.LENGTH_LONG).show();
             }
         });
@@ -110,6 +115,8 @@ public class customAdapter extends BaseAdapter {
                 boolean isMsgChk = isChecked;
 
                 helper.EditMSG(number, isMsgChk);
+
+                checkIconShow();
 
                 System.out.println("***********" + number + isMsgChk);
 
@@ -125,12 +132,23 @@ public class customAdapter extends BaseAdapter {
 
                 helper.EditCALL(number, isCallChk);
 
+                checkIconShow();
+
                 System.out.println("--------------" + number + isCallChk);
 
             }
         });
 
         return convertView;
+    }
+
+    public void checkIconShow(){
+
+        if((isCallChk && isMsgChk) || isMsgChk || isCallChk ){
+            ((callBlockerHome)context).showIcon();
+        }else{
+            ((callBlockerHome)context).disapperIcon();
+        }
     }
 
     private List<callBlockerModel> GetlistData() {

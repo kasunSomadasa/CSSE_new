@@ -1,6 +1,10 @@
 package com.example.kasun.busysms.callBlock;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -241,6 +246,7 @@ public class callBlockerHome extends AppCompatActivity {
                         lv.setAdapter(adapter);
 
                         Toast.makeText(callBlockerHome.this, "Successfully Blocked", Toast.LENGTH_SHORT).show();
+                        showIcon();
                     } else {
                         Toast.makeText(callBlockerHome.this, "Blocking unsuccessfull", Toast.LENGTH_SHORT).show();
                     }
@@ -251,6 +257,29 @@ public class callBlockerHome extends AppCompatActivity {
         });
 
         alertDialog.show();
+    }
+
+    public void disapperIcon(){
+        ((NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(1);
+    }
+
+    public void showIcon(){
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)//R.mipmap.ic_launcher-->for app icon
+                .setContentTitle("SMS Blocker Activated");
+        Intent resultIntent = new Intent(this, callBlockerHome.class);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                resultIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+        Notification notification = mBuilder.build();
+        notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
+
+        NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotifyMgr.notify(1, notification);
     }
 
     private List<callBlockerModel> GetlistData() {

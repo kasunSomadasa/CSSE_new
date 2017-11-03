@@ -84,8 +84,10 @@ public class home extends AppCompatActivity {
         int readPhoneState = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
         int smsReceive = ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS);
         int fileWitePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int fileReadPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int fileReadPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         int readCallLogPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG);
+        int recordAudio = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+        int captureAudioOutput = ContextCompat.checkSelfPermission(this, Manifest.permission.CAPTURE_AUDIO_OUTPUT);
 
         List<String> listPermissionsNeeded = new ArrayList<>();
 
@@ -106,6 +108,12 @@ public class home extends AppCompatActivity {
         }
         if (readCallLogPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_CALL_LOG);
+        }
+        if(recordAudio != PackageManager.PERMISSION_GRANTED){
+            listPermissionsNeeded.add(Manifest.permission.RECORD_AUDIO);
+        }
+        if (captureAudioOutput != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAPTURE_AUDIO_OUTPUT);
         }
         if (!listPermissionsNeeded.isEmpty())
         {

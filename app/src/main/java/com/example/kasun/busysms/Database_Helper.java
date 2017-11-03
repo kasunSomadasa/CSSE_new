@@ -282,7 +282,7 @@ public class Database_Helper extends SQLiteOpenHelper {
 
     public Cursor getRecordNumbers(String w1){
         db=this.getReadableDatabase();
-        Cursor c=db.rawQuery("select * from "+CALLBLOCKER_MSG_BLOCK_WORDS_TABLE,null);
+        Cursor c=db.rawQuery("select * from "+CALLRECORDER_TABLE,null);
         return  c;
     }
 
@@ -302,7 +302,6 @@ public class Database_Helper extends SQLiteOpenHelper {
         Cursor c=db.rawQuery("select * from "+CALLBLOCK_TIMES,null);
         return  c;
     }
-
 
     public boolean DeleteTime(String from,String to) {
         db = this.getWritableDatabase();

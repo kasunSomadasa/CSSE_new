@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.android.internal.telephony.ITelephony;
 import com.example.kasun.busysms.Database_Helper;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -123,32 +124,6 @@ public class callReceiver extends BroadcastReceiver {
                             DC.insertDataToCallBlockerHistory(incomingNumber, dateTime);
                             DC.close();
 
-                        } else {//if not blocked number
-
-                            //record call if in list
-                            if (inCall == true) {
-                                DC.open();
-                                Cursor numCursor = DC.getRecordNumbers(incomingNumber);
-                                int numIndex = numCursor.getColumnIndex(DC.columnName()[0]);
-                                for (numCursor.moveToFirst(); !numCursor.isAfterLast(); numCursor.moveToNext()) {
-                                    if (PhoneNumberUtils.compare(incomingNumber, c.getString(numIndex))) {
-
-                                        Toast.makeText(context, "no in list start recording", Toast.LENGTH_LONG).show();
-/*
-                                            audioRecorder recObj = new audioRecorder(context,incomingNumber);
-                                            if() {
-                                                recObj.startRecording();
-                                            }else{
-
-                                            }
-  */
-                                        break;
-                                    } else {
-                                        Toast.makeText(context, "no not in list not recording", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                                DC.close();
-                            }
                         }
                     } catch (Exception e) {
                         Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
@@ -160,12 +135,39 @@ public class callReceiver extends BroadcastReceiver {
                     break;
 
                 case TelephonyManager.CALL_STATE_IDLE:
-                    inCall = false;
+ /*                   audioRecorder recObj = new audioRecorder(context,incomingNumber);
+                    try {
+                        recObj.stop();
+                        Toast.makeText(context, "recording finished", Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+       */             inCall = false;
 
                 case TelephonyManager.CALL_STATE_OFFHOOK:
                     inCall = true;
+               /*     DC.open();
+                    Cursor numCursor = DC.getRecordNumbers(incomingNumber);
+                    for (numCursor.moveToFirst(); !numCursor.isAfterLast(); numCursor.moveToNext()) {
+                        if (PhoneNumberUtils.compare(incomingNumber, numCursor.getString(numCursor.getColumnIndex("_recNumber")))) {
+
+                            Toast.makeText(context, "no is in list start recording", Toast.LENGTH_LONG).show();
+                            recObj = new audioRecorder(context,incomingNumber);
+                            try {
+                                recObj.startRecording();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        } else {
+                            Toast.makeText(context, "no not in list not recording", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    DC.close();
+
+                    Toast.makeText(context, "recording started", Toast.LENGTH_LONG).show();
                     //Toast.makeText(context,"in a call",Toast.LENGTH_LONG).show();
-                    break;
+                    break;*/
             }
 
             super.onCallStateChanged(state, incomingNumber);
