@@ -25,12 +25,18 @@ import android.widget.Toast;
 import com.example.kasun.busysms.R;
 import com.example.kasun.busysms.taskCalendar.Helper.DateEx;
 import com.example.kasun.busysms.taskCalendar.Helper.ReminderActivator;
+import com.example.kasun.busysms.taskCalendar.Helper.ValidationHelper;
 import com.example.kasun.busysms.taskCalendar.Model.Task;
 
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * @author Nishan
+ * @version 3.4
+ * @see android.app.Activity
+ */
 public class AddTaskActivity extends AppCompatActivity {
     //To be used by android logger
     private static final String TAG = "AddTaskActivity";
@@ -44,7 +50,7 @@ public class AddTaskActivity extends AppCompatActivity {
     CheckBox chkAllDay;
     Button btnAddTask;
 
-    int oldTaskId = -1;
+    ValidationHelper validationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,11 @@ public class AddTaskActivity extends AppCompatActivity {
         chkAllDay = (CheckBox) findViewById(R.id.chkAllDay);
         btnAddTask = (Button) findViewById(R.id.btnAddTask);
 
+
+        //Initialization of validation instance
+        validationHelper = new ValidationHelper();
+        validationHelper.setAddTaskActivityValidator(txtTaskName, txtTaskLocation, txtTaskDate,
+                txtStartTime, txtEndTime, txtTaskDescription);
 
         //Variables Definition
         final long selectedDate = (long)getIntent().getExtras().get("selectedDate");
@@ -133,7 +144,11 @@ public class AddTaskActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 String date = year+"-"+(month+1)+"-"+day;
-                txtTaskDate.setText(date);
+                try {
+                    txtTaskDate.setText(DateEx.getFormattedDateString(date));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Cannot parse date to formated one - date picker listener", e);
+                }
             }
         };
 
@@ -142,7 +157,11 @@ public class AddTaskActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
                 String time = i + ":" + i1;
-                txtStartTime.setText(time);
+                try {
+                    txtStartTime.setText(DateEx.getFormatedTimeString(time));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Cannot parse time to formated one - start time picker listener", e);
+                }
             }
         };
 
@@ -151,7 +170,11 @@ public class AddTaskActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
                 String time = i + ":" + i1;
-                txtEndTime.setText(time);
+                try {
+                    txtEndTime.setText(DateEx.getFormatedTimeString(time));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Cannot parse time to formated one - end time picker listener", e);
+                }
             }
         };
 
@@ -210,8 +233,7 @@ public class AddTaskActivity extends AppCompatActivity {
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(oldTaskId != -1){
-                    finish();
+                if(!validationHelper.validateAddTask()){
                     return;
                 }
                 Task task = new Task();
@@ -268,10 +290,11 @@ public class AddTaskActivity extends AppCompatActivity {
                         break;
                 }
 
-                if(task.getTask_notification_time().before(new Date())){
+                if(task.getTask_notification_time().getTime() <= new Date().getTime()){
                     Snackbar.make(view, "Cannot set reminders for past events", Snackbar.LENGTH_LONG)
                             .setAction("OK", null).show();
-                }else{
+                }
+                else{
                     if(Task.addTaskToDB(AddTaskActivity.this, task)){
                         ReminderActivator.runActivator(AddTaskActivity.this, task);
                         Toast.makeText(AddTaskActivity.this, "Reminder added successfully", Toast.LENGTH_SHORT).show();

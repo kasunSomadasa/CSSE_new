@@ -49,7 +49,7 @@ public class DateEx extends Date {
     }
 
     /**
-     * @param date date date object which wants to extract the day. If null, gets today
+     * @param date date object which wants to extract the day. If null, gets today
      * @return
      */
     public static int getYearOf(@Nullable Date date){

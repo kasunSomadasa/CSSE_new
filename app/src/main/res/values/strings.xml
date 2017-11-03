@@ -23,5 +23,5 @@
         <item>System Fault</item>
     </string-array>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_update_task">UpdateTaskActivity</string>
+    <string name="title_activity_update_task">Edit Task</string>
 </resources>

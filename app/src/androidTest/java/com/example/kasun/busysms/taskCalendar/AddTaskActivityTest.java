@@ -2,6 +2,9 @@ package com.example.kasun.busysms.taskCalendar;
 
 import android.support.test.rule.ActivityTestRule;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.example.kasun.busysms.R;
 import com.example.kasun.busysms.taskCalendar.Model.Task;
@@ -35,11 +38,34 @@ public class AddTaskActivityTest {
 
     @Test
     public void testAddTask() throws Exception{
+        int oldTaskCount = Task.getAllTasks(addTaskActivity.getApplicationContext()).size();
+
+        EditText txtTaskName = (EditText) addTaskActivity.findViewById(R.id.txtTaskName);
+        EditText txtTaskLocation = (EditText) addTaskActivity.findViewById(R.id.txtLocation);
+        EditText txtTaskDate = (EditText) addTaskActivity.findViewById(R.id.txtTaskDate);
+        EditText txtStartTime = (EditText) addTaskActivity.findViewById(R.id.txtStartTime);
+        EditText txtEndTime = (EditText) addTaskActivity.findViewById(R.id.txtEndTime);
+        EditText txtTaskDescription = (EditText) addTaskActivity.findViewById(R.id.txtTaskDescription);
+        EditText txtTaskParticipants = (EditText) addTaskActivity.findViewById(R.id.txtTaskParticipants);
+        Spinner spinnerTaskNotificationTime = (Spinner) addTaskActivity.findViewById(R.id.spinnerTaskNotificationTime);
+        Spinner spinnerSounds = (Spinner) addTaskActivity.findViewById(R.id.spinnerSounds);
+        CheckBox chkAllDay = (CheckBox) addTaskActivity.findViewById(R.id.chkAllDay);
         Button btnAddTask = (Button) addTaskActivity.findViewById(R.id.btnAddTask);
-        int oldTaskSize = Task.getAllTasks(addTaskActivity.getApplicationContext()).size();
+
+        txtTaskName.setText("Upandine");
+        txtTaskLocation.setText("Kurunegala");
+        txtTaskDate.setText("2018-08-08");
+        txtStartTime.setText("08:08");
+        txtEndTime.setText("10:08");
+        txtTaskDescription.setText("Default description");
+        txtTaskParticipants.setText("Spider Man");
+        spinnerTaskNotificationTime.setSelection(0);
+        spinnerSounds.setSelection(0);
+        chkAllDay.setChecked(false);
+
         btnAddTask.performClick();
-        int newTaskSize = Task.getAllTasks(addTaskActivity.getApplicationContext()).size();
-        assertNotEquals(oldTaskSize, newTaskSize);
+        int newTaskCount = Task.getAllTasks(addTaskActivity.getApplicationContext()).size();
+        assertNotEquals(oldTaskCount, newTaskCount);
     }
 
 }
