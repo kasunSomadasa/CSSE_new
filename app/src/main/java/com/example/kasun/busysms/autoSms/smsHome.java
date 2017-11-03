@@ -21,16 +21,22 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.kasun.busysms.Database_Helper;
-
 import com.example.kasun.busysms.R;
 
+/**
+ * Created by Kasun Somadasa
+ * This is home activity of auto sms funtion
+ * Using this activity navigate to other activitys
+ */
+
 public class smsHome extends AppCompatActivity {
+
+    /** Constant for permission request */
+    private static final int PERMISSION_REQUEST_CODE =123;
+    //Databese referance
     Database_Helper db;
     ListView homeLogList;
-
-    private static final int PERMISSION_REQUEST_CODE =123;
     Button newBtn,logBtn,soundBtn;
     TextView dbStatus;
 
@@ -39,7 +45,9 @@ public class smsHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms_home);
 
+        //Before going to activitys check api 23 runtime permissions
         if(!hasPermissions()){
+            //if not then request runtime permissions
             requestPermission();
         }
 
@@ -51,11 +59,13 @@ public class smsHome extends AppCompatActivity {
         populatelistView();
         homeLogList.setOnItemClickListener(onItemClickListener);
 
+        //btn click methods
         onClickButtonListenerForLog();
         onClickButtonListenerForNewTimeSlot();
         onClickButtonListenerForControlSound();
         changeVolumeMode();
 
+        //enable action bar back btn and other action btns
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -79,8 +89,8 @@ public class smsHome extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        //navigate to activity according to item click
         if (id == R.id.add_btn) {
-
             Intent intent = new Intent(smsHome.this,addTimeSlot.class);
             startActivity(intent);
             return true;
@@ -94,6 +104,9 @@ public class smsHome extends AppCompatActivity {
     }
 
     public void onClickButtonListenerForLog(){
+        /*
+         * open addtime slot activity
+         */
         newBtn = (Button) findViewById(R.id.newButton);
         newBtn.setOnClickListener(
                 new View.OnClickListener() {
@@ -108,6 +121,9 @@ public class smsHome extends AppCompatActivity {
 
     }
     public void onClickButtonListenerForNewTimeSlot() {
+         /*
+         * open log display activity
+         */
         logBtn = (Button) findViewById(R.id.logButton);
         logBtn.setOnClickListener(
                 new View.OnClickListener() {
@@ -125,7 +141,9 @@ public class smsHome extends AppCompatActivity {
     }
 
     public void changeVolumeMode(){
-
+        /*
+         * check current mobile audio status and change btn according to it
+         */
         AudioManager audioManager =(AudioManager)getSystemService(getApplicationContext().AUDIO_SERVICE);
 
         switch( audioManager.getRingerMode() ){
@@ -149,6 +167,9 @@ public class smsHome extends AppCompatActivity {
     }
 
     public void onClickButtonListenerForControlSound() {
+         /*
+         * change mobile audio status
+         */
         soundBtn = (Button) findViewById(R.id.silentButton);
         soundBtn.setOnClickListener(
                 new View.OnClickListener() {
@@ -162,12 +183,14 @@ public class smsHome extends AppCompatActivity {
     }
 
     public void populatelistView() {
-
-
+         /*
+         * load database data to listView
+         */
         Cursor cursor = db.getListOfData();
 
-        String[] fromFiledNames = new String[]{Database_Helper.COL2, Database_Helper.COL3, Database_Helper.COL9,Database_Helper.COL5};
-        int[] toViewIds = new int[]{R.id.from, R.id.to ,R.id.activate,R.id.day};
+        //get only from,to,day and activation data from db
+        String[] fromFiledNames = new String[]{Database_Helper.COL2, Database_Helper.COL3, Database_Helper.COL9,Database_Helper.COL5,Database_Helper.COL4};
+        int[] toViewIds = new int[]{R.id.from, R.id.to ,R.id.activate,R.id.day,R.id.state};
 
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.time_slot_item_list, cursor, fromFiledNames, toViewIds, 0);
 
@@ -177,6 +200,7 @@ public class smsHome extends AppCompatActivity {
             return;
         }
         if (cursor.getCount() == 0) {
+            // if data is not available
             dbStatus.setVisibility(View.VISIBLE);
             dbStatus.setText("No Any SMS Record To Display");
             Toast.makeText(this, "No Any SMS Record To Display ", Toast.LENGTH_LONG).show();
@@ -187,12 +211,19 @@ public class smsHome extends AppCompatActivity {
     }
 
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        /*
+        * give direction when user click on listview item
+        */
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Toast.makeText(smsHome.this, "Please Go To The LOG", Toast.LENGTH_LONG).show();
         }
     };
 
     private  boolean hasPermissions(){
+         /*
+         * checking runtime permissions are available or not
+         * and return boolean
+         */
         int res=0;
         String[] permissions = new String[]{
                 Manifest.permission.SEND_SMS,
@@ -211,6 +242,10 @@ public class smsHome extends AppCompatActivity {
     }
 
     private  void  requestPermission(){
+         /*
+         * If mobile api level 23 or above versions and
+         * if permission is not available request that permissions form user at runtime
+         */
         String[] permissions = new String[]{
                 Manifest.permission.SEND_SMS,
                 Manifest.permission.READ_PHONE_STATE,
@@ -225,6 +260,11 @@ public class smsHome extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+         /*
+         * check wheather user accept our permission request
+         * if not display error toast
+         */
+
         boolean allow =true;
 
         switch (requestCode){
@@ -238,6 +278,8 @@ public class smsHome extends AppCompatActivity {
                 allow = false;
                 break;
         }
+
+        //display error toast
         if(!allow){
              if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                  if(shouldShowRequestPermissionRationale(Manifest.permission.SEND_SMS)){

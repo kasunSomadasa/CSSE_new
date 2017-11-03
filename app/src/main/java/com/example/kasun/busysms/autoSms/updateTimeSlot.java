@@ -30,11 +30,15 @@ import com.example.kasun.busysms.R;
 
 import java.util.ArrayList;
 
+/**
+ * Created by Kasun Somadasa
+ * This is the activity which update existing time slot in db
+ */
 
 public class updateTimeSlot extends AppCompatActivity {
 
-    static final int DILOGFROM = 0;
-    static final int DILOGTO = 1;
+    static final int DILOG_FROM = 0;
+    static final int DILOG_TO = 1;
     EditText msg, state;
     ArrayList<String> selectedItems = new ArrayList<String>();
     public String selections = "";
@@ -44,7 +48,6 @@ public class updateTimeSlot extends AppCompatActivity {
     Database_Helper db;
     AlertDialog alert;
     CheckBox checkBoxCall, checkBoxSms;
-
     String code, from, to, type, day, messege, call, sms, activation;
     String checkSms, checkCall,checkActive,checkTest;
 
@@ -62,6 +65,7 @@ public class updateTimeSlot extends AppCompatActivity {
         timeToText = (TextView) findViewById(R.id.time_to);
         repeatText = (TextView) findViewById(R.id.repeat);
         updateBtn = (Button) findViewById(R.id.updateTimeSlot);
+
         showDialogTimeFrom();
         showDialogTimeTo();
         showDialogdays();
@@ -69,7 +73,7 @@ public class updateTimeSlot extends AppCompatActivity {
 
         repeatText.setText("Choose your days");
         UpData();
-
+        //hold data parsed from timeSlotsList activity and set it to variables
         code = getIntent().getStringExtra("code");
         from = getIntent().getStringExtra("from");
         to = getIntent().getStringExtra("to");
@@ -85,13 +89,16 @@ public class updateTimeSlot extends AppCompatActivity {
         state.setText(type);
         msg.setText(messege);
         setCheck();
-
+        //enable action bar back btn
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
 
     }
 public boolean checkIconShow(){
+    /*
+     * check is notification show on notification bar
+     */
     Cursor c = db.getData();
     boolean test=false;
 
@@ -111,11 +118,13 @@ public boolean checkIconShow(){
     return  test;
 }
     public void showIcon(){
-
+        /*
+         * show notification with app icon on mobile notification bar
+         */
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)//R.mipmap.ic_launcher-->for app icon
                 .setContentTitle("Auto SMS Activated");
-        Intent resultIntent = new Intent(this, smsHome.class);
+        Intent resultIntent = new Intent(this, smsHome.class); //when user click on notification then directly comes to smsHome activity
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 this,
                 0,
@@ -134,22 +143,28 @@ public boolean checkIconShow(){
 
 
     public void showDialogTimeFrom() {
+     /*
+      * show time picker dialog for 'From'
+      */
         timeFromText.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showDialog(DILOGFROM);
+                        showDialog(DILOG_FROM);
                     }
                 }
         );
     }
 
     public void showDialogTimeTo() {
+     /*
+      * show time picker dialog for 'To'
+      */
         timeToText.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showDialog(DILOGTO);
+                        showDialog(DILOG_TO);
                     }
                 }
         );
@@ -157,9 +172,12 @@ public boolean checkIconShow(){
 
     @Override
     protected Dialog onCreateDialog(int id) {
-        if (id == DILOGFROM)
+     /*
+      * get user choosen hour and minute to variables
+      */
+        if (id == DILOG_FROM)
             return new TimePickerDialog(this, 2, timePikerListnerFrom, noOfHour, noOfminute, false);
-        else if (id == DILOGTO)
+        else if (id == DILOG_TO)
             return new TimePickerDialog(this, 2, timePikerListnerTo, noOfHour, noOfminute, false);
         return null;
     }
@@ -235,6 +253,7 @@ public boolean checkIconShow(){
                         selections=selections+","+ms;
                     }
                 }
+                //if selection is empty then display Choose your days" again
                 if(selections.equals("")){
                     repeatText.setText("Choose your days");
                 }else{
@@ -253,7 +272,9 @@ public boolean checkIconShow(){
 
 
     public void UpData() {
-
+        /*
+         * update existing time slot in db
+         */
         updateBtn.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -267,7 +288,7 @@ public boolean checkIconShow(){
 
                         if (!repeatText.equals("Choose your days") && !msg.equals("") && !state.equals("") && checkTest.equals("true")) {
 
-                            boolean isInserted = db.updateData(code, timeFromText.getText().toString(), timeToText.getText().toString(), state.getText().toString(), repeatText.getText().toString(), msg.getText().toString(), checkCall, checkSms, checkActive);
+                            boolean isUpdated = db.updateData(code, timeFromText.getText().toString(), timeToText.getText().toString(), state.getText().toString(), repeatText.getText().toString(), msg.getText().toString(), checkCall, checkSms, checkActive);
 
                             if(checkIconShow()){
                                 showIcon();
@@ -276,7 +297,7 @@ public boolean checkIconShow(){
                             }
 
 
-                            if (isInserted == true) {
+                            if (isUpdated == true) {
                                 Toast.makeText(updateTimeSlot.this, "Changers Are Saved", Toast.LENGTH_LONG).show();
 
                             } else {
@@ -296,6 +317,7 @@ public boolean checkIconShow(){
     }
 
     public void setCheck() {
+        //set check box according to db values
         if (call.equals("true")) {
             checkBoxCall.setChecked(true);
             checkCall = "true";
@@ -313,7 +335,7 @@ public boolean checkIconShow(){
     }
 
     public void addListenerForCheckBox() {
-
+        //get check box values
         checkBoxCall = (CheckBox) findViewById(R.id.for_call);
         checkBoxSms = (CheckBox) findViewById(R.id.for_sms);
 
@@ -321,7 +343,7 @@ public boolean checkIconShow(){
 
             @Override
             public void onClick(View v) {
-                //is checked?
+                //is Call CheckBox checked?
                 if (((CheckBox) v).isChecked()) {
                     checkCall = "true";
                 } else {
@@ -334,7 +356,7 @@ public boolean checkIconShow(){
 
             @Override
             public void onClick(View v) {
-                //is checked?
+                //is SMS CheckBox checked?
                 if (((CheckBox) v).isChecked()) {
                     checkSms = "true";
                 } else {
@@ -348,6 +370,9 @@ public boolean checkIconShow(){
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        /*
+         * set switch to action bar for detect activation on time slot
+         */
         getMenuInflater().inflate(R.menu.switch_menu,menu);
 
         MenuItem menuItem =menu.findItem(R.id.switchView);

@@ -7,12 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by Kasun on 11/16/2016.
+ * Created by Kasun
+ * Class which handle all database operation
  */
 public class Database_Helper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME="BUSY.db";
-    public static final String DATABASE_TABLE="Busy_info";
+    public static final String DATABASE_NAME="BUSY.db";//database name
+    public static final String DATABASE_TABLE="Busy_info";//database table which belongs to autoSMS function
     public static final String COL1="_id";
     public static final String COL2="TIME_FROM";
     public static final String COL3="TIME_TO";
@@ -31,17 +32,20 @@ public class Database_Helper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        //create database table which belongs to autoSMS function
         db.execSQL("CREATE TABLE Busy_info (_id INTEGER PRIMARY KEY AUTOINCREMENT,TIME_FROM TEXT,TIME_TO TEXT,TYPE TEXT," +
                 "DAY TEXT,MSG TEXT,CALL_T TEXT,SMS_T TEXT,ACTIVATION TEXT)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        //delete table when app is uninstall
         db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE);
         onCreate(db);
     }
 
     public boolean insertData(String from,String to,String type,String day,String msg,String call,String sms,String active){
+        //data insert query belongs to autoSMS function
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues cv=new ContentValues();
         cv.put(COL2,from);
@@ -61,23 +65,26 @@ public class Database_Helper extends SQLiteOpenHelper {
 
     }
     public void open(){
+        //open database connection
         SQLiteDatabase db=this.getWritableDatabase();
     }
 
 
     public Cursor getData(){
+        //get data query belongs to autoSMS function
         SQLiteDatabase db=this.getWritableDatabase();
         Cursor c=db.rawQuery("select * from "+DATABASE_TABLE,null);
         return  c;
     }
 
     public Integer deleteData(String id){
+        //delete data query belongs to autoSMS function
         SQLiteDatabase db=this.getWritableDatabase();
-
         return  db.delete(DATABASE_TABLE,"_id =?",new String[]{id});
     }
 
     public boolean updateData(String id,String from,String to,String type,String day,String msg,String call,String sms,String active){
+        //data update query belongs to autoSMS function
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues cv=new ContentValues();
         cv.put(COL1,id);
@@ -94,6 +101,7 @@ public class Database_Helper extends SQLiteOpenHelper {
     }
 
     public Cursor getListOfData(){
+        //get data query belongs to autoSMS function for display in listView
         SQLiteDatabase db=this.getReadableDatabase();
 
         String where=null;
@@ -108,6 +116,7 @@ public class Database_Helper extends SQLiteOpenHelper {
 
     }
     public Cursor searchData(String key){
+        //data search query belongs to autoSMS function
         SQLiteDatabase db=this.getWritableDatabase();
         Cursor c=db.rawQuery("select * from "+DATABASE_TABLE+" where "+COL4+" like '%"+key+"%'",null);
         return  c;

@@ -26,10 +26,15 @@ import com.example.kasun.busysms.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * Created by Kasun Somadasa
+ * This is the activity which save new time slot to db
+ */
+
 public class addTimeSlot extends AppCompatActivity {
 
-    static final int DILOGFROM=0;
-    static final int DILOGTO=1;
+    static final int DILOG_FROM=0;
+    static final int DILOG_TO=1;
     EditText msg,state;
     ArrayList<String> selectedItems=new ArrayList<String>();
     public String selections;
@@ -41,12 +46,12 @@ public class addTimeSlot extends AppCompatActivity {
     CheckBox checkBoxCall,checkBoxSms;
     String checkSms="false",checkCall="false",testCheck;
 
+    // Get currunt hour,minute and second
     Calendar now = Calendar.getInstance();
-
-
-    int hour = now.get(Calendar.HOUR_OF_DAY); // Get hour in 24 hour format
+    int hour = now.get(Calendar.HOUR_OF_DAY);
     int minute = now.get(Calendar.MINUTE);
     int second = now.get(Calendar.SECOND);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +67,13 @@ public class addTimeSlot extends AppCompatActivity {
         fromTimeText.setText(hour + ":" + minute+":"+second);
         toTimeText.setText(hour + ":" + minute+":"+second);
         displayText.setText("Choose your days");
+
         showDialogTimeFrom();
         showDialogTimeTo();
         showDialogdays();
         addData();
         addListenerForCheckBox();
+        //enable action bar back btn
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
@@ -74,11 +81,13 @@ public class addTimeSlot extends AppCompatActivity {
 
 
     public void showIcon(){
-
+        /*
+         * show notification with app icon on mobile notification bar
+         */
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)//R.mipmap.ic_launcher-->for app icon
                 .setContentTitle("Busy SMS Activated");
-        Intent resultIntent = new Intent(this, smsHome.class);
+        Intent resultIntent = new Intent(this, smsHome.class); //when user click on notification then directly comes to smsHome activity
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 this,
                 0,
@@ -94,21 +103,27 @@ public class addTimeSlot extends AppCompatActivity {
 
 
 public void showDialogTimeFrom(){
+     /*
+      * show time picker dialog for 'From'
+      */
     fromTimeText.setOnClickListener(
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showDialog(DILOGFROM);
+                    showDialog(DILOG_FROM);
                 }
             }
     );
 }
     public void showDialogTimeTo(){
+     /*
+      * show time picker dialog for 'To'
+      */
         toTimeText.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showDialog(DILOGTO);
+                        showDialog(DILOG_TO);
                     }
                 }
         );
@@ -116,9 +131,12 @@ public void showDialogTimeFrom(){
 
     @Override
     protected Dialog onCreateDialog(int id){
-        if(id==DILOGFROM )
+     /*
+      * get user choosen hour and minute to variables
+      */
+        if(id==DILOG_FROM )
             return new TimePickerDialog(this,2,timePikerListnerFrom,noOfHour,noOfminute,false);
-        else if(id==DILOGTO)
+        else if(id==DILOG_TO)
             return new TimePickerDialog(this,2,timePikerListnerTo,noOfHour,noOfminute,false);
         return  null;
     }
@@ -164,8 +182,8 @@ private  TimePickerDialog.OnTimeSetListener timePikerListnerFrom
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         // Set the dialog title
         builder.setTitle("Choose your days");
-                // Specify the list array, the items to be selected by default (null for none),
-                // and the listener through which to receive callbacks when items are selected
+        // Specify the list array, the items to be selected by default (null for none),
+        // and the listener through which to receive callbacks when items are selected
         builder.setMultiChoiceItems(R.array.my_date_choose, null,
                         new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
@@ -193,7 +211,7 @@ private  TimePickerDialog.OnTimeSetListener timePikerListnerFrom
                             }
 
                         }
-                     //   Toast.makeText(addTimeSlot.this,selections, Toast.LENGTH_LONG).show();
+                        //if selection is empty then display Choose your days" again
                         if(selections.equals("")){
                             displayText.setText("Choose your days");
                         }else{
@@ -214,6 +232,9 @@ private  TimePickerDialog.OnTimeSetListener timePikerListnerFrom
     }
 
     public void addData() {
+        /*
+         * add new time slot details to db
+         */
         saveBtn.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -247,7 +268,7 @@ private  TimePickerDialog.OnTimeSetListener timePikerListnerFrom
 
 
     public void addListenerForCheckBox() {
-
+        //get check box values
         checkBoxCall = (CheckBox) findViewById(R.id.for_call);
         checkBoxSms = (CheckBox) findViewById(R.id.for_sms);
 
@@ -255,7 +276,7 @@ private  TimePickerDialog.OnTimeSetListener timePikerListnerFrom
 
             @Override
             public void onClick(View v) {
-                //is CheckBox checked?
+                //is Call CheckBox checked?
                 if (((CheckBox) v).isChecked()) {
                     checkCall="true";
                 }else {
@@ -268,7 +289,7 @@ private  TimePickerDialog.OnTimeSetListener timePikerListnerFrom
 
             @Override
             public void onClick(View v) {
-                //is CheckBox checked?
+                //is SMS CheckBox checked?
                 if (((CheckBox) v).isChecked()) {
                     checkSms="true";
                 }else {

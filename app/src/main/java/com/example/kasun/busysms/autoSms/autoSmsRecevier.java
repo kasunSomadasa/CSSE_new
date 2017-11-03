@@ -16,20 +16,28 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by Kasun on 11/15/2016.
+ * Created by Kasun Somadasa
+ * This class run in background for identify incomming SMS
  */
 public class autoSmsRecevier extends BroadcastReceiver {
 
     Calendar now = Calendar.getInstance();
 
-    int hour = now.get(Calendar.HOUR_OF_DAY); // Get hour in 24 hour format
+    // Get Currunt hour in 24 hour format
+    int hour = now.get(Calendar.HOUR_OF_DAY);
+    // Get Currunt minute
     int minute = now.get(Calendar.MINUTE);
+    // Get Currunt second
     int second = now.get(Calendar.SECOND);
 
+    //make current time in Date format
     Date date = parseDate(hour + ":" + minute+":"+second);
 
 
     public String getDayOfWeek(){
+        /*
+         * get day of week in name format (i.e. Monday)
+         */
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
         Date date = new Date();
         String dayOfTheWeek = simpleDateFormat.format(date);
@@ -38,6 +46,10 @@ public class autoSmsRecevier extends BroadcastReceiver {
 
     public static final boolean isBetweenValidTime(Date startTime, Date endTime, Date validateTime)
     {
+        /*
+         * check given time(now) is between start and end times
+         * if thats in between then return true.
+         */
         boolean validTimeFlag = false;
 
         if(endTime.compareTo(startTime) <= 0)
@@ -56,7 +68,10 @@ public class autoSmsRecevier extends BroadcastReceiver {
     }
 
     public Date parseDate(String date) {
-
+        /*
+         * given String format date convert to Date format
+         * because isBetweenValidTime wants date in Date format
+         */
         final String inputFormat = "HH:mm:ss";
         SimpleDateFormat inputParser = new SimpleDateFormat(inputFormat, Locale.UK);
         try {
@@ -68,29 +83,40 @@ public class autoSmsRecevier extends BroadcastReceiver {
 
 
     public void onReceive(Context context,Intent intent) {
+        /*
+         * this method run in background and detect incomming sms event
+         * and check that incomming sms time is between our time slots then return our sms to that number
+         */
         Database_Helper db = new Database_Helper(context);
         Cursor c = db.getData();
 
         if (c.getCount() == 0) {
 
         } else {
+             /*
+              * Get incomming sms as a bundle and split into 'pdus'(sms which exceed normal sms length)
+              * and print that sms and get sender number
+              *
+              */
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
 
-                String sendernumber = null;
+                String senderNumber = null;
                 Object[] pdus = (Object[]) bundle.get("pdus");
 
                 for (int i = 0; i < pdus.length; i++) {
 
                     SmsMessage sms = SmsMessage.createFromPdu((byte[]) pdus[i]);
-                    sendernumber = sms.getOriginatingAddress();
+                    senderNumber = sms.getOriginatingAddress();
                     String msg = sms.getDisplayMessageBody();
 
-                    Toast.makeText(context, "From: " + sendernumber + " Message: " + msg, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "From: " + senderNumber + " Message: " + msg, Toast.LENGTH_LONG).show();
 
 
                 }
+
                 while (c.moveToNext()) {
+                    //Get time solt data from db and check is between valid time and its activation then send that stored msg
                     String getdb_from = c.getString(1);
                     String getdb_to = c.getString(2);
                     String getdb_day = c.getString(4);
@@ -106,9 +132,9 @@ public class autoSmsRecevier extends BroadcastReceiver {
                         Toast.makeText(context, "Message From: " + getdb_from, Toast.LENGTH_LONG).show();
                         Toast.makeText(context, "Message To: " + getdb_to, Toast.LENGTH_LONG).show();
 
-                        if (isBetweenValidTime(dateCompareOne, dateCompareTwo, date)&& sendernumber.length()<=10) {
+                        if (isBetweenValidTime(dateCompareOne, dateCompareTwo, date)) {
                             SmsManager smsManager = SmsManager.getDefault();
-                            smsManager.sendTextMessage(sendernumber, null, getdb_msg, null, null);
+                            smsManager.sendTextMessage(senderNumber, null, getdb_msg, null, null);
 
                         }
                     }
