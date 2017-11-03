@@ -7,10 +7,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
-
+import com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity;
 import com.example.kasun.busysms.autoSms.smsHome;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -57,7 +55,7 @@ public class home extends AppCompatActivity {
                     Intent intent = new Intent(home.this,blockerHome.class);
                     startActivity(intent);
                 }else{
-                    Intent intent = new Intent(home.this,calendarHome.class);
+                    Intent intent = new Intent(home.this,TaskCalendarHomeActivity.class);
                     startActivity(intent);
                 }//show the selected image in toast according to position
             }
