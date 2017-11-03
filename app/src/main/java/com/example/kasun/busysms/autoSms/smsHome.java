@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -203,8 +204,7 @@ public class smsHome extends AppCompatActivity {
             // if data is not available
             dbStatus.setVisibility(View.VISIBLE);
             dbStatus.setText("No Any SMS Record To Display");
-            Toast.makeText(this, "No Any SMS Record To Display ", Toast.LENGTH_LONG).show();
-
+            Log.i("INFO_SMS_HOME","No Any SMS Record To Display ");
             return;
         }
 

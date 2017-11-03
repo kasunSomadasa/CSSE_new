@@ -13,6 +13,7 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -160,6 +161,7 @@ public class timeSlotsList extends AppCompatActivity {
         }
         if (cursor.getCount() == 0) {
             // if data is not available
+            Log.i("INFO_TIME_SLOT_VIEW","No Any SMS Record To Display ");
             Toast.makeText(this, "No Any SMS Record To Display", Toast.LENGTH_LONG).show();
             return;
         }
@@ -216,6 +218,7 @@ public class timeSlotsList extends AppCompatActivity {
             return;
         }
         if (cursor.getCount() == 0) {
+            Log.i("INFO_TIME_SLOT_VIEW","No Any SMS Record To Display ");
             Toast.makeText(this, "No Any SMS Record To Display", Toast.LENGTH_LONG).show();
             return;
         }

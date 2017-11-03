@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.kasun.busysms.Database_Helper;
@@ -112,13 +113,14 @@ public class autoCallRecevier extends BroadcastReceiver {
                         Date dateCompareTwo = parseDate(getdb_to);
                         Toast.makeText(context, "Call From: " + getdb_from, Toast.LENGTH_LONG).show();
                         Toast.makeText(context, "Call To: " + getdb_to, Toast.LENGTH_LONG).show();
-
+                        Log.i("INFO_CALL","Detected call recevier event");
 
                         if (isBetweenValidTime(dateCompareOne, dateCompareTwo, date)) {
 
                             Toast.makeText(context, "Call From: " + incomingNumber, Toast.LENGTH_LONG).show();
                             SmsManager smsManager=SmsManager.getDefault();
                             smsManager.sendTextMessage(incomingNumber,null,getdb_msg,null,null);
+                            Log.i("INFO_CALL","Auto SMS sent");
 
                         }
 
@@ -128,6 +130,7 @@ public class autoCallRecevier extends BroadcastReceiver {
             } else if (intent.getStringExtra(TelephonyManager.EXTRA_STATE).equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
 
                 Toast.makeText(context, "Detected call hangup event", Toast.LENGTH_LONG).show();
+                Log.i("INFO_CALL","Detected call hangup event");
             }
         }
 

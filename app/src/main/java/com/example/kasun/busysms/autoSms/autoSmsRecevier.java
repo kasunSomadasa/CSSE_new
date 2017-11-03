@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.kasun.busysms.Database_Helper;
@@ -131,11 +132,12 @@ public class autoSmsRecevier extends BroadcastReceiver {
                         Date dateCompareTwo = parseDate(getdb_to);
                         Toast.makeText(context, "Message From: " + getdb_from, Toast.LENGTH_LONG).show();
                         Toast.makeText(context, "Message To: " + getdb_to, Toast.LENGTH_LONG).show();
+                        Log.i("INFO_SMS","Detected sms recevier event");
 
                         if (isBetweenValidTime(dateCompareOne, dateCompareTwo, date)) {
                             SmsManager smsManager = SmsManager.getDefault();
                             smsManager.sendTextMessage(senderNumber, null, getdb_msg, null, null);
-
+                            Log.i("INFO_SMS","Auto SMS sent");
                         }
                     }
 
