@@ -31,6 +31,7 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".taskCalendar.Helper.NotificationReciever"/>
 
         <activity
             android:name=".autoSms.timeSlotsList"
@@ -83,8 +84,43 @@
             android:name=".blockerHome"
             android:parentActivityName=".home" />
         <activity
-            android:name=".calendarHome"
-            android:parentActivityName=".home" />
+
+            android:name=".taskCalendar.TaskCalendarHomeActivity"
+            android:label="@string/title_activity_task_calendar_home"
+            android:parentActivityName=".home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kasun.busysms.home" />
+        </activity>
+        <activity
+            android:name=".taskCalendar.ViewTaskActivity"
+            android:label="@string/title_activity_view_task"
+            android:parentActivityName=".taskCalendar.TaskCalendarHomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity" />
+        </activity>
+        <activity
+            android:name=".taskCalendar.AddTaskActivity"
+            android:label="@string/title_activity_add_task"
+            android:parentActivityName=".taskCalendar.TaskCalendarHomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity" />
+        </activity>
+        <activity android:name=".taskCalendar.ReminderActivity" />
+        <activity
+            android:name=".taskCalendar.UpdateTaskActivity"
+            android:label="@string/title_activity_update_task"
+            android:parentActivityName=".taskCalendar.TaskCalendarHomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity" />
+        </activity>
 
     </application>
 
