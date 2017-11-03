@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,8 @@ import com.example.kasun.busysms.R;
  */
 
 public class timeSlotsList extends AppCompatActivity {
+
+    static final String TAG ="INFO_TIME_SLOT_VIEW";
     Database_Helper db;
     ListView dataList;
     SimpleCursorAdapter simpleCursorAdapter;
@@ -76,6 +79,9 @@ public class timeSlotsList extends AppCompatActivity {
                                     //after deleting item refresh listView
                                     Toast.makeText(getApplicationContext(), "Record Deleted", Toast.LENGTH_LONG).show();
                                     populateListView();
+                                    Intent i = new Intent(timeSlotsList.this, smsHome.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(i);
                                 }
 
                             }
@@ -161,7 +167,7 @@ public class timeSlotsList extends AppCompatActivity {
         }
         if (cursor.getCount() == 0) {
             // if data is not available
-            Log.i("INFO_TIME_SLOT_VIEW","No Any SMS Record To Display ");
+            Log.i(TAG,"No Any SMS Record To Display ");
             Toast.makeText(this, "No Any SMS Record To Display", Toast.LENGTH_LONG).show();
             return;
         }
@@ -218,7 +224,7 @@ public class timeSlotsList extends AppCompatActivity {
             return;
         }
         if (cursor.getCount() == 0) {
-            Log.i("INFO_TIME_SLOT_VIEW","No Any SMS Record To Display ");
+            Log.i(TAG,"No Any SMS Record To Display ");
             Toast.makeText(this, "No Any SMS Record To Display", Toast.LENGTH_LONG).show();
             return;
         }

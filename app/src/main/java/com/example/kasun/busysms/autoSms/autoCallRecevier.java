@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
  */
 public class autoCallRecevier extends BroadcastReceiver {
 
+    static final String TAG ="INFO_CALL";
     Calendar now = Calendar.getInstance();
     // Get hour in 24 hour format
     int hour = now.get(Calendar.HOUR_OF_DAY);
@@ -113,14 +114,14 @@ public class autoCallRecevier extends BroadcastReceiver {
                         Date dateCompareTwo = parseDate(getdb_to);
                         Toast.makeText(context, "Call From: " + getdb_from, Toast.LENGTH_LONG).show();
                         Toast.makeText(context, "Call To: " + getdb_to, Toast.LENGTH_LONG).show();
-                        Log.i("INFO_CALL","Detected call recevier event");
+                        Log.i(TAG,"Detected call recevier event");
 
                         if (isBetweenValidTime(dateCompareOne, dateCompareTwo, date)) {
 
                             Toast.makeText(context, "Call From: " + incomingNumber, Toast.LENGTH_LONG).show();
                             SmsManager smsManager=SmsManager.getDefault();
                             smsManager.sendTextMessage(incomingNumber,null,getdb_msg,null,null);
-                            Log.i("INFO_CALL","Auto SMS sent");
+                            Log.i(TAG,"Auto SMS sent");
 
                         }
 
@@ -130,7 +131,7 @@ public class autoCallRecevier extends BroadcastReceiver {
             } else if (intent.getStringExtra(TelephonyManager.EXTRA_STATE).equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
 
                 Toast.makeText(context, "Detected call hangup event", Toast.LENGTH_LONG).show();
-                Log.i("INFO_CALL","Detected call hangup event");
+                Log.i(TAG,"Detected call hangup event");
             }
         }
 

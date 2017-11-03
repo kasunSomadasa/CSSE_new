@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.media.AudioManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,7 @@ import com.example.kasun.busysms.R;
 
 public class smsHome extends AppCompatActivity {
 
+    static final String TAG ="INFO_SMS_HOME";
     /** Constant for permission request */
     private static final int PERMISSION_REQUEST_CODE =123;
     //Databese referance
@@ -204,7 +206,7 @@ public class smsHome extends AppCompatActivity {
             // if data is not available
             dbStatus.setVisibility(View.VISIBLE);
             dbStatus.setText("No Any SMS Record To Display");
-            Log.i("INFO_SMS_HOME","No Any SMS Record To Display ");
+            Log.i(TAG,"No Any SMS Record To Display ");
             return;
         }
 
@@ -215,7 +217,8 @@ public class smsHome extends AppCompatActivity {
         * give direction when user click on listview item
         */
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(smsHome.this, "Please Go To The LOG", Toast.LENGTH_LONG).show();
+            Snackbar.make(view, "Please go to the LOG !!!", Snackbar.LENGTH_LONG)
+                    .setAction("OK", null).show();
         }
     };
 

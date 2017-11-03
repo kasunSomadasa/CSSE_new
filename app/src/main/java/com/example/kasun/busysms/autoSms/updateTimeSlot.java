@@ -298,10 +298,9 @@ public boolean checkIconShow(){
 
 
                             if (isUpdated == true) {
-                                Toast.makeText(updateTimeSlot.this, "Changers Are Saved", Toast.LENGTH_LONG).show();
-
+                                Toast.makeText(updateTimeSlot.this, "Your changers are saved", Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(updateTimeSlot.this, "Changers Are Not Saved", Toast.LENGTH_LONG).show();
+                                Toast.makeText(updateTimeSlot.this, "Your changers are NOT saved", Toast.LENGTH_LONG).show();
                             }
 
                             Intent i = new Intent(updateTimeSlot.this, smsHome.class);
@@ -309,7 +308,8 @@ public boolean checkIconShow(){
                             startActivity(i);
 
                         } else {
-                            Toast.makeText(updateTimeSlot.this, "Some Required Field Are Missing !!!", Toast.LENGTH_LONG).show();
+
+                            Toast.makeText(updateTimeSlot.this, "Some required fields are missing !!!", Toast.LENGTH_LONG).show();
                         }
                     }
                 }

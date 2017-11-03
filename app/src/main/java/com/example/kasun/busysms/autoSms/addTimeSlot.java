@@ -17,8 +17,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 import android.app.AlertDialog;
+import android.widget.Toast;
 
 import com.example.kasun.busysms.Database_Helper;
 import com.example.kasun.busysms.R;
@@ -46,7 +46,7 @@ public class addTimeSlot extends AppCompatActivity {
     CheckBox checkBoxCall,checkBoxSms;
     String checkSms="false",checkCall="false",testCheck;
 
-    // Get currunt hour,minute and second
+    // Get current hour,minute and second
     Calendar now = Calendar.getInstance();
     int hour = now.get(Calendar.HOUR_OF_DAY);
     int minute = now.get(Calendar.MINUTE);
@@ -248,16 +248,16 @@ private  TimePickerDialog.OnTimeSetListener timePikerListnerFrom
                        if (!displayText.getText().toString().equals("Choose your days") && !msg.getText().toString().equals("") && !state.getText().toString().equals("") && testCheck.equals("true")) {
                             boolean isInserted = db.insertData(fromTimeText.getText().toString(), toTimeText.getText().toString(), state.getText().toString(), displayText.getText().toString(), msg.getText().toString(), checkCall, checkSms, "Active");
                             if (isInserted == true) {
-                                Toast.makeText(addTimeSlot.this, "Record Saved", Toast.LENGTH_LONG).show();
+                                Toast.makeText(addTimeSlot.this, "Your record is saved !!!", Toast.LENGTH_LONG).show();
                                 showIcon();
                             } else {
-                                Toast.makeText(addTimeSlot.this, "Record Not Saved", Toast.LENGTH_LONG).show();
+                                Toast.makeText(addTimeSlot.this, "Your record is not saved !!!", Toast.LENGTH_LONG).show();
                             }
                             Intent i = new Intent(addTimeSlot.this, smsHome.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
                         } else {
-                           Toast.makeText(addTimeSlot.this, "Some Required Field Are Missing !!!", Toast.LENGTH_LONG).show();
+                           Toast.makeText(addTimeSlot.this, "Some required fields are missing !!!", Toast.LENGTH_LONG).show();
                         }
                     }
                 }

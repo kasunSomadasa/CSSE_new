@@ -22,6 +22,7 @@ import java.util.Locale;
  */
 public class autoSmsRecevier extends BroadcastReceiver {
 
+    static final String TAG ="INFO_SMS";
     Calendar now = Calendar.getInstance();
 
     // Get Currunt hour in 24 hour format
@@ -132,12 +133,12 @@ public class autoSmsRecevier extends BroadcastReceiver {
                         Date dateCompareTwo = parseDate(getdb_to);
                         Toast.makeText(context, "Message From: " + getdb_from, Toast.LENGTH_LONG).show();
                         Toast.makeText(context, "Message To: " + getdb_to, Toast.LENGTH_LONG).show();
-                        Log.i("INFO_SMS","Detected sms recevier event");
+                        Log.i(TAG,"Detected sms recevier event");
 
                         if (isBetweenValidTime(dateCompareOne, dateCompareTwo, date)) {
                             SmsManager smsManager = SmsManager.getDefault();
                             smsManager.sendTextMessage(senderNumber, null, getdb_msg, null, null);
-                            Log.i("INFO_SMS","Auto SMS sent");
+                            Log.i(TAG,"Auto SMS sent");
                         }
                     }
 
