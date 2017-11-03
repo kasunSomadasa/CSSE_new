@@ -58,7 +58,7 @@ public class Database_Helper extends SQLiteOpenHelper {
     //endregion
 
     public Database_Helper(Context context) {
-        super(context, DATABASE_NAME, null, 3);
+        super(context, DATABASE_NAME, null, 4);
     }
 
     //region Database creation - Common 📢
