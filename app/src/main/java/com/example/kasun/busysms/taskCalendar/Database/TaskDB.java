@@ -26,6 +26,7 @@ public abstract class TaskDB extends SQLiteOpenHelper {
     private static final String COL_5 = "task_participants";
     private static final String COL_6 = "task_start";
     private static final String COL_7 = "task_end";
+
     private static final String COL_8 = "task_location";
     private static final String COL_9 = "is_all_day_task";
     private static final String COL_10 = "task_notification_time";
