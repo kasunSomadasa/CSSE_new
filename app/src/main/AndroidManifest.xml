@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -77,14 +80,40 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity
-            android:name=".alarmHome"
-            android:parentActivityName=".home" />
-        <activity
-            android:name=".blockerHome"
-            android:parentActivityName=".home" />
-        <activity
 
+        <!-- Sampath -->
+        <activity
+            android:name=".alarm.alarmHome"
+            android:parentActivityName=".home" />
+        <activity
+            android:name=".alarm.setAlarm"
+            android:parentActivityName=".alarm.alarmHome">
+            <intent-filter>
+                <action android:name="com.example.kasun.busysms.alarm.setAlarm" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".alarm.alarmReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+
+                <action android:name="com.example.kasun.busysms.alarm.alarmFire" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".alarm.ringtonPlayingService"
+            android:enabled="true" />
+
+        <activity android:name=".alarm.alarmFire"
+            android:excludeFromRecents="true"/>
+
+        <activity
             android:name=".taskCalendar.TaskCalendarHomeActivity"
             android:label="@string/title_activity_task_calendar_home"
             android:parentActivityName=".home"
@@ -122,6 +151,9 @@
                 android:value="com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity" />
         </activity>
 
+  <activity
+            android:name=".blockerHome"
+            android:parentActivityName=".home" />
     </application>
 
 </manifest>

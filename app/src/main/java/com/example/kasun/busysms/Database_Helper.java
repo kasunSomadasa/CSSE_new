@@ -27,7 +27,6 @@ public class Database_Helper extends SQLiteOpenHelper {
     public static final String COL7="CALL_T";
     public static final String COL8="SMS_T";
     public static final String COL9="ACTIVATION";
-
  
     //region Columns and information - Task Calendar 📆
     private static final String TASK_TABLE_NAME = "Tasks";
@@ -58,6 +57,7 @@ public class Database_Helper extends SQLiteOpenHelper {
     private static final String TASK_SQL_DROP_ENTRIES = "drop table if exists "+ TASK_TABLE_NAME;
     //endregion
 
+
     public static final String[] allColumn=new String[] {COL1,COL2,COL3,COL4,COL5,COL6,COL7,COL8,COL9};
 
 
@@ -71,7 +71,9 @@ public class Database_Helper extends SQLiteOpenHelper {
         //create database table which belongs to autoSMS function
         db.execSQL("CREATE TABLE Busy_info (_id INTEGER PRIMARY KEY AUTOINCREMENT,TIME_FROM TEXT,TIME_TO TEXT,TYPE TEXT," +
                 "DAY TEXT,MSG TEXT,CALL_T TEXT,SMS_T TEXT,ACTIVATION TEXT)");
+
         db.execSQL(TASK_SQL_CREATE_ENTRIES);
+
     }
 
     @Override
