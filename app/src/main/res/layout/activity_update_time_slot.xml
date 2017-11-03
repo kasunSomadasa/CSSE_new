@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.kasun.busysms.autoSms.updateTimeSlot"
-    android:background="@drawable/back">
+   >
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,9 +26,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/time_from"
-        android:layout_alignBottom="@+id/textView4"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/abc_primary_text_disable_only_material_dark" />
+        android:layout_below="@+id/textView4"
+        android:textColor="#FF000000" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,10 +46,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/time_to"
-        android:layout_alignBottom="@+id/textView3"
-        android:layout_alignLeft="@+id/time_from"
-        android:layout_alignStart="@+id/time_from"
-        android:textColor="@color/abc_primary_text_disable_only_material_dark" />
+        android:layout_below="@+id/textView3"
+        android:textColor="#FF000000" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,10 +55,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Repeat"
         android:id="@+id/textView2"
-        android:layout_below="@+id/time_to"
+        android:layout_marginTop="13dp"
+        android:layout_below="@+id/view"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="57dp" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -69,39 +66,34 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/repeat"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_alignLeft="@+id/time_to"
-        android:layout_alignStart="@+id/time_to"
-        android:textColor="@color/abc_primary_text_disable_only_material_dark" />
+        android:layout_below="@+id/textView2"
+        android:textColor="#FF000000" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/status"
-        android:textColor="@color/abc_primary_text_disable_only_material_dark"
+        android:textColor="#FF000000"
         android:hint="Status"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp"
         android:padding="10dp"
         android:background="@drawable/input_outline"
-        android:singleLine="true" />
+        android:layout_below="@+id/for_sms"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="90dp"
         android:id="@+id/messege"
-        android:layout_below="@+id/status"
-        android:layout_alignLeft="@+id/status"
-        android:layout_alignStart="@+id/status"
-        android:layout_marginTop="31dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textColor="@color/abc_primary_text_disable_only_material_dark"
+        android:layout_marginTop="10dp"
+        android:textColor="#FF000000"
         android:hint="Message"
         android:padding="10dp"
         android:background="@drawable/input_outline"
-        android:singleLine="false" />
+        android:layout_below="@+id/status"
+
+     />
 
     <Button
         android:layout_width="match_parent"
@@ -120,11 +112,11 @@
         android:layout_height="wrap_content"
         android:text="SMS"
         android:id="@+id/for_sms"
+        android:layout_marginLeft="50dp"
         android:checked="false"
-        android:textColor="@color/abc_primary_text_disable_only_material_dark"
-        android:layout_below="@+id/messege"
-        android:layout_toRightOf="@+id/textView4"
-        android:layout_toEndOf="@+id/textView4" />
+        android:textColor="#FF000000"
+        android:layout_below="@+id/textView"
+     />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -132,42 +124,45 @@
         android:text="CALL"
         android:id="@+id/for_call"
         android:checked="false"
-        android:textColor="@color/abc_primary_text_disable_only_material_dark"
-        android:layout_below="@+id/messege"
-        android:layout_alignLeft="@+id/enableSwitch"
-        android:layout_alignStart="@+id/enableSwitch" />
+        android:layout_marginLeft="230dp"
+        android:textColor="#FF000000"
+        android:layout_below="@+id/textView" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="For"
+        android:layout_marginTop="15dp"
         android:id="@+id/textView"
-        android:layout_alignBottom="@+id/for_sms"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/repeat" />
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/enableSwitch"
-        android:checked="false"
-        android:layout_alignBottom="@+id/textView6"
-        android:layout_toRightOf="@+id/repeat"
-        android:textOff=""
-        android:textOn=""
-        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FF000000"
+        android:layout_below="@+id/time_from"
+        android:layout_marginTop="5dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FF000000"
+        android:layout_below="@+id/repeat"
+        android:layout_marginTop="5dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Activation"
-        android:id="@+id/textView6"
-        android:layout_above="@+id/updateTimeSlot"
-        android:layout_toLeftOf="@+id/for_sms"
-        android:layout_toStartOf="@+id/for_sms"
-        android:layout_marginBottom="15dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FF000000"
+        android:layout_below="@+id/for_call"
+        android:layout_marginTop="5dp"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FF000000"
+        android:layout_below="@+id/time_to"
+        android:layout_marginTop="5dp"
+        android:id="@+id/view" />
 
 </RelativeLayout>

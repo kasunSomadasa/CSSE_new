@@ -20,16 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".autoSms.autoSmsHome"
-            android:parentActivityName=".home" />
 
-        <receiver android:name=".autoSms.mycallRecevier">
+        <receiver android:name=".autoSms.autoCallRecevier">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".autoSms.mysmsRecevier">
+        <receiver android:name=".autoSms.autoSmsRecevier">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
@@ -50,6 +47,15 @@
             android:parentActivityName=".home">
             <intent-filter>
                 <action android:name="com.example.kasun.busysms.second" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".autoSms.smsHome"
+            android:parentActivityName=".home">
+            <intent-filter>
+                <action android:name="com.example.kasun.busysms.sms_home" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -78,6 +84,7 @@
             android:name=".blockerHome"
             android:parentActivityName=".home" />
         <activity
+
             android:name=".taskCalendar.TaskCalendarHomeActivity"
             android:label="@string/title_activity_task_calendar_home"
             android:parentActivityName=".home"
@@ -114,6 +121,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity" />
         </activity>
+
     </application>
 
 </manifest>
