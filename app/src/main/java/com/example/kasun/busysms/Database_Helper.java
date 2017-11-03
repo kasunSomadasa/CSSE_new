@@ -303,6 +303,7 @@ public class Database_Helper extends SQLiteOpenHelper {
         return  c;
     }
 
+
     public boolean DeleteTime(String from,String to) {
         db = this.getWritableDatabase();
         long result = db.delete(CALLBLOCK_TIMES, COL_FROM + " ='" + from +"' and "+COL_TO + " ='" + to + "'", null);
