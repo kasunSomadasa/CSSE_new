@@ -38,27 +38,27 @@
         android:layout_height="2dp"
         android:layout_marginTop="10dp"
         android:layout_below="@id/alarm_status"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray"
+        android:id="@+id/view3" />
 
     <!--  repeats    -->
     <TextView
         android:id="@+id/repeat_days"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/alarm_status"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="14dp"
         android:text="Repeat"
         android:textSize="20dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_below="@+id/view3"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/show_repeats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/repeat_days"
-        android:text="show repeat days" />
+        android:text="No Repeat" />
 
 
     <View
@@ -101,7 +101,7 @@
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:text="Sound and Volume"
         android:textSize="17dp"
         android:textStyle="bold"
@@ -144,12 +144,11 @@
         android:id="@+id/volume_level"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="17dp"
         android:text="Volume"
         android:textSize="20dp"
         android:textStyle="bold"
         android:layout_below="@+id/view1"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <SeekBar
@@ -177,7 +176,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/view2"
         android:layout_marginTop="21dp"
-        android:text="Vibration"
+        android:text="Silent Mode"
         android:textSize="20dp"
         android:textStyle="bold" />
 
@@ -196,5 +195,13 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView21" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/silent_on_off"
+        android:text="Play alarm even when the device is in silent mode" />
 
 </RelativeLayout>

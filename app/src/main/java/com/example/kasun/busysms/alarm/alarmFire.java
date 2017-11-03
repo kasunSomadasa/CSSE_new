@@ -3,27 +3,19 @@ package com.example.kasun.busysms.alarm;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
+import android.content.Context;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.example.kasun.busysms.R;
-import com.example.kasun.busysms.home;
 
 public class alarmFire extends AppCompatActivity {
 
     AlarmManager alarm_Manager;
-
-
-    public void cancelAlarmNotify() {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +28,15 @@ public class alarmFire extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-//                alarm_Manager.cancel(pending_intent);
+                NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancelAll();
 
+                String get_silent_state = getIntent().getExtras().getString("silentExtra");
+                Log.e("fire in intent ",get_silent_state);
 
                 android.os.Process.killProcess(android.os.Process.myPid());
-//               cancel the activity
-//                System.exit(0);
-                cancelAlarmNotify();
-
                 finishAffinity();
-               // finish();
-    //
+//                finish();
             }
         });
     }

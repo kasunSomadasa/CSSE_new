@@ -6,8 +6,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -37,9 +39,13 @@ public class ringtonPlayingService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("LocalService", "Received start id " + startId + ": " + intent);
 
+        AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
+
         //fetch the extra strings from the on/off values
-        String state = null;
-            state = intent.getExtras().getString("extra");
+        String state = intent.getExtras().getString("extra");
+
+        String silent_string = intent.getExtras().getString("silentExtra");
+        Log.e("silent mode in service",silent_string);
 
         //fetch the extra integer
         int ringtone_sound_choice = intent.getExtras().getInt("ringtoneChoice");
@@ -48,6 +54,7 @@ public class ringtonPlayingService extends Service {
         Log.e("Rington choice is ", String.valueOf(ringtone_sound_choice));
 
         assert state != null;
+//        assert vibrateState != null;
         switch (state) {
             case "on":
                 startId = 1;
@@ -59,6 +66,7 @@ public class ringtonPlayingService extends Service {
                 startId = 0;
                 break;
         }
+
         //if there is no music playing, and the user pressed "on"
         //music should start playing
         if (!this.isRunning && startId == 1){
@@ -78,40 +86,66 @@ public class ringtonPlayingService extends Service {
                 case 1:{
                     //create an instance of the media player
                     alarm_song = MediaPlayer.create(this, R.raw.wake_up);
-                    alarm_song.start();
-                    alarm_song.setLooping(true);
                     break;}
                 case 2:{
                     //create an instance of the media player
                     alarm_song = MediaPlayer.create(this, R.raw.alarm);
-                    alarm_song.start();
-                    alarm_song.setLooping(true);
                     break;}
                 case 3:{
                     //create an instance of the media player
                     alarm_song = MediaPlayer.create(this, R.raw.wake_up_tone);
-                    alarm_song.start();
-                    alarm_song.setLooping(true);
                     break;}
                 case 4:{
                     //create an instance of the media player
                     alarm_song = MediaPlayer.create(this, R.raw.sweet_alarm);
-                    alarm_song.start();
-                    alarm_song.setLooping(true);
                     break;}
                 case 5:{
                     //create an instance of the media player
                     alarm_song = MediaPlayer.create(this, R.raw.morning_alarm);
-                    alarm_song.start();
-                    alarm_song.setLooping(true);
                     break;}
                 default:{
-                    //any error happen create rington
+                    //any error happen create ringtone
                     alarm_song = MediaPlayer.create(this, R.raw.wake_up_tone);
-                    alarm_song.start();
-                    alarm_song.setLooping(true);
+
                     break;}
             }
+            if(alarm_song!=null){
+                switch (am.getRingerMode()) {
+                    case AudioManager.RINGER_MODE_SILENT:
+                        if (silent_string.equals("on")){
+//                            am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                            alarm_song.start();
+                        }else{
+//                            alarm_song.start();
+                            alarm_song.setVolume(0,0);
+                        }
+                        break;
+                    case AudioManager.RINGER_MODE_VIBRATE:
+                        if (silent_string.equals("on")){
+                            am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                            alarm_song.start();
+                        }else{
+//                            alarm_song.start();
+                            alarm_song.setVolume(0,0);
+                        }
+                        break;
+                    case AudioManager.RINGER_MODE_NORMAL:
+                        alarm_song.start();
+                        alarm_song.setLooping(true);
+                        break;
+                }
+//                alarm_song.start();
+//                alarm_song.setLooping(true);
+            }
+
+//            play alarm sound 1 minute
+            Handler handler=new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    alarm_song.stop();
+                }
+            }, 60 * 1000);
 
 
         }
@@ -165,7 +199,6 @@ public class ringtonPlayingService extends Service {
 
         super.onDestroy();
         this.isRunning = false;
-//        cancelAlarmNotify();
     }
 
     //notification on when alarm is triggring.
@@ -192,7 +225,6 @@ public class ringtonPlayingService extends Service {
         notificationManager.notify(0,alarm_notification);
 
     }
-
 
 
 }

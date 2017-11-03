@@ -8,8 +8,6 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!-- <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/> -->
-    <!-- <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" /> -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -108,10 +106,13 @@
         <activity
             android:name=".blockerHome"
             android:parentActivityName=".home" />
+
         <activity
             android:name=".calendarHome"
             android:parentActivityName=".home" />
-        <activity android:name=".alarm.alarmFire" />
+
+        <activity android:name=".alarm.alarmFire"
+            android:excludeFromRecents="true"/>
     </application>
 
 </manifest>

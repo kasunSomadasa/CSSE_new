@@ -1,9 +1,8 @@
 package com.example.kasun.busysms.alarm;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextClock;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import com.example.kasun.busysms.R;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class alarmHome extends AppCompatActivity {
     private static Button btnAddTime;

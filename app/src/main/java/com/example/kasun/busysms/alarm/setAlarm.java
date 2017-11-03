@@ -3,21 +3,18 @@ package com.example.kasun.busysms.alarm;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,7 +30,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.kasun.busysms.R;
-import com.example.kasun.busysms.home;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,7 +43,7 @@ public class setAlarm extends AppCompatActivity {
     AlarmManager alarm_Manager;
     AlertDialog ad;
     Context context;
-    int Cal_hour,Cal_minute,Cal_sec,Cal_day;
+    int Cal_hour,Cal_minute,Cal_sec,Cal_day,Cal_ampm;
     String hour,min;
     int choose_ringtone;
     SeekBar sb;
@@ -78,25 +74,42 @@ public class setAlarm extends AppCompatActivity {
         Cal_hour = calendar.get(Calendar.HOUR_OF_DAY);
         Cal_minute = calendar.get(Calendar.MINUTE);
         Cal_sec = calendar.get(Calendar.SECOND);
+        Cal_ampm = calendar.get(Calendar.AM_PM);
         Cal_day = calendar.get(Calendar.DAY_OF_WEEK); //sunday =1 , saturday =7
 
-        final String day = String.valueOf(Cal_day);
-        Log.e("Day of the week",day);
+        String ampm = "AM";
+        hour = String.valueOf(Cal_hour);
+        min = String.valueOf(Cal_minute);
+        if(Cal_hour > 12){
+            hour = String.valueOf(Cal_hour - 12);
+            ampm = "PM";
 
-        //create an intent to the alam receiver class
+        }if(Cal_minute < 10){
+            min = "0"+String.valueOf(Cal_minute);
+        }
+
+        final String day = String.valueOf(Cal_day);
+        String time = hour+":"+min+" "+ampm;
+        Log.e("Day of the week",day);
+        Log.e("Today time",time);
+
+//        create an intent to the alam receiver class
         final Intent Alarm_intent = new Intent(this.context,alarmReceiver.class);
 
-        //get id from time
+//        get id from time
         settimeTxt = (TextView) findViewById(R.id.AddTimeText);
         show_timetxt = (TextView) findViewById(R.id.alarm_status);
+        show_timetxt.setText(time);
+
+
 
         //get ids of repeat days textboxes
         setRepeatTxt = (TextView) findViewById(R.id.repeat_days);
         showRepeatTxt = (TextView) findViewById(R.id.show_repeats);
 
-        //set volume seekbar value
+//        set volume seek bar value
         sb = (SeekBar) findViewById(R.id.seekBar);
-        am = (AudioManager) getSystemService(AUDIO_SERVICE);
+        am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         final int maxVolume = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         int currVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
         sb.setMax(maxVolume);
@@ -105,7 +118,6 @@ public class setAlarm extends AppCompatActivity {
 //        preview sound
         checkSound = (CheckBox) findViewById(R.id.check_sound);
 
-
 //        switch button set
         switch_silent = (Switch) findViewById(R.id.silent_on_off);
 
@@ -113,20 +125,23 @@ public class setAlarm extends AppCompatActivity {
         showTimeDialog();
         showDialogAlarmdays();
 
+
+
 //        switch method to enable silent mode or not
+//        Default one is off
+        Alarm_intent.putExtra("silentExtra","off");
         switch_silent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-//                    Toast.makeText(setAlarm.this,"Silent mode on",Toast.LENGTH_SHORT).show();
-                    am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+                    Toast.makeText(setAlarm.this,"Silent mode",Toast.LENGTH_SHORT).show();
+                    Alarm_intent.putExtra("silentExtra","on");
+
                 }else{
-//                    Toast.makeText(setAlarm.this,"Silent mode off",Toast.LENGTH_SHORT).show();
-                    am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                    Alarm_intent.putExtra("silentExtra","off");
                 }
             }
         });
-
 
         //start alarm
         Button alarm_start = (Button) findViewById(R.id.alarm_on);
@@ -145,7 +160,7 @@ public class setAlarm extends AppCompatActivity {
                         if (s.equals("Sunday")) {
                             String sunday = String.valueOf(Calendar.SUNDAY);
                             if (sunday.equals(day)) {
-                                //                          Toast.makeText(setAlarm.this,"Today is Sunday", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(setAlarm.this,"Today is Sunday", Toast.LENGTH_SHORT).show();
 
                                 //check the date is equal
                                 Log.e("Today is ", "Sunday");
@@ -153,6 +168,7 @@ public class setAlarm extends AppCompatActivity {
                                 //celender set time
                                 calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
                                 calendar.set(Calendar.MINUTE, Cal_minute);
+                                calendar.set(Calendar.SECOND,0);
 
                                 //put extra string into Alarm_intent
                                 //tells the clock that you pressed the 'OK' button
@@ -170,8 +186,8 @@ public class setAlarm extends AppCompatActivity {
 
 
                                 //set the alarm manager
-                                //                            alarm_Manager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),
-                                //                            pending_intent);
+                                // alarm_Manager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),
+                                //               pending_intent);
 
                                 //                            alarm_Manager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),
                                 //                                    AlarmManager.INTERVAL_DAY * 7,pending_intent);
@@ -190,10 +206,11 @@ public class setAlarm extends AppCompatActivity {
                                 //celender set time
                                 calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
                                 calendar.set(Calendar.MINUTE, Cal_minute);
+                                calendar.set(Calendar.SECOND,0);
 
                                 Alarm_intent.putExtra("extra", "on");
                                 Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
-                                Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
+                                Log.e("Ringtone id ", String.valueOf(choose_ringtone));
 
                                 pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 1,
                                         Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
@@ -212,6 +229,7 @@ public class setAlarm extends AppCompatActivity {
                                 //celender set time
                                 calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
                                 calendar.set(Calendar.MINUTE, Cal_minute);
+                                calendar.set(Calendar.SECOND,0);
 
                                 Alarm_intent.putExtra("extra", "on");
                                 Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
@@ -234,6 +252,7 @@ public class setAlarm extends AppCompatActivity {
                                 //celender set time
                                 calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
                                 calendar.set(Calendar.MINUTE, Cal_minute);
+                                calendar.set(Calendar.SECOND,0);
 
                                 Alarm_intent.putExtra("extra", "on");
                                 Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
@@ -255,6 +274,8 @@ public class setAlarm extends AppCompatActivity {
                                 //celender set time
                                 calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
                                 calendar.set(Calendar.MINUTE, Cal_minute);
+                                calendar.set(Calendar.SECOND,0);
+
 
                                 Alarm_intent.putExtra("extra", "on");
                                 Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
@@ -265,6 +286,7 @@ public class setAlarm extends AppCompatActivity {
 
                                 alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                                         pending_intent);
+
                             }
                         }
                         if (s.equals("Friday")) {
@@ -275,6 +297,7 @@ public class setAlarm extends AppCompatActivity {
                                 //celender set time
                                 calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
                                 calendar.set(Calendar.MINUTE, Cal_minute);
+                                calendar.set(Calendar.SECOND,0);
 
                                 Alarm_intent.putExtra("extra", "on");
                                 Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
@@ -296,6 +319,7 @@ public class setAlarm extends AppCompatActivity {
                                 //celender set time
                                 calendar.set(Calendar.HOUR_OF_DAY, Cal_hour);
                                 calendar.set(Calendar.MINUTE, Cal_minute);
+                                calendar.set(Calendar.SECOND,0);
 
                                 Alarm_intent.putExtra("extra", "on");
                                 Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
@@ -306,6 +330,7 @@ public class setAlarm extends AppCompatActivity {
 
                                 alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                                         pending_intent);
+
                             }
                         }
                     }
@@ -321,11 +346,11 @@ public class setAlarm extends AppCompatActivity {
         alarm_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(setAlarm.this,"cancel Alarm", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+//                Toast.makeText(setAlarm.this,"Alarm cancelled!!!", Toast.LENGTH_SHORT).show();
 
                 //cancel the alarm
                 alarm_Manager.cancel(pending_intent);
-
 
                 //put extra string into ALarm_intent
                 //tells the clock that you pressed the 'cancel' button
@@ -336,14 +361,17 @@ public class setAlarm extends AppCompatActivity {
                 //to avoid exceptions
                 Alarm_intent.putExtra("ringtoneChoice",choose_ringtone);
 
+                //put extra string into Alarm_intent
+                //tells the swich to off
+                Alarm_intent.putExtra("silentExtra","off");
+
                 //cancel the ringtone service
                 sendBroadcast(Alarm_intent);
 
-                Intent intent = new Intent(setAlarm.this,alarmHome.class);
-                startActivity(intent);
+//                // back to the previous activity
+//                finish();
             }
         });
-
 
         //create the spinner to get ringtone elements
         final Spinner spinner = (Spinner) findViewById(R.id.RingToneSpinner);
@@ -433,14 +461,7 @@ public class setAlarm extends AppCompatActivity {
                 }
             }
         });
-
-
-
-
     }
-
-
-
 
     //create a method for get time from timepicker dialog
     public void showTimeDialog(){
@@ -465,18 +486,20 @@ public class setAlarm extends AppCompatActivity {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             Cal_hour = hourOfDay;
             Cal_minute = minute;
+            String ampm = "AM";
 
              hour = String.valueOf(Cal_hour);
              min = String.valueOf(Cal_minute);
 
             if(Cal_hour > 12){
                 hour = String.valueOf(Cal_hour - 12);
+                ampm = "PM";
 
             }if(Cal_minute < 10){
                 min = "0"+String.valueOf(Cal_minute);
             }
 
-            set_Alarm_status(hour+":"+min);
+            set_Alarm_status(hour+":"+min+" "+ampm);
             //Toast.makeText(setAlarm.this,hour+":"+minut, Toast.LENGTH_SHORT).show();
         }
     };
