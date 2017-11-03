@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
 import com.example.kasun.busysms.alarm.alarmHome;
-import com.example.kasun.busysms.autoSms.autoSmsHome;
+import com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity;
+import com.example.kasun.busysms.autoSms.smsHome;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,12 +17,11 @@ import java.util.HashMap;
 public class home extends AppCompatActivity {
 
     ListView simpleListView;
-    String[] animalName={"Lion","Tiger","Monkey","Dog","Cat","Elephant"};//animal names array
     int[] animalImages={
             R.drawable.function1,
             R.drawable.function2,
             R.drawable.function3,
-            R.drawable.function4};//animal images array
+            R.drawable.fnew};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,7 @@ public class home extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 if(position == 0){
-                    Intent intent = new Intent(home.this,autoSmsHome.class);
+                    Intent intent = new Intent(home.this, smsHome.class);
                     startActivity(intent);
                 }else if(position ==1){
                     Intent intent = new Intent(home.this,alarmHome.class);
@@ -58,38 +57,13 @@ public class home extends AppCompatActivity {
                     Intent intent = new Intent(home.this,blockerHome.class);
                     startActivity(intent);
                 }else{
-                    Intent intent = new Intent(home.this,calendarHome.class);
+                    Intent intent = new Intent(home.this,TaskCalendarHomeActivity.class);
                     startActivity(intent);
                 }//show the selected image in toast according to position
             }
         });
 
-      /*  GridView gridView=(GridView) findViewById(R.id.gridView);
-        gridView.setAdapter(new ImageAdapter(this));
 
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if(position == 0){
-                    Intent intent = new Intent(home.this,autoSmsHome.class);
-                    startActivity(intent);
-                }else if(position ==1){
-                    Intent intent = new Intent(home.this,alarmHome.class);
-                    startActivity(intent);
-                }else if(position ==2){
-                    Intent intent = new Intent(home.this,blockerHome.class);
-                    startActivity(intent);
-                }else{
-                    Intent intent = new Intent(home.this,calendarHome.class);
-                    startActivity(intent);
-                }
-            }
-        });
-
-
-*/
     }
 
 

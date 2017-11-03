@@ -13,6 +13,8 @@ import android.database.Cursor;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -28,72 +30,76 @@ import com.example.kasun.busysms.R;
 
 import java.util.ArrayList;
 
+/**
+ * Created by Kasun Somadasa
+ * This is the activity which update existing time slot in db
+ */
 
 public class updateTimeSlot extends AppCompatActivity {
-    EditText e1, e2;
-    ArrayList<String> mSelectedItems = new ArrayList<String>();
+
+    static final int DILOG_FROM = 0;
+    static final int DILOG_TO = 1;
+    EditText msg, state;
+    ArrayList<String> selectedItems = new ArrayList<String>();
     public String selections = "";
-    Button btn;
-    TextView tx1, tx2, tx3;
-    static final int DILOG1 = 0;
-    static final int DILOG2 = 1;
-    int hour1, minte;
-    Database_Helper mydb;
-    AlertDialog ad;
-    CheckBox c_call, c_sms;
-    Switch sw1;
-
-
-    String txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9;
-    String checksms, checkcall,checkactive,test_check;
+    Button updateBtn;
+    TextView timeFromText, timeToText, repeatText;
+    int noOfHour, noOfminute;
+    Database_Helper db;
+    AlertDialog alert;
+    CheckBox checkBoxCall, checkBoxSms;
+    String code, from, to, type, day, messege, call, sms, activation;
+    String checkSms, checkCall,checkActive,checkTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_time_slot);
 
-        c_call = (CheckBox) findViewById(R.id.for_call);
-        c_sms = (CheckBox) findViewById(R.id.for_sms);
-        mydb = new Database_Helper(this);
-        e1 = (EditText) findViewById(R.id.messege);
-        e2 = (EditText) findViewById(R.id.status);
-        tx1 = (TextView) findViewById(R.id.time_from);
-        tx2 = (TextView) findViewById(R.id.time_to);
-        tx3 = (TextView) findViewById(R.id.repeat);
-        btn = (Button) findViewById(R.id.updateTimeSlot);
-        sw1 = (Switch) findViewById(R.id.enableSwitch);
-        showDialogTime1();
-        showDialogTime2();
+        checkBoxCall = (CheckBox) findViewById(R.id.for_call);
+        checkBoxSms = (CheckBox) findViewById(R.id.for_sms);
+        db = new Database_Helper(this);
+        msg = (EditText) findViewById(R.id.messege);
+        state = (EditText) findViewById(R.id.status);
+        timeFromText = (TextView) findViewById(R.id.time_from);
+        timeToText = (TextView) findViewById(R.id.time_to);
+        repeatText = (TextView) findViewById(R.id.repeat);
+        updateBtn = (Button) findViewById(R.id.updateTimeSlot);
+
+        showDialogTimeFrom();
+        showDialogTimeTo();
         showDialogdays();
-        addListenerOnChkIos();
+        addListenerForCheckBox();
 
-        tx3.setText("Choose your days");
+        repeatText.setText("Choose your days");
         UpData();
-
-        txt1 = getIntent().getStringExtra("txt1");
-        txt2 = getIntent().getStringExtra("txt2");
-        txt3 = getIntent().getStringExtra("txt3");
-        txt4 = getIntent().getStringExtra("txt4");
-        txt5 = getIntent().getStringExtra("txt5");
-        txt6 = getIntent().getStringExtra("txt6");
-        txt7 = getIntent().getStringExtra("txt7");
-        txt8 = getIntent().getStringExtra("txt8");
-        txt9 = getIntent().getStringExtra("txt9");
-        tx1.setText(txt2);
-        tx2.setText(txt3);
-        tx3.setText(txt5);
-        e2.setText(txt4);
-        e1.setText(txt6);
+        //hold data parsed from timeSlotsList activity and set it to variables
+        code = getIntent().getStringExtra("code");
+        from = getIntent().getStringExtra("from");
+        to = getIntent().getStringExtra("to");
+        type = getIntent().getStringExtra("type");
+        day = getIntent().getStringExtra("day");
+        messege = getIntent().getStringExtra("msg");
+        call = getIntent().getStringExtra("call");
+        sms = getIntent().getStringExtra("sms");
+        activation = getIntent().getStringExtra("activation");
+        timeFromText.setText(from);
+        timeToText.setText(to);
+        repeatText.setText(day);
+        state.setText(type);
+        msg.setText(messege);
         setCheck();
-        Switch_test();
-
+        //enable action bar back btn
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
 
     }
 public boolean checkIconShow(){
-    Cursor c = mydb.getData();
+    /*
+     * check is notification show on notification bar
+     */
+    Cursor c = db.getData();
     boolean test=false;
 
     if (c.getCount() == 0) {
@@ -112,11 +118,13 @@ public boolean checkIconShow(){
     return  test;
 }
     public void showIcon(){
-
+        /*
+         * show notification with app icon on mobile notification bar
+         */
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)//R.mipmap.ic_launcher-->for app icon
-                .setContentTitle("Busy SMS Activated");
-        Intent resultIntent = new Intent(this, addTimeSlot.class);
+                .setContentTitle("Auto SMS Activated");
+        Intent resultIntent = new Intent(this, smsHome.class); //when user click on notification then directly comes to smsHome activity
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 this,
                 0,
@@ -130,27 +138,35 @@ public boolean checkIconShow(){
         mNotifyMgr.notify(1, notification);
     }
     public void disapperIcon(){
+        /*
+         * Disapper notification with app icon on mobile notification bar
+         */
         ((NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(1);
     }
 
-
-    public void showDialogTime1() {
-        tx1.setOnClickListener(
+    public void showDialogTimeFrom() {
+     /*
+      * show time picker dialog for 'From'
+      */
+        timeFromText.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showDialog(DILOG1);
+                        showDialog(DILOG_FROM);
                     }
                 }
         );
     }
 
-    public void showDialogTime2() {
-        tx2.setOnClickListener(
+    public void showDialogTimeTo() {
+     /*
+      * show time picker dialog for 'To'
+      */
+        timeToText.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showDialog(DILOG2);
+                        showDialog(DILOG_TO);
                     }
                 }
         );
@@ -158,47 +174,50 @@ public boolean checkIconShow(){
 
     @Override
     protected Dialog onCreateDialog(int id) {
-        if (id == DILOG1)
-            return new TimePickerDialog(this, 2, tpikerListner1, hour1, minte, false);
-        else if (id == DILOG2)
-            return new TimePickerDialog(this, 2, tpikerListner2, hour1, minte, false);
+     /*
+      * get user choosen hour and minute to variables
+      */
+        if (id == DILOG_FROM)
+            return new TimePickerDialog(this, 2, timePikerListnerFrom, noOfHour, noOfminute, false);
+        else if (id == DILOG_TO)
+            return new TimePickerDialog(this, 2, timePikerListnerTo, noOfHour, noOfminute, false);
         return null;
     }
 
-    private TimePickerDialog.OnTimeSetListener tpikerListner1
+    private TimePickerDialog.OnTimeSetListener timePikerListnerFrom
             = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            hour1 = hourOfDay;
-            minte = minute;
+            noOfHour = hourOfDay;
+            noOfminute = minute;
 
-            tx1.setText(hour1 + ":" + minte + ":00");
-         //   Toast.makeText(updateTimeSlot.this, hour1 + ":" + minte + ":00", Toast.LENGTH_LONG).show();
+            timeFromText.setText(noOfHour + ":" + noOfminute + ":00");
+
         }
 
 
     };
-    private TimePickerDialog.OnTimeSetListener tpikerListner2
+    private TimePickerDialog.OnTimeSetListener timePikerListnerTo
             = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            hour1 = hourOfDay;
-            minte = minute;
+            noOfHour = hourOfDay;
+            noOfminute = minute;
 
-            tx2.setText(hour1 + ":" + minte + ":00");
-         //   Toast.makeText(updateTimeSlot.this, hour1 + ":" + minte + ":00", Toast.LENGTH_LONG).show();
+            timeToText.setText(noOfHour + ":" + noOfminute + ":00");
+
         }
 
 
     };
 
     public void showDialogdays() {
-        tx3.setOnClickListener(
+        repeatText.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         selections="";
-                        ad.show();
+                        alert.show();
                     }
                 }
         );
@@ -217,10 +236,10 @@ public boolean checkIconShow(){
                                         boolean isChecked) {
                         if (isChecked) {
                             // If the user checked the item, add it to the selected items
-                            mSelectedItems.add(items[which]);
-                        } else if (mSelectedItems.contains(items[which])) {
+                            selectedItems.add(items[which]);
+                        } else if (selectedItems.contains(items[which])) {
                             // Else, if the item is already in the array, remove it
-                            mSelectedItems.remove(items[which]);
+                            selectedItems.remove(items[which]);
                         }
                     }
                 });
@@ -229,18 +248,18 @@ public boolean checkIconShow(){
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 selections="";
-                for (String ms : mSelectedItems) {
+                for (String ms : selectedItems) {
                     if(selections==""){
                         selections=ms;
                     }else{
                         selections=selections+","+ms;
                     }
                 }
-              //  Toast.makeText(updateTimeSlot.this, selections, Toast.LENGTH_LONG).show();
+                //if selection is empty then display Choose your days" again
                 if(selections.equals("")){
-                    tx3.setText("Choose your days");
+                    repeatText.setText("Choose your days");
                 }else{
-                    tx3.setText(selections);
+                    repeatText.setText(selections);
                 }
             }
         });
@@ -250,28 +269,28 @@ public boolean checkIconShow(){
 
             }
         });
-
-        ad = builder.create();
-
+        alert = builder.create();
     }
 
 
     public void UpData() {
-
-        btn.setOnClickListener(
+        /*
+         * update existing time slot in db
+         */
+        updateBtn.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        if (checkcall.equals("false") && checksms.equals("false")) {
-                            test_check = "false";
+                        if (checkCall.equals("false") && checkSms.equals("false")) {
+                            checkTest = "false";
                         } else {
-                            test_check = "true";
+                            checkTest = "true";
                         }
 
-                        if (!tx3.equals("Choose your days") && !e1.equals("") && !e2.equals("") && test_check.equals("true")) {
+                        if (!repeatText.equals("Choose your days") && !msg.equals("") && !state.equals("") && checkTest.equals("true")) {
 
-                            boolean isInserted = mydb.updateData(txt1, tx1.getText().toString(), tx2.getText().toString(), e2.getText().toString(), tx3.getText().toString(), e1.getText().toString(), checkcall, checksms, checkactive);
+                            boolean isUpdated = db.updateData(code, timeFromText.getText().toString(), timeToText.getText().toString(), state.getText().toString(), repeatText.getText().toString(), msg.getText().toString(), checkCall, checkSms, checkActive);
 
                             if(checkIconShow()){
                                 showIcon();
@@ -280,19 +299,19 @@ public boolean checkIconShow(){
                             }
 
 
-                            if (isInserted == true) {
-                                Toast.makeText(updateTimeSlot.this, "Changers Are Saved", Toast.LENGTH_LONG).show();
-
+                            if (isUpdated == true) {
+                                Toast.makeText(updateTimeSlot.this, "Your changers are saved", Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(updateTimeSlot.this, "Changers Are Not Saved", Toast.LENGTH_LONG).show();
+                                Toast.makeText(updateTimeSlot.this, "Your changers are NOT saved", Toast.LENGTH_LONG).show();
                             }
 
-                            Intent i = new Intent(updateTimeSlot.this, autoSmsHome.class);
+                            Intent i = new Intent(updateTimeSlot.this, smsHome.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
 
                         } else {
-                            Toast.makeText(updateTimeSlot.this, "Some Required Field Are Missing !!!", Toast.LENGTH_LONG).show();
+
+                            Toast.makeText(updateTimeSlot.this, "Some required fields are missing !!!", Toast.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -300,82 +319,90 @@ public boolean checkIconShow(){
     }
 
     public void setCheck() {
-        if (txt7.equals("true")) {
-            c_call.setChecked(true);
-            checkcall = "true";
+        //set check box according to db values
+        if (call.equals("true")) {
+            checkBoxCall.setChecked(true);
+            checkCall = "true";
         } else {
-            c_call.setChecked(false);
-            checkcall = "false";
+            checkBoxCall.setChecked(false);
+            checkCall = "false";
         }
-        if (txt8.equals("true")) {
-            c_sms.setChecked(true);
-            checksms = "true";
+        if (sms.equals("true")) {
+            checkBoxSms.setChecked(true);
+            checkSms = "true";
         } else {
-            c_sms.setChecked(false);
-            checksms = "false";
+            checkBoxSms.setChecked(false);
+            checkSms = "false";
         }
+    }
 
-        if(txt9.equals("Active")){
-            sw1.setChecked(true);
-            checkactive="Active";
+    public void addListenerForCheckBox() {
+        //get check box values
+        checkBoxCall = (CheckBox) findViewById(R.id.for_call);
+        checkBoxSms = (CheckBox) findViewById(R.id.for_sms);
+
+        checkBoxCall.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //is Call CheckBox checked?
+                if (((CheckBox) v).isChecked()) {
+                    checkCall = "true";
+                } else {
+                    checkCall = "false";
+                }
+
+            }
+        });
+        checkBoxSms.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //is SMS CheckBox checked?
+                if (((CheckBox) v).isChecked()) {
+                    checkSms = "true";
+                } else {
+                    checkSms = "false";
+                }
+
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        /*
+         * set switch to action bar for detect activation on time slot
+         */
+        getMenuInflater().inflate(R.menu.switch_menu,menu);
+
+        MenuItem menuItem =menu.findItem(R.id.switchView);
+        menuItem.setActionView(R.layout.use_switch);
+        final Switch sw= (Switch) menu.findItem(R.id.switchView).getActionView().findViewById(R.id.action_switch);
+
+
+        if(activation.equals("Active")){
+            sw.setChecked(true);
+            checkActive="Active";
         }else {
-            sw1.setChecked(false);
-            checkactive="Deactive";
+            sw.setChecked(false);
+            checkActive="Deactive";
         }
-    }
 
-    public void addListenerOnChkIos() {
-
-        c_call = (CheckBox) findViewById(R.id.for_call);
-        c_sms = (CheckBox) findViewById(R.id.for_sms);
-
-        c_call.setOnClickListener(new View.OnClickListener() {
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
 
             @Override
-            public void onClick(View v) {
-                //is chkIos checked?
-                if (((CheckBox) v).isChecked()) {
-                    checkcall = "true";
-                } else {
-                    checkcall = "false";
-                }
-
-            }
-        });
-        c_sms.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                //is chkIos checked?
-                if (((CheckBox) v).isChecked()) {
-                    checksms = "true";
-                } else {
-                    checksms = "false";
-                }
-
-            }
-        });
-
-    }
-    public void Switch_test() {
-        sw1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    checkactive="Active";
+                    checkActive="Active";
                     Toast.makeText(updateTimeSlot.this, "Active", Toast.LENGTH_LONG).show();
                 } else {
-                    checkactive="Deactive";
+                    checkActive="Deactive";
                     Toast.makeText(updateTimeSlot.this, "Deactive", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
-
+        return true;
     }
-
-
 }
