@@ -12,11 +12,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
 import android.widget.Toast;
-
-
-import com.example.kasun.busysms.autoSms.autoSmsHome;
 import com.example.kasun.busysms.callBlock.callBlockerHome;
+import com.example.kasun.busysms.alarm.alarmHome;
+import com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity;
+import com.example.kasun.busysms.autoSms.smsHome;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,14 +27,14 @@ import java.util.List;
 public class home extends AppCompatActivity {
 
     ListView simpleListView;
-    String[] animalName={"Lion","Tiger","Monkey","Dog","Cat","Elephant"};//animal names array
     int[] animalImages={
             R.drawable.function1,
             R.drawable.function2,
             R.drawable.function3,
-            R.drawable.function4};//animal images array
+            R.drawable.fnew};//animal images array
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
+           
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -60,7 +62,7 @@ public class home extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 if(position == 0){
-                    Intent intent = new Intent(home.this, autoSmsHome.class);
+                    Intent intent = new Intent(home.this, smsHome.class);
                     startActivity(intent);
                 }else if(position ==1){
                     Intent intent = new Intent(home.this,alarmHome.class);
@@ -69,11 +71,12 @@ public class home extends AppCompatActivity {
                     Intent intent = new Intent(home.this,callBlockerHome.class);
                     startActivity(intent);
                 }else{
-                    Intent intent = new Intent(home.this,calendarHome.class);
+                    Intent intent = new Intent(home.this,TaskCalendarHomeActivity.class);
                     startActivity(intent);
                 }//show the selected image in toast according to position
             }
         });
+
 
 
     }
@@ -122,6 +125,7 @@ public class home extends AppCompatActivity {
             return false;
         }
         return true;
+
     }
 
 /*

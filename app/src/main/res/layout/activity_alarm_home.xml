@@ -8,17 +8,55 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.kasun.busysms.alarmHome">
+    tools:context="com.example.kasun.busysms.alarm.alarmHome">
 
-    <TextView
-        android:text="sampath"
+    <Button
+        android:id="@+id/AddTimeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="New Alarm"
+        android:background="@drawable/button_draw"
+        android:textColor="#ffff"
+        tools:ignore="HardcodedText"
+        android:layout_below="@+id/textday"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp" />
+
+    <TextClock
+        android:id="@+id/textClock1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format12Hour="hh:mm"
+        android:textColor="@color/colorAccent"
+        android:textSize="80dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginStart="50dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="131dp"
-        android:layout_marginStart="131dp"
-        android:layout_marginTop="90dp"
-        android:id="@+id/textView15" />
+        android:layout_alignParentStart="true" />
+
+    <TextClock
+        android:id="@+id/textClock2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format12Hour="a"
+        android:textColor="@color/colorAccent"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_alignBaseline="@+id/textClock1"
+        android:layout_alignBottom="@+id/textClock1"
+        android:layout_toEndOf="@+id/textClock1"
+        android:layout_marginStart="5dp" />
+
+    <TextView
+        android:id="@+id/textday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MMM MM dd"
+        android:textSize="25dp"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        android:layout_below="@+id/textClock1"
+        android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>
