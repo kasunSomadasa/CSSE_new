@@ -17,6 +17,12 @@ public class Database_Helper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME="BUSY.db";//database name
     public static final String DATABASE_TABLE="Busy_info";//database table which belongs to autoSMS function
+    
+    private static final String CALLBLOCKER_TABLE = "CALLBLOCKER";
+    private static final String CALLBLOCKER_HISTORY_TABLE = "CALLBLOCKERHISTORY";
+    private static final String CALLBLOCKER_MSG_BLOCK_WORDS_TABLE = "CALLBLOCKERWORDS";
+    private static final String CALLRECORDER_TABLE = "CALLRECORDER";
+    private static final String CALLBLOCK_TIMES = "CALLBLOCKTIMES";
 
     public static final String COL1="_id";
     public static final String COL2="TIME_FROM";
@@ -27,6 +33,32 @@ public class Database_Helper extends SQLiteOpenHelper {
     public static final String COL7="CALL_T";
     public static final String COL8="SMS_T";
     public static final String COL9="ACTIVATION";
+
+
+    //callblocker table columns
+    private static final String COL_NAME = "_name";
+    private static final String COL_NUMBER = "_number";
+    private static final String COL_MSG = "_msg";
+    private static final String COL_CALL = "_call";
+
+    //call blocker history table
+    private static final String COL_BLOCKED_NUMBER = "_blockedNumber";
+    private static final String COL_BLOCKED_DATE = "_blockedDate";
+
+    //callblocker words to block message table
+    private static final String COL_MSG_BLOCK_WORDS = "_word";
+
+    //call recorder table
+    private static final String COL_REC_NUMBER = "_recNumber";
+
+    //block time table
+    private static final String COL_FROM = "_from";
+    private static final String COL_TO = "_to";
+
+    private SQLiteDatabase db;
+
+
+
  
     //region Columns and information - Task Calendar 📆
     private static final String TASK_TABLE_NAME = "Tasks";
@@ -62,7 +94,8 @@ public class Database_Helper extends SQLiteOpenHelper {
 
 
     public Database_Helper(Context context) {
-        super(context, DATABASE_NAME, null, 4);
+        super(context, DATABASE_NAME, null, 5);
+
     }
 
     //region Database creation - Common 📢
@@ -72,15 +105,49 @@ public class Database_Helper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE Busy_info (_id INTEGER PRIMARY KEY AUTOINCREMENT,TIME_FROM TEXT,TIME_TO TEXT,TYPE TEXT," +
                 "DAY TEXT,MSG TEXT,CALL_T TEXT,SMS_T TEXT,ACTIVATION TEXT)");
 
+
+        db.execSQL("CREATE TABLE " + CALLBLOCKER_TABLE + " (" +
+                COL_NAME + " TEXT, " +
+                COL_NUMBER + " TEXT PRIMARY KEY, " +
+                COL_MSG + " BOOLEAN, " +
+                COL_CALL + " BOOLEAN );"
+        );
+
+        db.execSQL("CREATE TABLE " + CALLBLOCKER_HISTORY_TABLE + " (" +
+                COL_BLOCKED_NUMBER + " TEXT, " +
+                COL_BLOCKED_DATE + " TEXT );"
+        );
+
+        db.execSQL("CREATE TABLE " + CALLBLOCKER_MSG_BLOCK_WORDS_TABLE + " (" +
+                COL_MSG_BLOCK_WORDS + " TEXT PRIMARY KEY);"
+        );
+
+        db.execSQL("CREATE TABLE " + CALLRECORDER_TABLE + " (" +
+                COL_REC_NUMBER + " TEXT PRIMARY KEY);"
+        );
+
+        db.execSQL("CREATE TABLE " + CALLBLOCK_TIMES + " (" +
+                COL_FROM + " TEXT, "+
+                COL_TO + " TEXT );"
+        );
+
         db.execSQL(TASK_SQL_CREATE_ENTRIES);
+
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+      
         //delete table when app is uninstall
         db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE);
         db.execSQL(TASK_SQL_DROP_ENTRIES);
+        db.execSQL("DROP TABLE IF EXISTS " + CALLBLOCKER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CALLBLOCKER_HISTORY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CALLBLOCKER_MSG_BLOCK_WORDS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CALLRECORDER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CALLBLOCK_TIMES);
         onCreate(db);
     }
     //endregion
@@ -111,13 +178,12 @@ public class Database_Helper extends SQLiteOpenHelper {
         SQLiteDatabase db=this.getWritableDatabase();
     }
 
-
     public Cursor getData(){
         //get data query belongs to autoSMS function
         SQLiteDatabase db=this.getWritableDatabase();
-        Cursor c=db.rawQuery("select * from "+DATABASE_TABLE,null);
-        return  c;
+        return db.rawQuery("select * from "+DATABASE_TABLE,null);
     }
+
 
     public Integer deleteData(String id){
         //delete data query belongs to autoSMS function
@@ -144,6 +210,7 @@ public class Database_Helper extends SQLiteOpenHelper {
 
     public Cursor getListOfData(){
         //get data query belongs to autoSMS function for display in listView
+
         SQLiteDatabase db=this.getReadableDatabase();
 
         String where=null;
@@ -152,10 +219,9 @@ public class Database_Helper extends SQLiteOpenHelper {
         if (c != null) {
             c.moveToFirst();
             return  c;
-        }else{
+        } else {
             return  null;
         }
-
     }
     public Cursor searchData(String key){
         //data search query belongs to autoSMS function
@@ -164,6 +230,7 @@ public class Database_Helper extends SQLiteOpenHelper {
         return  c;
     }
     //endregion
+
 
     //region Operations - Task Calendar 📆
     public boolean task_insert(Task task){
@@ -188,6 +255,7 @@ public class Database_Helper extends SQLiteOpenHelper {
             return true;
         }
     }
+
 
     public boolean task_update(Task newTask, int oldTaskId){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -224,6 +292,147 @@ public class Database_Helper extends SQLiteOpenHelper {
             return true;
         }
     }
+
+
+
+    /**
+     *
+     ***************************
+     * call blocker methods
+     ***************************
+     *
+     */
+
+    //call blocker table methods
+    public boolean insertDataToCallBlocker(String w1, String w2, boolean w3, boolean w4) {
+        db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COL_NAME, w1);
+        cv.put(COL_NUMBER, w2);
+        cv.put(COL_MSG, w3);
+        cv.put(COL_CALL, w4);
+
+        long result = db.insert(CALLBLOCKER_TABLE, null, cv);
+
+        return result != -1;
+    }
+
+    public Cursor getDataCallBlocker() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("select * from " + CALLBLOCKER_TABLE, null);
+    }
+
+    public boolean isBlocked(String number){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = db.rawQuery("select * from " + CALLBLOCKER_TABLE + " where "+ COL_NUMBER +" = '"+number+"'", null);
+
+        if (c != null) {
+            c.moveToFirst();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void DeleteDataCallBlocker(String num) {
+        db = this.getWritableDatabase();
+        db.delete(CALLBLOCKER_TABLE, COL_NUMBER + "='" + num+"'", null);
+    }
+
+    public void EditMSG(String num, boolean msg) {
+        db = this.getWritableDatabase();
+        ContentValues cvUpdate = new ContentValues();
+        cvUpdate.put(COL_MSG, msg);
+        db.update(CALLBLOCKER_TABLE, cvUpdate, COL_NUMBER + "='" + num+"'", null);
+    }
+
+    public void EditCALL(String num, boolean call) {
+        db = this.getWritableDatabase();
+        ContentValues cvUpdate = new ContentValues();
+        cvUpdate.put(COL_CALL, call);
+        db.update(CALLBLOCKER_TABLE, cvUpdate, COL_NUMBER + "='" + num+"'", null);
+    }
+
+    public String[] columnName() {
+        return new String[]{COL_NAME, COL_NUMBER, COL_MSG, COL_CALL};
+    }
+
+    //call blocker history table methods
+    public boolean insertDataToCallBlockerHistory(String w1, String w2) {
+        db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COL_BLOCKED_NUMBER, w1);
+        cv.put(COL_BLOCKED_DATE, w2);
+
+        long result = db.insert(CALLBLOCKER_HISTORY_TABLE, null, cv);
+
+        return result != -1;
+    }
+
+    public Cursor getDataCallBlockerHistory() {
+        SQLiteDatabase db=this.getWritableDatabase();
+        Cursor c=db.rawQuery("select * from "+CALLBLOCKER_HISTORY_TABLE,null);
+        return  c;
+    }
+
+    //call blocker words table methods
+    public boolean insertDataToCallBlockerWords(String w1) {
+        db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COL_MSG_BLOCK_WORDS, w1);
+        long result = db.insert(CALLBLOCKER_MSG_BLOCK_WORDS_TABLE, null, cv);
+
+        return result != -1;
+    }
+
+    public Cursor getDataCallBlockerWords() {
+        SQLiteDatabase db=this.getWritableDatabase();
+        Cursor c=db.rawQuery("select * from "+CALLBLOCKER_MSG_BLOCK_WORDS_TABLE,null);
+        return  c;
+    }
+
+    //insert to call recorder
+    public boolean insertDataToCallRecorder(String w1) {
+        db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COL_REC_NUMBER, w1);
+        long result = db.insert(CALLRECORDER_TABLE, null, cv);
+
+        return result != -1;
+    }
+
+    public Cursor getRecordNumbers(String w1){
+        db=this.getReadableDatabase();
+        Cursor c=db.rawQuery("select * from "+CALLRECORDER_TABLE,null);
+        return  c;
+    }
+
+    //call blocker times
+    public boolean insertCallBlockTimes(String w1,String w2) {
+        db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COL_FROM, w1);
+        cv.put(COL_TO, w2);
+        long result = db.insert(CALLBLOCK_TIMES, null, cv);
+
+        return result != -1;
+    }
+
+    public Cursor getCallBlockTimes(){
+        db=this.getReadableDatabase();
+        Cursor c=db.rawQuery("select * from "+CALLBLOCK_TIMES,null);
+        return  c;
+    }
+
+    public boolean DeleteTime(String from,String to) {
+        db = this.getWritableDatabase();
+        long result = db.delete(CALLBLOCK_TIMES, COL_FROM + " ='" + from +"' and "+COL_TO + " ='" + to + "'", null);
+
+        return result != -1;
+    }
+
 
     public Cursor task_selectAll(){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -305,4 +514,5 @@ public class Database_Helper extends SQLiteOpenHelper {
         return db.query(TASK_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
     }
     //endregion
+
 }

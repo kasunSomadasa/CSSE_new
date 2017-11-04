@@ -1,8 +1,7 @@
 package com.example.kasun.busysms;
 
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 public class blockerHome extends AppCompatActivity {
 
@@ -11,5 +10,6 @@ public class blockerHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blocker_home);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 }
