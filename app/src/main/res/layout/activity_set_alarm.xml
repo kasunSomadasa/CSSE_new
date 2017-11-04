@@ -104,7 +104,7 @@
         android:text="Sound and Volume"
         android:textSize="17dp"
         android:textStyle="bold"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/colorAccent"
         android:layout_below="@+id/view"
         android:layout_centerHorizontal="true" />
 

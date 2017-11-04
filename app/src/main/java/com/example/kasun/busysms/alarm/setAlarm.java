@@ -458,8 +458,9 @@ public class setAlarm extends AppCompatActivity {
         checkSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if(isChecked && mp != null){
 //                    Toast.makeText(setAlarm.this,"checked",Toast.LENGTH_SHORT).show();
+
                     mp.stop();
                     spinner.setEnabled(false);
                 }else{
