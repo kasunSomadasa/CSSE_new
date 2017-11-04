@@ -29,7 +29,7 @@ public class autoCallRecevierTest {
     @Test
     public void getDayOfWeek() throws Exception {
 
-        String expectedOutput ="Wednesday";
+        String expectedOutput ="Saturday";
         String output;
         output=callRecevier.getDayOfWeek();
 
