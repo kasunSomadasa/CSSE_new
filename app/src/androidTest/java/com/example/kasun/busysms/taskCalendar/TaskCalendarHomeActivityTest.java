@@ -26,7 +26,7 @@ import static org.junit.Assert.assertNotNull;
 public class TaskCalendarHomeActivityTest {
     @Rule
     public ActivityTestRule<TaskCalendarHomeActivity> activityTestRule = new ActivityTestRule<TaskCalendarHomeActivity>(TaskCalendarHomeActivity.class);
-    private TaskCalendarHomeActivity taskCalendarHomeActivity = null;
+    private TaskCalendarHomeActivity taskCalendarHomeActivity;
 
     @Before
     public void setUp() throws Exception {
@@ -37,6 +37,7 @@ public class TaskCalendarHomeActivityTest {
     public void tearDown() throws Exception {
         taskCalendarHomeActivity = null;
     }
+
 
     @Test
     public void checkMainCalendar(){

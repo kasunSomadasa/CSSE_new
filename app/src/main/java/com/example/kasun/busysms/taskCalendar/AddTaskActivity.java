@@ -81,7 +81,11 @@ public class AddTaskActivity extends AppCompatActivity {
                 txtStartTime, txtEndTime, txtTaskDescription);
 
         //Variables Definition
-        final long selectedDate = (long)getIntent().getExtras().get("selectedDate");
+        final long selectedDate;
+        if(getIntent().hasExtra("selectedDate"))
+            selectedDate = (long)getIntent().getExtras().get("selectedDate");
+        else
+            selectedDate = new Date().getTime();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(selectedDate));
         txtTaskDate.setText(DateEx.getDateString(calendar.getTime()));

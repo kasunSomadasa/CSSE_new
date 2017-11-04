@@ -1,5 +1,6 @@
 package com.example.kasun.busysms.taskCalendar;
 
+import android.support.test.annotation.UiThreadTest;
 import android.support.test.rule.ActivityTestRule;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,20 +24,24 @@ import static org.junit.Assert.assertNotEquals;
  */
 public class AddTaskActivityTest {
     @Rule
-    public ActivityTestRule<AddTaskActivity> activityTestRule = new ActivityTestRule<AddTaskActivity>(AddTaskActivity.class);
+    public ActivityTestRule<AddTaskActivity> activityTestRuleAddTask = new ActivityTestRule<AddTaskActivity>(AddTaskActivity.class);
+
+    private TaskCalendarHomeActivity taskCalendarHomeActivity;
     private AddTaskActivity addTaskActivity;
 
     @Before
     public void setUp() throws Exception {
-        addTaskActivity = activityTestRule.getActivity();
+        addTaskActivity = activityTestRuleAddTask.getActivity();
     }
 
     @After
     public void tearDown() throws Exception {
         addTaskActivity = null;
+        taskCalendarHomeActivity = null;
     }
 
     @Test
+    @UiThreadTest
     public void testAddTask() throws Exception{
         int oldTaskCount = Task.getAllTasks(addTaskActivity.getApplicationContext()).size();
 
