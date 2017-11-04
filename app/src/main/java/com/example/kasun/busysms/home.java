@@ -3,7 +3,6 @@ package com.example.kasun.busysms;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,14 +11,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
-import android.widget.Toast;
 import com.example.kasun.busysms.callBlock.callBlockerHome;
 import com.example.kasun.busysms.alarm.alarmHome;
 import com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity;
 import com.example.kasun.busysms.autoSms.smsHome;
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +26,7 @@ public class home extends AppCompatActivity {
             R.drawable.function1,
             R.drawable.function2,
             R.drawable.function3,
-            R.drawable.fnew};//animal images array
+            R.drawable.fnew};//function images array
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
            
@@ -44,6 +39,7 @@ public class home extends AppCompatActivity {
         simpleListView=(ListView)findViewById(R.id.homeListView);
 
         ArrayList<HashMap<String,String>> arrayList=new ArrayList<>();
+
         for (int i=0;i<4;i++)
         {
             HashMap<String,String> hashMap=new HashMap<>();//create a hashmap to store the data in key value pair
@@ -62,15 +58,19 @@ public class home extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 if(position == 0){
+                    //go to smsHome Activity
                     Intent intent = new Intent(home.this, smsHome.class);
                     startActivity(intent);
                 }else if(position ==1){
+                    //go to alarmHome Activity
                     Intent intent = new Intent(home.this,alarmHome.class);
                     startActivity(intent);
                 }else if(position ==2){
+                    //go to callBlockerHome Activity
                     Intent intent = new Intent(home.this,callBlockerHome.class);
                     startActivity(intent);
                 }else{
+                    //go to TaskCalendarHomeActivity Activity
                     Intent intent = new Intent(home.this,TaskCalendarHomeActivity.class);
                     startActivity(intent);
                 }//show the selected image in toast according to position
@@ -81,6 +81,7 @@ public class home extends AppCompatActivity {
 
     }
 
+    //permission requestion
     private  boolean checkAndRequestPermissions() {
 
         int contacts = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
@@ -128,38 +129,5 @@ public class home extends AppCompatActivity {
 
     }
 
-/*
-    public class ImageAdapter extends BaseAdapter{
-        private Context mContext;
-
-        public  ImageAdapter(Context c){
-            mContext=c;
-        }
-
-        public int getCount(){
-            return mImages.length;
-        }
-
-        public  Object getItem(int position){
-            return null;
-        }
-        public long getItemId(int position){
-            return 0;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent){
-            ImageView imageView =new ImageView(mContext);
-            imageView.setImageResource(mImages[position]);
-            return  imageView;
-        }
-
-        private Integer[] mImages={
-                R.drawable.function1,
-                R.drawable.function2,
-                R.drawable.function3,
-                R.drawable.function4
-        };
-    }
-*/
 
 }
