@@ -10,20 +10,23 @@ import com.example.kasun.busysms.taskCalendar.Helper.DateEx;
 import com.example.kasun.busysms.taskCalendar.Model.Task;
 
 /**
- * Created by Kasun
  * Class which handle all database operation
  */
 public class Database_Helper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME="BUSY.db";//database name
-    public static final String DATABASE_TABLE="Busy_info";//database table which belongs to autoSMS function
-    
+    //database name
+    public static final String DATABASE_NAME="BUSY.db";
+    //database table which belongs to autoSMS function
+    public static final String DATABASE_TABLE="Busy_info";
+
+    //database table which belongs to call blocker function
     private static final String CALLBLOCKER_TABLE = "CALLBLOCKER";
     private static final String CALLBLOCKER_HISTORY_TABLE = "CALLBLOCKERHISTORY";
     private static final String CALLBLOCKER_MSG_BLOCK_WORDS_TABLE = "CALLBLOCKERWORDS";
     private static final String CALLRECORDER_TABLE = "CALLRECORDER";
     private static final String CALLBLOCK_TIMES = "CALLBLOCKTIMES";
 
+    //auto sms columns
     public static final String COL1="_id";
     public static final String COL2="TIME_FROM";
     public static final String COL3="TIME_TO";
@@ -140,7 +143,7 @@ public class Database_Helper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
       
-        //delete table when app is uninstall
+        //delete all tables when app is uninstall
         db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE);
         db.execSQL(TASK_SQL_DROP_ENTRIES);
         db.execSQL("DROP TABLE IF EXISTS " + CALLBLOCKER_TABLE);

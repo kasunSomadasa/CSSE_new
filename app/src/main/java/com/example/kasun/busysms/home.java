@@ -22,6 +22,7 @@ import java.util.List;
 public class home extends AppCompatActivity {
 
     ListView simpleListView;
+
     int[] animalImages={
             R.drawable.function1,
             R.drawable.function2,
@@ -42,15 +43,22 @@ public class home extends AppCompatActivity {
 
         for (int i=0;i<4;i++)
         {
-            HashMap<String,String> hashMap=new HashMap<>();//create a hashmap to store the data in key value pair
+            //create a hashmap to store the data in key value pair
+            HashMap<String,String> hashMap=new HashMap<>();
             hashMap.put("image",animalImages[i]+"");
-            arrayList.add(hashMap);//add the hashmap into arrayList
+            //add the hashmap into arrayList
+            arrayList.add(hashMap);
         }
-        String[] from={"image"};//string array
-        int[] to={R.id.homeImage};//int array of views id's
-        SimpleAdapter simpleAdapter=new SimpleAdapter(this,arrayList,R.layout.home_item_list,from,to);//Create object and set the parameters for simpleAdapter
-        simpleListView.setAdapter(simpleAdapter);//sets the adapter for listView
+        //string array
+        String[] from={"image"};
+        //int array of views id's
+        int[] to={R.id.homeImage};
+        //Create object and set the parameters for simpleAdapter
+        SimpleAdapter simpleAdapter=new SimpleAdapter(this,arrayList,R.layout.home_item_list,from,to);
+        //sets the adapter for listView(add images to listView)
+        simpleListView.setAdapter(simpleAdapter);
 
+        //check runtime permissions for callBlocker function
         checkAndRequestPermissions();
 
         //perform listView item click event

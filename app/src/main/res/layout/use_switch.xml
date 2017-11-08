@@ -3,7 +3,9 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
+    <!-- this file belongs to auto sms function-->
 
+    <!-- add switch on action bar in auto sms function-->
     <Switch
         android:id="@+id/action_switch"
         android:layout_width="wrap_content"
