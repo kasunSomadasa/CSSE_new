@@ -3,12 +3,28 @@
     package="com.example.kasun.busysms">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAPTURE_AUDIO_OUTPUT" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <uses-feature android:name="android.hardware.telephony" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
+
 
     <application
         android:allowBackup="true"
@@ -35,6 +51,18 @@
             </intent-filter>
         </receiver>
         <receiver android:name=".taskCalendar.Helper.NotificationReciever"/>
+
+        <receiver android:name=".callBlock.callReceiver">
+            <intent-filter android:priority="99999999">
+                <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".callBlock.messageReceiver">
+            <intent-filter android:priority="999999999">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".autoSms.timeSlotsList"
@@ -79,6 +107,15 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+
+ 
+        <activity
+            android:name=".callBlock.callBlockerHome"
+            android:label="@string/title_activity_call_blocker_home"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
 
 
         <!-- Sampath -->
@@ -151,9 +188,8 @@
                 android:value="com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity" />
         </activity>
 
-  <activity
-            android:name=".blockerHome"
-            android:parentActivityName=".home" />
+ 
+
     </application>
 
 </manifest>

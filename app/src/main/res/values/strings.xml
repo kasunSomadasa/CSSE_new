@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">BusySms</string>
 
+    <string name="title_activity_call_blocker_home">callBlockerHome</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+
 
     <string-array name="ringtone_array">
         <item>Select a Ringtone </item>
@@ -34,7 +39,8 @@
         <item>Siren</item>
         <item>System Fault</item>
     </string-array>
-    <string name="action_settings">Settings</string>
+
     <string name="title_activity_update_task">Edit Task</string>
+
 
 </resources>

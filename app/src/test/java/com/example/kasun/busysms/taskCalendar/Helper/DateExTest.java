@@ -11,6 +11,7 @@ import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getDateOfDate
 import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getDateOfDateTime;
 import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getDateOfTime;
 import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getDateString;
+import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getDateTimeString;
 import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getDayOf;
 import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getFormatedTimeString;
 import static com.example.kasun.busysms.taskCalendar.Helper.DateEx.getFormattedDateString;
@@ -56,28 +57,34 @@ public class DateExTest {
     public void testGetDateTimeString() throws Exception {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2017, 2, 3, 10, 2, 0);
-        assertEquals("2017-03-03 10:02:00", calendar.getTime());
+        assertEquals("2017-03-03 10:02:00", getDateTimeString(calendar.getTime()));
     }
 
     @Test
     public void testGetDateOfDate() throws Exception {
         Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         calendar.set(2017, 2, 3);
-        assertEquals(calendar.getTime(), getDateOfDate("2017-03-03"));
+        assertEquals(calendar.getTime().getTime(), getDateOfDate("2017-03-03").getTime());
     }
 
     @Test
     public void testGetDateOfTime() throws Exception {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2017, 2, 3, 10, 2);
-        assertEquals(calendar.getTime(), getDateOfTime("10:02"));
+        calendar.set(1970, 0, 1, 10, 2, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        assertEquals(calendar.getTime().getTime(), getDateOfTime("10:02").getTime());
     }
 
     @Test
     public void testGetDateOfDateTime() throws Exception {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2017, 2, 3, 10, 2);
-        assertEquals(calendar.getTime(), getDateOfDateTime("2017-03-03 10:02"));
+        calendar.set(2017, 2, 3, 10, 2, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        assertEquals(calendar.getTime().getTime(), getDateOfDateTime("2017-03-03 10:02:00").getTime());
     }
 
     @Test
@@ -104,9 +111,11 @@ public class DateExTest {
     @Test
     public void testAddMinutesTo() throws Exception {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2017, 2, 3, 10, 2);
+        calendar.set(2017, 2, 3, 10, 2, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         Calendar calendar2 = Calendar.getInstance();
-        calendar2.set(2017, 2, 3, 10, 7);
+        calendar2.set(2017, 2, 3, 10, 7, 0);
+        calendar2.set(Calendar.MILLISECOND, 0);
         assertEquals(calendar2.getTimeInMillis(), addMinutesTo(calendar.getTime(), 5).getTime());
     }
 

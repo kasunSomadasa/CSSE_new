@@ -66,7 +66,9 @@ public class smsHome extends AppCompatActivity {
         onClickButtonListenerForLog();
         onClickButtonListenerForNewTimeSlot();
         onClickButtonListenerForControlSound();
-        changeVolumeMode();
+
+        //check current volume mode
+        checkVolumeMode();
 
         //enable action bar back btn and other action btns
         ActionBar actionBar = getSupportActionBar();
@@ -144,7 +146,7 @@ public class smsHome extends AppCompatActivity {
 
     public void changeVolumeMode(){
         /*
-         * check current mobile audio status and change btn according to it
+         * change current mobile audio status and change btn according to it
          */
         AudioManager audioManager =(AudioManager)getSystemService(getApplicationContext().AUDIO_SERVICE);
 
@@ -168,6 +170,7 @@ public class smsHome extends AppCompatActivity {
         }
     }
 
+
     public void onClickButtonListenerForControlSound() {
          /*
          * change mobile audio status
@@ -181,6 +184,26 @@ public class smsHome extends AppCompatActivity {
                     }
                 }
         );
+
+    }
+
+
+    public void checkVolumeMode(){
+        /*
+         * check current mobile audio status and change btn according to it
+         */
+        AudioManager audioManager =(AudioManager)getSystemService(getApplicationContext().AUDIO_SERVICE);
+
+        if(audioManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE ) {
+            soundBtn.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_vibration_white_24dp, 0, 0, 0);
+            soundBtn.setText("VIBRATE");
+        }else if(audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL ) {
+            soundBtn.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_volume_up_white_24dp, 0, 0, 0);
+            soundBtn.setText("NORMAL");
+        }else if(audioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT ) {
+            soundBtn.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_volume_off_white_24dp, 0, 0, 0);
+            soundBtn.setText("SILENT");
+        }
 
     }
 

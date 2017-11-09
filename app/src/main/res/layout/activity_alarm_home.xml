@@ -16,6 +16,9 @@
         android:layout_height="wrap_content"
         android:text="New Alarm"
         android:background="@drawable/button_draw"
+
+        android:textColor="#ffff"
+
         tools:ignore="HardcodedText"
         android:layout_below="@+id/textday"
         android:layout_centerHorizontal="true"
@@ -26,6 +29,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:format12Hour="hh:mm"
+
+        android:textColor="@color/colorAccent"
+
         android:textSize="80dp"
         android:layout_marginTop="23dp"
         android:layout_alignParentTop="true"
@@ -39,6 +45,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:format12Hour="a"
+
+        android:textColor="@color/colorAccent"
+
         android:textSize="25dp"
         android:textStyle="bold"
         android:layout_alignTop="@+id/textClock1"
@@ -51,6 +60,9 @@
         android:layout_height="wrap_content"
         android:text="MMM MM dd"
         android:textSize="25dp"
+
+        android:textColor="@color/colorAccent"
+
         android:textStyle="bold"
         android:layout_below="@+id/textClock1"
         android:layout_centerHorizontal="true" />

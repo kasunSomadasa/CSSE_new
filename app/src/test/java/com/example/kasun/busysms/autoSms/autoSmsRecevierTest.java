@@ -15,7 +15,7 @@ public class autoSmsRecevierTest {
     @Test
     public void getDayOfWeek() throws Exception {
 
-        String expectedOutput ="Wednesday";
+        String expectedOutput ="Saturday";
         String output;
         output=smsRecevier.getDayOfWeek();
 

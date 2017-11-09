@@ -43,7 +43,7 @@
     <!--  repeats    -->
     <TextView
         android:id="@+id/repeat_days"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:text="Repeat"
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:text="Save"
         android:background="@drawable/button_draw"
-        android:textColor="@color/lightlightGreen"
+        android:textColor="#fff"
         android:layout_alignBaseline="@+id/alarm_off"
         android:layout_alignBottom="@+id/alarm_off"
         android:layout_alignParentRight="true"
@@ -89,8 +89,8 @@
         android:layout_height="wrap_content"
         android:text="Cancel"
         android:background="@drawable/button_draw"
-        android:textColor="@color/lightlightGreen"
-        android:layout_marginBottom="17dp"
+        android:textColor="#ffff"
+        android:layout_marginBottom="1dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -104,7 +104,7 @@
         android:text="Sound and Volume"
         android:textSize="17dp"
         android:textStyle="bold"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@color/colorAccent"
         android:layout_below="@+id/view"
         android:layout_centerHorizontal="true" />
 
@@ -201,6 +201,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/silent_on_off"
-        android:text="Play alarm even when the device is in silent mode" />
+        android:text="Play alarm even when the device is in silent mode"
+        android:layout_alignParentLeft="true" />
 
 </RelativeLayout>

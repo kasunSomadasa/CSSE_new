@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     tools:context="com.example.kasun.busysms.home"
     android:background="@drawable/back">
+    <!-- this file belongs to main home page-->
 
+    <!-- main function listView -->
     <ListView
         android:id="@+id/homeListView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
-
+        android:layout_height="wrap_content">
     </ListView>
 
 
