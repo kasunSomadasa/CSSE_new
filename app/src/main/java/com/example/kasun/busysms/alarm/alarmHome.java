@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextClock;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kasun.busysms.Database_Helper;
 import com.example.kasun.busysms.R;
@@ -99,19 +100,21 @@ public class alarmHome extends AppCompatActivity {
     }
 
     public void viewALarmData(){
-        Cursor cursor = alarmDB.getAlarmData();
+        Cursor cursor = alarmDB.getAlarmDataList();
         if (cursor.getCount() == 0) {
-//            Toast.makeText(this, "No Any Record To Display ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No Alarm History !!! ", Toast.LENGTH_SHORT).show();
             return;
-        }
-        StringBuffer bufferAlarmData = new StringBuffer();
-        while (cursor.moveToNext()){
-            bufferAlarmData.append(cursor.getString(1)+"\n");
-            bufferAlarmData.append(cursor.getString(2)+"\n");
-            bufferAlarmData.append("\n");
+        }else{
+            StringBuffer bufferAlarmData = new StringBuffer();
+            while (cursor.moveToNext()){
+                bufferAlarmData.append(cursor.getString(1)+"\n");
+                bufferAlarmData.append(cursor.getString(2)+"\n");
+                bufferAlarmData.append("\n");
+            }
+
+            showAlarmDataMsg("            Alarm History",bufferAlarmData.toString());
         }
 
-        showAlarmDataMsg("            Alarm History",bufferAlarmData.toString());
     }
 
     public void showAlarmDataMsg(String title, String message){

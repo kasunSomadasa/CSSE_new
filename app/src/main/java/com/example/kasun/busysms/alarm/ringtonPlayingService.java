@@ -123,7 +123,7 @@ public class ringtonPlayingService extends Service {
                         break;
                     case AudioManager.RINGER_MODE_VIBRATE:
                         if (silent_string.equals("on")){
-                            am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+//                            am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                             alarm_song.start();
                         }else{
 //                            alarm_song.start();

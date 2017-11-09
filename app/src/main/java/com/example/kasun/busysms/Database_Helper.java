@@ -90,7 +90,7 @@ public class Database_Helper extends SQLiteOpenHelper {
 
 //        create alarm_info table
         db.execSQL("CREATE TABLE alarm_info (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "ALARM_TIME TEXT," +
+                "                                ALARM_TIME TEXT," +
                 "                                ALARM_REPEAT TEXT," +
                 "                                ALARM_SOUND TEXT," +
                 "                                SOUND_CHK TEXT," +
