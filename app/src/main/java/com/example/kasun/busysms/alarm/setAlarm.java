@@ -683,9 +683,9 @@ public class setAlarm extends AppCompatActivity {
 
         //make the notification parameters
         NotificationCompat.Builder notifyAlarmBuilder = new NotificationCompat.Builder(this)
-//                .setSmallIcon(R.drawable.ic_alarm_on_white_24dp)
+                .setSmallIcon(R.drawable.ic_alarm_on_white_24dp)
                 .setContentTitle("Alarm Activated !!")
-//                .addAction(R.drawable.ic_clear_white_24dp,"If you want to cancel",pending_setAlarm_activity)
+                .addAction(R.drawable.ic_clear_white_24dp,"If you want to cancel",pending_setAlarm_activity)
                 .setAutoCancel(true);
         notifyAlarmBuilder.setContentIntent(pending_setAlarm_activity);
         Notification alarm_notification = notifyAlarmBuilder.build();

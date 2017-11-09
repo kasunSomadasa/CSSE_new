@@ -37,8 +37,6 @@ public class Database_Helper extends SQLiteOpenHelper {
     public static final String COL8="SMS_T";
     public static final String COL9="ACTIVATION";
 
-
-
     //    alarm table
     public static final String DATABASE_TABLE_ALARM="alarm_info";
     public static final String ALARM_ID_COL="_id";
@@ -50,10 +48,6 @@ public class Database_Helper extends SQLiteOpenHelper {
     public static final String ALARM_SILENT_COL="ALARM_SILENT";
     public static final String[] allcolumns=new String[] {ALARM_ID_COL,ALARM_TIME_COL,ALARM_REPEAT_COL,ALARM_SOUND_COL,
             ALARM_SOUND_CHK,ALARM_VOLUME_COL,ALARM_SILENT_COL};
-
-
-
-
 
     //callblocker table columns
     private static final String COL_NAME = "_name";
@@ -76,10 +70,6 @@ public class Database_Helper extends SQLiteOpenHelper {
     private static final String COL_TO = "_to";
 
     private SQLiteDatabase db;
-
-
-
- 
 
     //region Columns and information - Task Calendar 📆
     private static final String TASK_TABLE_NAME = "Tasks";
@@ -134,7 +124,7 @@ public class Database_Helper extends SQLiteOpenHelper {
                 "                                ALARM_SOUND TEXT," +
                 "                                SOUND_CHK TEXT," +
                 "                                ALARM_VOL TEXT," +
-                "                                ALARM_SILENT TEXT)"
+                "                                ALARM_SILENT TEXT)");
 
 
         db.execSQL("CREATE TABLE " + CALLBLOCKER_TABLE + " (" +
@@ -370,16 +360,7 @@ public class Database_Helper extends SQLiteOpenHelper {
         }
     }
 
-
-
-    /**
-     *
-     ***************************
-     * call blocker methods
-     ***************************
-     *
-     */
-
+    
     //call blocker table methods
     public boolean insertDataToCallBlocker(String w1, String w2, boolean w3, boolean w4) {
         db = this.getWritableDatabase();
