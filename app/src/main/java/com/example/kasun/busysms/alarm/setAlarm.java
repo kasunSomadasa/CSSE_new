@@ -539,6 +539,11 @@ public class setAlarm extends AppCompatActivity {
                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 notificationManager.cancel(6);
 
+                Intent intent = new Intent(setAlarm.this, alarmHome.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
+
                 Toast.makeText(getApplicationContext(), "Alarm cancelled", Toast.LENGTH_LONG).show();
 
             }
@@ -683,7 +688,7 @@ public class setAlarm extends AppCompatActivity {
                 .addAction(R.drawable.ic_clear_white_24dp,"If you want to cancel",pending_setAlarm_activity);
         notifyAlarmBuilder.setContentIntent(pending_setAlarm_activity);
         Notification alarm_notification = notifyAlarmBuilder.build();
-        alarm_notification.flags = Notification.FLAG_AUTO_CANCEL;
+        alarm_notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
 
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

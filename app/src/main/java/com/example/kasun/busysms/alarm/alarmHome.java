@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -67,9 +68,8 @@ public class alarmHome extends AppCompatActivity {
             return true;
 
         } else if(id == R.id.delete_alarm_btn){
-//            Intent intent = new Intent(alarmHome.this,.class);
-//            startActivity(intent);
-//            return true;
+            viewALarmData();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -96,15 +96,29 @@ public class alarmHome extends AppCompatActivity {
 
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.alarm_item_list, cursor, from_field_name, to_View_ID, 0);
         alarmListView.setAdapter(simpleCursorAdapter);
+    }
 
-//        if (cursor.getCount() == 0) {
-////            t1.setVisibility(View.VISIBLE);
-////            t1.setText("No Any SMS Record To Display");
+    public void viewALarmData(){
+        Cursor cursor = alarmDB.getAlarmData();
+        if (cursor.getCount() == 0) {
 //            Toast.makeText(this, "No Any Record To Display ", Toast.LENGTH_SHORT).show();
-//
-//            return;
-//        }
+            return;
+        }
+        StringBuffer bufferAlarmData = new StringBuffer();
+        while (cursor.moveToNext()){
+            bufferAlarmData.append(cursor.getString(1)+"\n");
+            bufferAlarmData.append(cursor.getString(2)+"\n");
+            bufferAlarmData.append("\n");
+        }
 
+        showAlarmDataMsg("            Alarm History",bufferAlarmData.toString());
+    }
 
+    public void showAlarmDataMsg(String title, String message){
+        AlertDialog.Builder alrmBuilder = new AlertDialog.Builder(this);
+        alrmBuilder.setCancelable(true);
+        alrmBuilder.setTitle(title);
+        alrmBuilder.setMessage(message);
+        alrmBuilder.show();
     }
 }
