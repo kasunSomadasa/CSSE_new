@@ -36,7 +36,7 @@ import java.util.Calendar;
 
 public class setAlarm extends AppCompatActivity {
     private TextView update_txt,settimeTxt,setRepeatTxt,showRepeatTxt,show_timetxt;
-    ArrayList<String> mSelectedItems=new ArrayList<String>();
+    ArrayList<String> mSelectedDaysItems=new ArrayList<String>();
     static final int dialog_id = 0;
     public String selections;
     PendingIntent pending_intent;
@@ -152,11 +152,11 @@ public class setAlarm extends AppCompatActivity {
             public void onClick(View v) {
 //               Toast.makeText(setAlarm.this,day,Toast.LENGTH_SHORT).show();
 
-                if(mSelectedItems.isEmpty()){
+                if(mSelectedDaysItems.isEmpty()){
                     Toast.makeText(setAlarm.this,"Alarm not set !!!!!\n Select the days",Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    for (String s : mSelectedItems) {
+                    for (String s : mSelectedDaysItems) {
                         if (s.equals("Sunday")) {
                             String sunday = String.valueOf(Calendar.SUNDAY);
                             if (sunday.equals(day)) {
@@ -423,7 +423,6 @@ public class setAlarm extends AppCompatActivity {
                         break;
                     default:
                         break;
-
 //                    here ringtone start
                 }
                 if(mp!=null)
@@ -541,26 +540,27 @@ public class setAlarm extends AppCompatActivity {
                                         boolean isChecked) {
                         if (isChecked) {
                             // If the user checked the item, add it to the selected items
-                            mSelectedItems.add(items[which]);
-                        } else if (mSelectedItems.contains(items[which])) {
+                            mSelectedDaysItems.add(items[which]);
+                        } else if (mSelectedDaysItems.contains(items[which])) {
                             // Else, if the item is already in the array, remove it
-                            mSelectedItems.remove(items[which]);
+                            mSelectedDaysItems.remove(items[which]);
                         }
                     }
                 });
+
         // Set the action buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 selections="";
-                for (String ms:mSelectedItems) {
+                for (String ms:mSelectedDaysItems) {
                     if(selections==""){
                         selections=ms;
                     }else{
                         selections=selections+","+ms;
                     }
-
                 }
+
                 //   Toast.makeText(setAlarm.this,selections, Toast.LENGTH_LONG).show();
                 if(selections.equals("")){
                     showRepeatTxt.setText("Choose your days");
@@ -578,7 +578,6 @@ public class setAlarm extends AppCompatActivity {
         });
 
         ad =  builder.create();
-
     }
 
     //create a method for change the state
