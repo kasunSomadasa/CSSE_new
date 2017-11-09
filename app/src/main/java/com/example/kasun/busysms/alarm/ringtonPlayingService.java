@@ -215,15 +215,15 @@ public class ringtonPlayingService extends Service {
 
         //make the notification parameters
         NotificationCompat.Builder notifyAlarmBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_alarm_on_black_24dp)
-                .setContentTitle("Alarm on")
+                .setSmallIcon(R.drawable.ic_alarm_on_white_24dp)
+                .setContentTitle("Alarm is triggering")
                 .setAutoCancel(true);
         notifyAlarmBuilder.setContentIntent(pending_setAlarm_activity);
         Notification alarm_notification = notifyAlarmBuilder.build();
 //        alarm_notification.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_ONGOING_EVENT;
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(0,alarm_notification);
+        notificationManager.notify(5,alarm_notification);
 
     }
 
