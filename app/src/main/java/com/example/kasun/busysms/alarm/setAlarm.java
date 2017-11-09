@@ -4,16 +4,21 @@ import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +34,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.kasun.busysms.Database_Helper;
 import com.example.kasun.busysms.R;
 
 import java.util.ArrayList;
@@ -36,7 +42,7 @@ import java.util.Calendar;
 
 public class setAlarm extends AppCompatActivity {
     private TextView update_txt,settimeTxt,setRepeatTxt,showRepeatTxt,show_timetxt;
-    ArrayList<String> mSelectedItems=new ArrayList<String>();
+    ArrayList<String> mSelectedDaysItems=new ArrayList<String>();
     static final int dialog_id = 0;
     public String selections;
     PendingIntent pending_intent;
@@ -52,6 +58,11 @@ public class setAlarm extends AppCompatActivity {
     PowerManager pm;
     Switch switch_silent;
     CheckBox checkSound;
+    Database_Helper alarmDB;
+    String ringtSound;
+    String isSoundChecked;
+    String progessVolume;
+    String silentMode;
 
 
     @Override
@@ -61,6 +72,12 @@ public class setAlarm extends AppCompatActivity {
         this.context = this;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        ringtSound = "Select a Ringtone";
+        isSoundChecked = "false";
+        silentMode = "off";
+
+        //database instance
+        alarmDB = new Database_Helper(this);
 
         //initialze the alarm manager
         alarm_Manager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -136,9 +153,11 @@ public class setAlarm extends AppCompatActivity {
                 if(isChecked){
                     Toast.makeText(setAlarm.this,"Silent mode",Toast.LENGTH_SHORT).show();
                     Alarm_intent.putExtra("silentExtra","on");
+                    silentMode = "on";
 
                 }else{
                     Alarm_intent.putExtra("silentExtra","off");
+                    silentMode = "off";
                 }
             }
         });
@@ -152,11 +171,11 @@ public class setAlarm extends AppCompatActivity {
             public void onClick(View v) {
 //               Toast.makeText(setAlarm.this,day,Toast.LENGTH_SHORT).show();
 
-                if(mSelectedItems.isEmpty()){
+                if(mSelectedDaysItems.isEmpty()){
                     Toast.makeText(setAlarm.this,"Alarm not set !!!!!\n Select the days",Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    for (String s : mSelectedItems) {
+                    for (String s : mSelectedDaysItems) {
                         if (s.equals("Sunday")) {
                             String sunday = String.valueOf(Calendar.SUNDAY);
                             if (sunday.equals(day)) {
@@ -338,8 +357,24 @@ public class setAlarm extends AppCompatActivity {
                         mp.stop();
                     }
 
-                    Toast.makeText(setAlarm.this, "Alarm set..!", Toast.LENGTH_SHORT).show();
-                    finish();
+                    boolean isInserted =  alarmDB.insertAlarmData(show_timetxt.getText().toString(),showRepeatTxt.getText().toString(),
+                            ringtSound,isSoundChecked,progessVolume,silentMode);
+                    if(isInserted = true){
+                        Toast.makeText(setAlarm.this, "Alarm set!", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(setAlarm.this, "Not set Alarm", Toast.LENGTH_SHORT).show();
+                    }
+
+//                    Toast.makeText(setAlarm.this, "Alarm set..!", Toast.LENGTH_SHORT).show();
+//                    finish();
+
+//                    set the alarm notification
+                    alarmSetNotification();
+
+                    Intent intent = new Intent(setAlarm.this, alarmHome.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
             }
         });
@@ -377,6 +412,9 @@ public class setAlarm extends AppCompatActivity {
                 }
 
 //                // back to the previous activity
+                Intent intent = new Intent(setAlarm.this, alarmHome.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
 //                finish();
             }
         });
@@ -398,7 +436,7 @@ public class setAlarm extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 choose_ringtone = (int) id;
                // Toast.makeText(setAlarm.this,"The selected choice is "+ id,Toast.LENGTH_SHORT).show();
-                String ringtSound = String.valueOf(parent.getItemAtPosition(position));
+                ringtSound = String.valueOf(parent.getItemAtPosition(position));
 
 //                check whether media player working or not
                 if (mp != null && mp.isPlaying()) {
@@ -423,7 +461,6 @@ public class setAlarm extends AppCompatActivity {
                         break;
                     default:
                         break;
-
 //                    here ringtone start
                 }
                 if(mp!=null)
@@ -441,6 +478,7 @@ public class setAlarm extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 am.setStreamVolume(AudioManager.STREAM_MUSIC,progress,0);
+                progessVolume = String.valueOf(progress);
                 //Toast.makeText(setAlarm.this,progress+"",Toast.LENGTH_SHORT).show();
             }
 
@@ -461,15 +499,59 @@ public class setAlarm extends AppCompatActivity {
                 if(isChecked && mp != null){
 //                    Toast.makeText(setAlarm.this,"checked",Toast.LENGTH_SHORT).show();
 
+                    isSoundChecked = "true";
+
                     mp.stop();
                     spinner.setEnabled(false);
                 }else{
 //                    Toast.makeText(setAlarm.this,"Unchecked",Toast.LENGTH_SHORT).show();
-                   // mp.stop();
+                    // mp.stop();
+                    isSoundChecked = "false";
                     spinner.setEnabled(true);
                 }
             }
         });
+
+//        cancel set alarm when click the notification
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null)
+            {
+                //Cry about not being clicked on
+                Log.e("notify","default option");
+
+                PackageManager pm  = setAlarm.this.getPackageManager();
+                ComponentName componentName = new ComponentName(setAlarm.this, alarmReceiver.class);
+                pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                        PackageManager.DONT_KILL_APP);
+//                Toast.makeText(getApplicationContext(), "activated", Toast.LENGTH_LONG).show();
+
+            }
+            else if (extras.getBoolean("AlrmSetExtra"))
+            {
+                //Do your stuff here mate :)
+                Log.e("notify","cancel the receiver");
+
+                PackageManager pm  = setAlarm.this.getPackageManager();
+                ComponentName componentName = new ComponentName(setAlarm.this, alarmReceiver.class);
+                pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                        PackageManager.DONT_KILL_APP);
+
+                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                notificationManager.cancel(6);
+
+                Intent intent = new Intent(setAlarm.this, alarmHome.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
+
+                Toast.makeText(getApplicationContext(), "Alarm cancelled", Toast.LENGTH_LONG).show();
+
+            }
+
+        }
+
+
     }
 
     //create a method for get time from timepicker dialog
@@ -542,26 +624,27 @@ public class setAlarm extends AppCompatActivity {
                                         boolean isChecked) {
                         if (isChecked) {
                             // If the user checked the item, add it to the selected items
-                            mSelectedItems.add(items[which]);
-                        } else if (mSelectedItems.contains(items[which])) {
+                            mSelectedDaysItems.add(items[which]);
+                        } else if (mSelectedDaysItems.contains(items[which])) {
                             // Else, if the item is already in the array, remove it
-                            mSelectedItems.remove(items[which]);
+                            mSelectedDaysItems.remove(items[which]);
                         }
                     }
                 });
+
         // Set the action buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 selections="";
-                for (String ms:mSelectedItems) {
+                for (String ms:mSelectedDaysItems) {
                     if(selections==""){
                         selections=ms;
                     }else{
                         selections=selections+","+ms;
                     }
-
                 }
+
                 //   Toast.makeText(setAlarm.this,selections, Toast.LENGTH_LONG).show();
                 if(selections.equals("")){
                     showRepeatTxt.setText("Choose your days");
@@ -579,12 +662,38 @@ public class setAlarm extends AppCompatActivity {
         });
 
         ad =  builder.create();
-
     }
 
     //create a method for change the state
     private void set_Alarm_status(String status) {
         show_timetxt.setText(status);
+
+    }
+
+    //notification on when alarm is Set.
+    public void alarmSetNotification(){
+
+        //set up an intent that goes to the setAlarm activity
+        Intent notifySetAlarmIntent = new Intent(this,setAlarm.class);
+
+        notifySetAlarmIntent.putExtra("AlrmSetExtra",true);
+        //set up a pending intent
+        PendingIntent pending_setAlarm_activity;
+        pending_setAlarm_activity = PendingIntent.getActivity(this,0,notifySetAlarmIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //make the notification parameters
+        NotificationCompat.Builder notifyAlarmBuilder = new NotificationCompat.Builder(this)
+//                .setSmallIcon(R.drawable.ic_alarm_on_white_24dp)
+                .setContentTitle("Alarm Activated !!")
+//                .addAction(R.drawable.ic_clear_white_24dp,"If you want to cancel",pending_setAlarm_activity)
+                .setAutoCancel(true);
+        notifyAlarmBuilder.setContentIntent(pending_setAlarm_activity);
+        Notification alarm_notification = notifyAlarmBuilder.build();
+        alarm_notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
+
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(6,alarm_notification);
 
     }
 }

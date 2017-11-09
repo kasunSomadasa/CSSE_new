@@ -38,6 +38,23 @@ public class Database_Helper extends SQLiteOpenHelper {
     public static final String COL9="ACTIVATION";
 
 
+
+    //    alarm table
+    public static final String DATABASE_TABLE_ALARM="alarm_info";
+    public static final String ALARM_ID_COL="_id";
+    public static final String ALARM_TIME_COL ="ALARM_TIME";
+    public static final String ALARM_REPEAT_COL="ALARM_REPEAT";
+    public static final String ALARM_SOUND_COL="ALARM_SOUND";
+    public static final String ALARM_SOUND_CHK="SOUND_CHK";
+    public static final String ALARM_VOLUME_COL="ALARM_VOL";
+    public static final String ALARM_SILENT_COL="ALARM_SILENT";
+    public static final String[] allcolumns=new String[] {ALARM_ID_COL,ALARM_TIME_COL,ALARM_REPEAT_COL,ALARM_SOUND_COL,
+            ALARM_SOUND_CHK,ALARM_VOLUME_COL,ALARM_SILENT_COL};
+
+
+
+
+
     //callblocker table columns
     private static final String COL_NAME = "_name";
     private static final String COL_NUMBER = "_number";
@@ -63,6 +80,7 @@ public class Database_Helper extends SQLiteOpenHelper {
 
 
  
+
     //region Columns and information - Task Calendar 📆
     private static final String TASK_TABLE_NAME = "Tasks";
     private static final String TASK_COL_1 = "task_id";
@@ -109,6 +127,16 @@ public class Database_Helper extends SQLiteOpenHelper {
                 "DAY TEXT,MSG TEXT,CALL_T TEXT,SMS_T TEXT,ACTIVATION TEXT)");
 
 
+//        create alarm_info table
+        db.execSQL("CREATE TABLE alarm_info (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "                                ALARM_TIME TEXT," +
+                "                                ALARM_REPEAT TEXT," +
+                "                                ALARM_SOUND TEXT," +
+                "                                SOUND_CHK TEXT," +
+                "                                ALARM_VOL TEXT," +
+                "                                ALARM_SILENT TEXT)"
+
+
         db.execSQL("CREATE TABLE " + CALLBLOCKER_TABLE + " (" +
                 COL_NAME + " TEXT, " +
                 COL_NUMBER + " TEXT PRIMARY KEY, " +
@@ -132,6 +160,7 @@ public class Database_Helper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + CALLBLOCK_TIMES + " (" +
                 COL_FROM + " TEXT, "+
                 COL_TO + " TEXT );"
+
         );
 
         db.execSQL(TASK_SQL_CREATE_ENTRIES);
@@ -145,6 +174,8 @@ public class Database_Helper extends SQLiteOpenHelper {
       
         //delete all tables when app is uninstall
         db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE);
+        //        check db is create is or not
+        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_ALARM);
         db.execSQL(TASK_SQL_DROP_ENTRIES);
         db.execSQL("DROP TABLE IF EXISTS " + CALLBLOCKER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + CALLBLOCKER_HISTORY_TABLE);
@@ -176,10 +207,53 @@ public class Database_Helper extends SQLiteOpenHelper {
         }
 
     }
+
+    //insert alarm data
+    public boolean insertAlarmData(String time,String repeat,String sound,String sound_check,String volume,String silent){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues cv=new ContentValues();
+        cv.put(ALARM_TIME_COL,time);
+        cv.put(ALARM_REPEAT_COL,repeat);
+        cv.put(ALARM_SOUND_COL,sound);
+        cv.put(ALARM_SOUND_CHK,sound_check);
+        cv.put(ALARM_VOLUME_COL,volume);
+        cv.put(ALARM_SILENT_COL,silent);
+        long result=db.insert(DATABASE_TABLE_ALARM,null,cv);
+        if(result == -1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     public void open(){
         //open database connection
         SQLiteDatabase db=this.getWritableDatabase();
     }
+
+
+    //get alarm data
+    public Cursor getAlarmDataList(){
+        SQLiteDatabase db=this.getWritableDatabase();
+        Cursor cursor=db.rawQuery("select * from "+DATABASE_TABLE_ALARM,null);
+        return  cursor;
+    }
+
+    public Cursor getAlarmData(){
+        SQLiteDatabase db=this.getReadableDatabase();
+
+        String where=null;
+        Cursor cursor = db.query(true,DATABASE_TABLE_ALARM,allcolumns,null,null,null,null,null,null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            return  cursor;
+        }else{
+            return  null;
+        }
+
+    }
+
 
     public Cursor getData(){
         //get data query belongs to autoSMS function
