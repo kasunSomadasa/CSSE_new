@@ -207,7 +207,6 @@ public class ringtonPlayingService extends Service {
 
         //set up an intent that goes to the setAlarm activity
         Intent notifyIntent = new Intent(this,setAlarm.class);
-//        Intent notifyIn = new Intent(this,alarmFire.class);
 
         //set up a pending intent
         PendingIntent pending_setAlarm_activity;
@@ -215,12 +214,11 @@ public class ringtonPlayingService extends Service {
 
         //make the notification parameters
         NotificationCompat.Builder notifyAlarmBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_alarm_on_white_24dp)
+//                .setSmallIcon(R.drawable.ic_alarm_on_white_24dp)
                 .setContentTitle("Alarm is triggering")
                 .setAutoCancel(true);
         notifyAlarmBuilder.setContentIntent(pending_setAlarm_activity);
         Notification alarm_notification = notifyAlarmBuilder.build();
-//        alarm_notification.flags |= Notification.FLAG_AUTO_CANCEL | Notification.FLAG_ONGOING_EVENT;
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(5,alarm_notification);

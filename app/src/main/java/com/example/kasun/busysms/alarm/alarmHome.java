@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -59,22 +58,22 @@ public class alarmHome extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.add_alarm_btn) {
-            Intent intent = new Intent(alarmHome.this,setAlarm.class);
-            startActivity(intent);
-            return true;
-
-        } else if(id == R.id.delete_alarm_btn){
-            viewALarmData();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//
+//        if (id == R.id.add_alarm_btn) {
+//            Intent intent = new Intent(alarmHome.this,setAlarm.class);
+//            startActivity(intent);
+//            return true;
+//
+//        } else if(id == R.id.delete_alarm_btn){
+//            viewALarmData();
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
     public  void OnClickBtnListner(){

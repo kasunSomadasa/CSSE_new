@@ -5,14 +5,14 @@
 
     <item
         android:id="@+id/add_alarm_btn"
-        android:icon="@drawable/ic_alarm_add_white_24dp"
         android:title=""
         app:showAsAction="always"/>
+    <!--android:icon="@drawable/ic_alarm_add_white_24dp"/>-->
 
     <item
         android:id="@+id/delete_alarm_btn"
-        android:icon="@drawable/ic_history_white_24dp"
         android:title=""
         app:showAsAction="always"/>
+    <!--android:icon="@drawable/ic_history_white_24dp"/>-->
 
 </menu>
