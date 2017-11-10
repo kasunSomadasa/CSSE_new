@@ -77,10 +77,11 @@ public class ringtonPlayingService extends Service {
             //alarm_song = MediaPlayer.create(this, R.raw.wake_up_tone);
             // alarm_song.start();
 
+            notifyAlarm();
             this.isRunning = true;
             this.startId = 0;
 
-            notifyAlarm();
+
 
             //set ringtone options
             switch (ringtone_sound_choice) {
@@ -214,7 +215,7 @@ public class ringtonPlayingService extends Service {
 
         //make the notification parameters
         NotificationCompat.Builder notifyAlarmBuilder = new NotificationCompat.Builder(this)
-//                .setSmallIcon(R.drawable.ic_alarm_on_white_24dp)
+                .setSmallIcon(R.drawable.ic_alarm_on_white_24dp)
                 .setContentTitle("Alarm is triggering")
                 .setAutoCancel(true);
         notifyAlarmBuilder.setContentIntent(pending_setAlarm_activity);

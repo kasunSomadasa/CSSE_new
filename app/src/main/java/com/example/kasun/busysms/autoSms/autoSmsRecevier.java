@@ -123,11 +123,11 @@ public class autoSmsRecevier extends BroadcastReceiver {
                     String getdb_to = c.getString(2);
                     String getdb_day = c.getString(4);
                     String getdb_msg = c.getString(5);
-                    String getdb_call = c.getString(6);
+                    String getdb_sms = c.getString(7);
                     String getdb_activation = c.getString(8);
 
 
-                    if (getdb_call.equals("true") && getdb_activation.equals("Active") && getdb_day.equals(getDayOfWeek())) {
+                    if (getdb_sms.equals("true") && getdb_activation.equals("Active") && getdb_day.equals(getDayOfWeek())) {
 
                         Date dateCompareOne = parseDate(getdb_from);
                         Date dateCompareTwo = parseDate(getdb_to);

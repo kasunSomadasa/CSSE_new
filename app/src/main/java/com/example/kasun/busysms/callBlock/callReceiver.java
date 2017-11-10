@@ -48,6 +48,7 @@ public class callReceiver extends BroadcastReceiver {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
 
+            Database_Helper DC = new Database_Helper(context);
             switch (state) {
                 case TelephonyManager.CALL_STATE_RINGING:
 
@@ -55,7 +56,7 @@ public class callReceiver extends BroadcastReceiver {
 
                     inCall = false;
 
-                    Database_Helper DC = new Database_Helper(context);
+
                     DC.open();
 
                     Cursor timeCursor = DC.getCallBlockTimes();
@@ -135,18 +136,19 @@ public class callReceiver extends BroadcastReceiver {
                     break;
 
                 case TelephonyManager.CALL_STATE_IDLE:
- /*                   audioRecorder recObj = new audioRecorder(context,incomingNumber);
+                  /*  audioRecorder recObj = new audioRecorder(context,incomingNumber);
                     try {
                         recObj.stop();
                         Toast.makeText(context, "recording finished", Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-       */             inCall = false;
+                    */
+                    inCall = false;
 
                 case TelephonyManager.CALL_STATE_OFFHOOK:
                     inCall = true;
-               /*     DC.open();
+                   /* DC.open();
                     Cursor numCursor = DC.getRecordNumbers(incomingNumber);
                     for (numCursor.moveToFirst(); !numCursor.isAfterLast(); numCursor.moveToNext()) {
                         if (PhoneNumberUtils.compare(incomingNumber, numCursor.getString(numCursor.getColumnIndex("_recNumber")))) {
@@ -165,9 +167,11 @@ public class callReceiver extends BroadcastReceiver {
                     }
                     DC.close();
 
+                    */
+
                     Toast.makeText(context, "recording started", Toast.LENGTH_LONG).show();
                     //Toast.makeText(context,"in a call",Toast.LENGTH_LONG).show();
-                    break;*/
+                    break;
             }
 
             super.onCallStateChanged(state, incomingNumber);

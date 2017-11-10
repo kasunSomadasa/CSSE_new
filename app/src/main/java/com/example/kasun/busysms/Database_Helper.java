@@ -360,7 +360,7 @@ public class Database_Helper extends SQLiteOpenHelper {
         }
     }
 
-    
+
     //call blocker table methods
     public boolean insertDataToCallBlocker(String w1, String w2, boolean w3, boolean w4) {
         db = this.getWritableDatabase();
