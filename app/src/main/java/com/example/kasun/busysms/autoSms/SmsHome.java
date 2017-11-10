@@ -209,7 +209,7 @@ public class SmsHome extends AppCompatActivity {
 
     public void populatelistView() {
          /*
-         * load database data to listView
+         * load database data to listView  
          */
         Cursor cursor = db.getListOfData();
 
