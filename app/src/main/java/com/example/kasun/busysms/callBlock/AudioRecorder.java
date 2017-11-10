@@ -14,13 +14,13 @@ import java.util.Date;
  * Created by madupoorna on 11/2/17.
  */
 
-public class audioRecorder {
+public class AudioRecorder {
 
     public Context context;
     final MediaRecorder recorder = new MediaRecorder();
     public String path,number;
 
-    public audioRecorder(Context context,String number) {
+    public AudioRecorder(Context context, String number) {
         this.context=context;
         this.number=number;
     }

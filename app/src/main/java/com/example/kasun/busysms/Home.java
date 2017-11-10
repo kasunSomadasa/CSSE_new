@@ -11,15 +11,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import com.example.kasun.busysms.callBlock.callBlockerHome;
-import com.example.kasun.busysms.alarm.alarmHome;
+
+import com.example.kasun.busysms.alarm.AlarmHome;
+import com.example.kasun.busysms.autoSms.SmsHome;
+import com.example.kasun.busysms.callBlock.CallBlockerHome;
 import com.example.kasun.busysms.taskCalendar.TaskCalendarHomeActivity;
-import com.example.kasun.busysms.autoSms.smsHome;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class home extends AppCompatActivity {
+public class Home extends AppCompatActivity {
 
     ListView simpleListView;
 
@@ -66,20 +68,20 @@ public class home extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 if(position == 0){
-                    //go to smsHome Activity
-                    Intent intent = new Intent(home.this, smsHome.class);
+                    //go to SmsHome Activity
+                    Intent intent = new Intent(Home.this, SmsHome.class);
                     startActivity(intent);
                 }else if(position ==1){
-                    //go to alarmHome Activity
-                    Intent intent = new Intent(home.this,alarmHome.class);
+                    //go to AlarmHome Activity
+                    Intent intent = new Intent(Home.this,AlarmHome.class);
                     startActivity(intent);
                 }else if(position ==2){
-                    //go to callBlockerHome Activity
-                    Intent intent = new Intent(home.this,callBlockerHome.class);
+                    //go to CallBlockerHome Activity
+                    Intent intent = new Intent(Home.this,CallBlockerHome.class);
                     startActivity(intent);
                 }else{
                     //go to TaskCalendarHomeActivity Activity
-                    Intent intent = new Intent(home.this,TaskCalendarHomeActivity.class);
+                    Intent intent = new Intent(Home.this,TaskCalendarHomeActivity.class);
                     startActivity(intent);
                 }//show the selected image in toast according to position
             }

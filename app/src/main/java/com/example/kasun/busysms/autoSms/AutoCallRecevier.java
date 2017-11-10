@@ -8,7 +8,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
  * Created by Kasun Somadasa
  * This class run in background for identify incomming Call
  */
-public class autoCallRecevier extends BroadcastReceiver {
+public class AutoCallRecevier extends BroadcastReceiver {
 
     static final String TAG ="INFO_CALL";
     Calendar now = Calendar.getInstance();
@@ -87,7 +87,7 @@ public class autoCallRecevier extends BroadcastReceiver {
          * this method run in background and detect incomming Call event
          * and check that incomming Call time is between our time slots then return our sms to that number
          */
-        Database_Helper db = new Database_Helper(context);
+        DatabaseHelper db = new DatabaseHelper(context);
         Cursor c = db.getData();
 
         if (c.getCount() == 0) {

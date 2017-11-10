@@ -9,13 +9,13 @@ import android.util.Log;
  * Created by SM_MYPC on 9/29/2017.
  */
 
-public class alarmReceiver extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         // Toast.makeText(context,"Alarm is running.... ",Toast.LENGTH_LONG).show();
         Log.e("we are in the receiver", "Hooo");
                 //create an intent to the ringtone service
-        Intent service_intent = new Intent(context, ringtonPlayingService.class);
+        Intent service_intent = new Intent(context, RingtonPlayingService.class);
 
                 //create new intent to the alarm fire
         Intent alarmTriggerIntent = new Intent();
@@ -56,7 +56,7 @@ public class alarmReceiver extends BroadcastReceiver {
 
         //start new intent when  alarm is triggering
         if(get_alarm_String.equals("on")) {
-            alarmTriggerIntent.setClass(context, alarmFire.class);
+            alarmTriggerIntent.setClass(context, AlarmFire.class);
             alarmTriggerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(alarmTriggerIntent);
         }

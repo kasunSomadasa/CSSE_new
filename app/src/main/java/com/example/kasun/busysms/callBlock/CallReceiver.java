@@ -11,18 +11,14 @@ import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
-public class callReceiver extends BroadcastReceiver {
+public class CallReceiver extends BroadcastReceiver {
 
     public static boolean inCall;
 
@@ -48,7 +44,7 @@ public class callReceiver extends BroadcastReceiver {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
 
-            Database_Helper DC = new Database_Helper(context);
+            DatabaseHelper DC = new DatabaseHelper(context);
             switch (state) {
                 case TelephonyManager.CALL_STATE_RINGING:
 
@@ -136,7 +132,7 @@ public class callReceiver extends BroadcastReceiver {
                     break;
 
                 case TelephonyManager.CALL_STATE_IDLE:
-                  /*  audioRecorder recObj = new audioRecorder(context,incomingNumber);
+                  /*  AudioRecorder recObj = new AudioRecorder(context,incomingNumber);
                     try {
                         recObj.stop();
                         Toast.makeText(context, "recording finished", Toast.LENGTH_LONG).show();
@@ -154,7 +150,7 @@ public class callReceiver extends BroadcastReceiver {
                         if (PhoneNumberUtils.compare(incomingNumber, numCursor.getString(numCursor.getColumnIndex("_recNumber")))) {
 
                             Toast.makeText(context, "no is in list start recording", Toast.LENGTH_LONG).show();
-                            recObj = new audioRecorder(context,incomingNumber);
+                            recObj = new AudioRecorder(context,incomingNumber);
                             try {
                                 recObj.startRecording();
                             } catch (IOException e) {

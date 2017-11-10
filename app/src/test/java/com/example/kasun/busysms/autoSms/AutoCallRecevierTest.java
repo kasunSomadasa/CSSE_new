@@ -9,9 +9,9 @@ import static org.junit.Assert.*;
 /**
  * Created by Kasun on 11/1/2017.
  */
-public class autoCallRecevierTest {
+public class AutoCallRecevierTest {
 
-    autoCallRecevier callRecevier =new autoCallRecevier();
+    AutoCallRecevier callRecevier =new AutoCallRecevier();
     @Test
     public void isBetweenValidTime() throws Exception {
 

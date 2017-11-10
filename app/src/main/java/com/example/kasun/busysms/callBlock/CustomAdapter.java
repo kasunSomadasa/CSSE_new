@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 import com.example.kasun.busysms.R;
 
 import java.util.ArrayList;
@@ -22,27 +22,27 @@ import java.util.List;
  * Created by madupoorna on 10/22/17.
  */
 
-public class customAdapter extends BaseAdapter {
+public class CustomAdapter extends BaseAdapter {
 
-    private List<callBlockerModel> list;
+    private List<CallBlockerModel> list;
     private LayoutInflater mInflater;
-    Database_Helper helper;
+    DatabaseHelper helper;
     Context context;
     boolean isMsgChk=true;
     boolean isCallChk =true;
-    com.example.kasun.busysms.callBlock.tab1Fragment tab1Fragment;
+    Tab1Fragment Tab1Fragment;
 
-    public customAdapter(Context context, List<callBlockerModel> results) {
+    public CustomAdapter(Context context, List<CallBlockerModel> results) {
 
         list = results;
         mInflater = LayoutInflater.from(context);
-        helper = new Database_Helper(context);
+        helper = new DatabaseHelper(context);
         this.context = context;
         checkIconShow();
     }
 
-    public void setFragment(com.example.kasun.busysms.callBlock.tab1Fragment tab1Fragment) {
-        this.tab1Fragment = tab1Fragment;
+    public void setFragment(Tab1Fragment Tab1Fragment) {
+        this.Tab1Fragment = Tab1Fragment;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class customAdapter extends BaseAdapter {
                 //lv.setAdapter(this);
                 notifyDataSetChanged();
                 if(list.size() == 0){
-                    ((callBlockerHome)context).disapperIcon();
+                    ((CallBlockerHome)context).disapperIcon();
                 }
                 Toast.makeText(v.getContext(), number + " deleted", Toast.LENGTH_LONG).show();
             }
@@ -145,23 +145,23 @@ public class customAdapter extends BaseAdapter {
     public void checkIconShow(){
 
         if((isCallChk && isMsgChk) || isMsgChk || isCallChk ){
-            ((callBlockerHome)context).showIcon();
+            ((CallBlockerHome)context).showIcon();
         }else{
-            ((callBlockerHome)context).disapperIcon();
+            ((CallBlockerHome)context).disapperIcon();
         }
     }
 
-    private List<callBlockerModel> GetlistData() {
-        List<callBlockerModel> itemList = new ArrayList<>();
+    private List<CallBlockerModel> GetlistData() {
+        List<CallBlockerModel> itemList = new ArrayList<>();
 
-        callBlockerModel listItem;
-        Database_Helper dbHelper = new Database_Helper(context);
+        CallBlockerModel listItem;
+        DatabaseHelper dbHelper = new DatabaseHelper(context);
 
         Cursor mCursor = dbHelper.getDataCallBlocker();
 
         if (mCursor.getCount() != 0) {
             for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()) {
-                listItem = new callBlockerModel();
+                listItem = new CallBlockerModel();
                 String name = mCursor.getString(mCursor.getColumnIndex("_name"));
                 String number = mCursor.getString(mCursor.getColumnIndex("_number"));
                 boolean msg = mCursor.getInt(mCursor.getColumnIndex("_msg")) > 0;

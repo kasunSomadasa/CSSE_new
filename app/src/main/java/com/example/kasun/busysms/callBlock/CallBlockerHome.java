@@ -37,13 +37,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 import com.example.kasun.busysms.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class callBlockerHome extends AppCompatActivity {
+public class CallBlockerHome extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -64,10 +64,10 @@ public class callBlockerHome extends AppCompatActivity {
     Animation fabOpen, fabClose, fabRotateClockwise, fabRotateAnticlockwise;
     boolean isOpen = false;
     private final int PICK_CONTACTS = 1;
-    Database_Helper dbObj;
+    DatabaseHelper dbObj;
 
-    com.example.kasun.busysms.callBlock.tab1Fragment tab1Fragment;
-    com.example.kasun.busysms.callBlock.tab2Fragment tab2Fragment;
+    Tab1Fragment Tab1Fragment;
+    Tab2Fragment Tab2Fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +95,7 @@ public class callBlockerHome extends AppCompatActivity {
         fabRotateClockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_clockwise);
         fabRotateAnticlockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_anticlockwise);
 
-        dbObj = new Database_Helper(this);
+        dbObj = new DatabaseHelper(this);
 
         //show plus button animations
         fab_plus.setOnClickListener(new View.OnClickListener() {
@@ -203,7 +203,7 @@ public class callBlockerHome extends AppCompatActivity {
 
     public void openAddNumberPopUp(final String conName, String conNumber) {
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(callBlockerHome.this);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(CallBlockerHome.this);
         final View mView = getLayoutInflater().inflate(R.layout.popup_window_add_number, null);
 
         final EditText name = (EditText) mView.findViewById(R.id.nameTxtBox);
@@ -238,20 +238,20 @@ public class callBlockerHome extends AppCompatActivity {
 
                         alertDialog.dismiss();
 
-                        List<callBlockerModel> results = GetlistData();
-                        ListView lv = (ListView) tab1Fragment.getView().findViewById(R.id.blockedListView);
+                        List<CallBlockerModel> results = GetlistData();
+                        ListView lv = (ListView) Tab1Fragment.getView().findViewById(R.id.blockedListView);
 
-                        customAdapter adapter = new customAdapter(callBlockerHome.this, results);
-                        adapter.setFragment(tab1Fragment);
+                        CustomAdapter adapter = new CustomAdapter(CallBlockerHome.this, results);
+                        adapter.setFragment(Tab1Fragment);
                         lv.setAdapter(adapter);
 
-                        Toast.makeText(callBlockerHome.this, "Successfully Blocked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CallBlockerHome.this, "Successfully Blocked", Toast.LENGTH_SHORT).show();
                         showIcon();
                     } else {
-                        Toast.makeText(callBlockerHome.this, "Blocking unsuccessfull", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CallBlockerHome.this, "Blocking unsuccessfull", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(callBlockerHome.this, "Please fill Empty fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CallBlockerHome.this, "Please fill Empty fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -268,7 +268,7 @@ public class callBlockerHome extends AppCompatActivity {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)//R.mipmap.ic_launcher-->for app icon
                 .setContentTitle("SMS Blocker Activated");
-        Intent resultIntent = new Intent(this, callBlockerHome.class);
+        Intent resultIntent = new Intent(this, CallBlockerHome.class);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 this,
                 0,
@@ -282,17 +282,17 @@ public class callBlockerHome extends AppCompatActivity {
         mNotifyMgr.notify(1, notification);
     }
 
-    private List<callBlockerModel> GetlistData() {
-        List<callBlockerModel> itemList = new ArrayList<>();
+    private List<CallBlockerModel> GetlistData() {
+        List<CallBlockerModel> itemList = new ArrayList<>();
 
-        callBlockerModel listItem;
-        Database_Helper dbHelper = new Database_Helper(callBlockerHome.this);
+        CallBlockerModel listItem;
+        DatabaseHelper dbHelper = new DatabaseHelper(CallBlockerHome.this);
 
         Cursor mCursor = dbHelper.getDataCallBlocker();
 
         if (mCursor.getCount() != 0) {
             for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()) {
-                listItem = new callBlockerModel();
+                listItem = new CallBlockerModel();
                 String name = mCursor.getString(mCursor.getColumnIndex("_name"));
                 String number = mCursor.getString(mCursor.getColumnIndex("_number"));
                 boolean msg = mCursor.getInt(mCursor.getColumnIndex("_msg")) > 0;
@@ -431,15 +431,15 @@ public class callBlockerHome extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    tab1Fragment = new tab1Fragment();
-                    tab1Fragment.setContext(getApplicationContext());
-                    return tab1Fragment;
+                    Tab1Fragment = new Tab1Fragment();
+                    Tab1Fragment.setContext(getApplicationContext());
+                    return Tab1Fragment;
                 case 1:
-                    tab2Fragment = new tab2Fragment();
-                    tab2Fragment.setContext(getApplicationContext());
-                    return tab2Fragment;
+                    Tab2Fragment = new Tab2Fragment();
+                    Tab2Fragment.setContext(getApplicationContext());
+                    return Tab2Fragment;
                 case 2:
-                    tab3Fragment tab3 = new tab3Fragment();
+                    Tab3Fragment tab3 = new Tab3Fragment();
                     return tab3;
             }
             return null;

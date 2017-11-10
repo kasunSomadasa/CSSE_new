@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 import com.example.kasun.busysms.R;
 
 /**
@@ -30,10 +29,10 @@ import com.example.kasun.busysms.R;
  * This is the activity which display exist time solts in db on listView
  */
 
-public class timeSlotsList extends AppCompatActivity {
+public class TimeSlotsList extends AppCompatActivity {
 
     static final String TAG ="INFO_TIME_SLOT_VIEW";
-    Database_Helper db;
+    DatabaseHelper db;
     ListView dataList;
     SimpleCursorAdapter simpleCursorAdapter;
 
@@ -43,7 +42,7 @@ public class timeSlotsList extends AppCompatActivity {
         setContentView(R.layout.activity_time_slot_list);
 
         dataList = (ListView) findViewById(R.id.list);
-        db = new Database_Helper(this);
+        db = new DatabaseHelper(this);
         db.open();
         populateListView();
 
@@ -59,7 +58,7 @@ public class timeSlotsList extends AppCompatActivity {
 
                 final Cursor cursor = (Cursor) dataList.getItemAtPosition(position);
 
-                new AlertDialog.Builder(timeSlotsList.this)
+                new AlertDialog.Builder(TimeSlotsList.this)
                         .setTitle("Delete entry")
                         .setMessage("Are you sure you want to delete this entry?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -80,8 +79,8 @@ public class timeSlotsList extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Record Deleted", Toast.LENGTH_LONG).show();
                                     //refresh listView
                                     populateListView();
-                                    //goto smsHome activity
-                                    Intent i = new Intent(timeSlotsList.this, smsHome.class);
+                                    //goto SmsHome activity
+                                    Intent i = new Intent(TimeSlotsList.this, SmsHome.class);
                                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(i);
                                 }
@@ -133,7 +132,7 @@ public class timeSlotsList extends AppCompatActivity {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)//R.mipmap.ic_launcher-->for app icon
                 .setContentTitle("Busy SMS Activated");
-        Intent resultIntent = new Intent(this, smsHome.class);//when user click on notification then directly comes to smsHome activity
+        Intent resultIntent = new Intent(this, SmsHome.class);//when user click on notification then directly comes to SmsHome activity
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 this,
                 0,
@@ -161,7 +160,7 @@ public class timeSlotsList extends AppCompatActivity {
          */
         Cursor cursor = db.getListOfData();
         //get only from,to,day and activation data from db
-        String[] fromFiledNames = new String[]{Database_Helper.COL2, Database_Helper.COL3, Database_Helper.COL9,Database_Helper.COL5,Database_Helper.COL4};
+        String[] fromFiledNames = new String[]{DatabaseHelper.COL2, DatabaseHelper.COL3, DatabaseHelper.COL9, DatabaseHelper.COL5, DatabaseHelper.COL4};
         int[] toViewIds = new int[]{R.id.from, R.id.to ,R.id.activate,R.id.day,R.id.state};
 
         simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.time_slot_item_list, cursor, fromFiledNames, toViewIds, 0);
@@ -197,8 +196,8 @@ public class timeSlotsList extends AppCompatActivity {
             String table_sms = cursor.getString(cursor.getColumnIndexOrThrow("SMS_T"));
             String table_activation = cursor.getString(cursor.getColumnIndexOrThrow("ACTIVATION"));
 
-            //pass that information to updateTimeSlot activity and launch that activity
-            Intent i = new Intent(timeSlotsList.this, updateTimeSlot.class);
+            //pass that information to UpdateTimeSlot activity and launch that activity
+            Intent i = new Intent(TimeSlotsList.this, UpdateTimeSlot.class);
             i.putExtra("code", String.valueOf(code));
             i.putExtra("from", String.valueOf(table_from));
             i.putExtra("to", String.valueOf(table_to));
@@ -219,7 +218,7 @@ public class timeSlotsList extends AppCompatActivity {
         //populate listView according to search
         Cursor cursor = db.searchData(key);
 
-        String[] fromFileDnames = new String[]{Database_Helper.COL2, Database_Helper.COL3, Database_Helper.COL9,Database_Helper.COL5,Database_Helper.COL4};
+        String[] fromFileDnames = new String[]{DatabaseHelper.COL2, DatabaseHelper.COL3, DatabaseHelper.COL9, DatabaseHelper.COL5, DatabaseHelper.COL4};
         int[] toViewIds = new int[]{R.id.from, R.id.to ,R.id.activate,R.id.day,R.id.state};
 
         simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.time_slot_item_list, cursor, fromFileDnames, toViewIds, 0);

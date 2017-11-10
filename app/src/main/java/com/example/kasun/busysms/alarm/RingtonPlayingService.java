@@ -22,7 +22,7 @@ import com.example.kasun.busysms.R;
  * Created by SM_MYPC on 9/29/2017.
  */
 
-public class ringtonPlayingService extends Service {
+public class RingtonPlayingService extends Service {
 
     MediaPlayer alarm_song;
     boolean isRunning;
@@ -206,8 +206,8 @@ public class ringtonPlayingService extends Service {
     //notification on when alarm is triggring.
     public void notifyAlarm(){
 
-        //set up an intent that goes to the setAlarm activity
-        Intent notifyIntent = new Intent(this,setAlarm.class);
+        //set up an intent that goes to the SetAlarm activity
+        Intent notifyIntent = new Intent(this,SetAlarm.class);
 
         //set up a pending intent
         PendingIntent pending_setAlarm_activity;

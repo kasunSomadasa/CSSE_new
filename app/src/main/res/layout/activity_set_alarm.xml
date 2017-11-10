@@ -8,7 +8,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context="com.example.kasun.busysms.alarm.setAlarm">
+    tools:context="com.example.kasun.busysms.alarm.SetAlarm">
 
     <!--  time    -->
     <TextView

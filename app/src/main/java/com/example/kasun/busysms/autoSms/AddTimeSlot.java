@@ -20,7 +20,7 @@ import android.widget.TimePicker;
 import android.app.AlertDialog;
 import android.widget.Toast;
 
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 import com.example.kasun.busysms.R;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import java.util.Calendar;
  * This is the activity which save new time slot to db
  */
 
-public class addTimeSlot extends AppCompatActivity {
+public class AddTimeSlot extends AppCompatActivity {
 
     static final int DILOG_FROM=0;
     static final int DILOG_TO=1;
@@ -41,7 +41,7 @@ public class addTimeSlot extends AppCompatActivity {
     Button saveBtn;
     TextView fromTimeText,toTimeText,displayText;
     int noOfHour,noOfminute;
-    Database_Helper db;
+    DatabaseHelper db;
     AlertDialog alert;
     CheckBox checkBoxCall,checkBoxSms;
     String checkSms="false",checkCall="false",testCheck;
@@ -57,7 +57,7 @@ public class addTimeSlot extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_time_slot);
 
-        db = new Database_Helper(this);
+        db = new DatabaseHelper(this);
         msg=(EditText)findViewById(R.id.messege);
         state=(EditText)findViewById(R.id.status);
         fromTimeText=(TextView)findViewById(R.id.time_from);
@@ -87,7 +87,7 @@ public class addTimeSlot extends AppCompatActivity {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)//R.mipmap.ic_launcher-->for app icon
                 .setContentTitle("Busy SMS Activated");
-        Intent resultIntent = new Intent(this, smsHome.class); //when user click on notification then directly comes to smsHome activity
+        Intent resultIntent = new Intent(this, SmsHome.class); //when user click on notification then directly comes to SmsHome activity
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 this,
                 0,
@@ -248,16 +248,16 @@ private  TimePickerDialog.OnTimeSetListener timePikerListnerFrom
                        if (!displayText.getText().toString().equals("Choose your days") && !msg.getText().toString().equals("") && !state.getText().toString().equals("") && testCheck.equals("true")) {
                             boolean isInserted = db.insertData(fromTimeText.getText().toString(), toTimeText.getText().toString(), state.getText().toString(), displayText.getText().toString(), msg.getText().toString(), checkCall, checkSms, "Active");
                             if (isInserted == true) {
-                                Toast.makeText(addTimeSlot.this, "Your record is saved !!!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(AddTimeSlot.this, "Your record is saved !!!", Toast.LENGTH_LONG).show();
                                 showIcon();
                             } else {
-                                Toast.makeText(addTimeSlot.this, "Your record is not saved !!!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(AddTimeSlot.this, "Your record is not saved !!!", Toast.LENGTH_LONG).show();
                             }
-                            Intent i = new Intent(addTimeSlot.this, smsHome.class);
+                            Intent i = new Intent(AddTimeSlot.this, SmsHome.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
                         } else {
-                           Toast.makeText(addTimeSlot.this, "Some required fields are missing !!!", Toast.LENGTH_LONG).show();
+                           Toast.makeText(AddTimeSlot.this, "Some required fields are missing !!!", Toast.LENGTH_LONG).show();
                         }
                     }
                 }

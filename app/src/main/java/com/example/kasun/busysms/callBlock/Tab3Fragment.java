@@ -1,27 +1,20 @@
 package com.example.kasun.busysms.callBlock;
 
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 import com.example.kasun.busysms.R;
 
 import java.util.ArrayList;
@@ -32,9 +25,9 @@ import java.util.StringTokenizer;
  * Created by madupoorna on 10/22/17.
  */
 
-public class tab3Fragment extends Fragment {
+public class Tab3Fragment extends Fragment {
 
-    Database_Helper helper;
+    DatabaseHelper helper;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
 
@@ -54,7 +47,7 @@ public class tab3Fragment extends Fragment {
         Button addBtn=(Button) view.findViewById(R.id.addTimesBtn);
         Button timeListBtn=(Button) view.findViewById(R.id.blockedTimeListBtn);
 
-        helper = new Database_Helper(view.getContext());
+        helper = new DatabaseHelper(view.getContext());
 
         recCallBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,7 +187,7 @@ public class tab3Fragment extends Fragment {
                                             to=st.nextToken();
                                         }
 
-                                        helper = new Database_Helper(v.getContext());
+                                        helper = new DatabaseHelper(v.getContext());
                                         boolean delSuccess=helper.DeleteTime(from,to);
                                         if(delSuccess == true) {
                                             Toast.makeText(v.getContext(), finalAccounts_list[item]+ " deleted", Toast.LENGTH_LONG).show();

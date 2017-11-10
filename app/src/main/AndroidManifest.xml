@@ -32,7 +32,7 @@
         android:label="Are You Busy"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".home">
+        <activity android:name=".Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,33 +40,33 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".autoSms.autoCallRecevier">
+        <receiver android:name=".autoSms.AutoCallRecevier">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".autoSms.autoSmsRecevier">
+        <receiver android:name=".autoSms.AutoSmsRecevier">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
         <receiver android:name=".taskCalendar.Helper.NotificationReciever"/>
 
-        <receiver android:name=".callBlock.callReceiver">
+        <receiver android:name=".callBlock.CallReceiver">
             <intent-filter android:priority="99999999">
                 <action android:name="android.intent.action.PHONE_STATE" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".callBlock.messageReceiver">
+        <receiver android:name=".callBlock.MessageReceiver">
             <intent-filter android:priority="999999999">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
         <activity
-            android:name=".autoSms.timeSlotsList"
-            android:parentActivityName=".home">
+            android:name=".autoSms.TimeSlotsList"
+            android:parentActivityName=".Home">
             <intent-filter>
                 <action android:name="com.example.kasun.busysms.list_test_act" />
 
@@ -74,8 +74,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".autoSms.addTimeSlot"
-            android:parentActivityName=".home">
+            android:name=".autoSms.AddTimeSlot"
+            android:parentActivityName=".Home">
             <intent-filter>
                 <action android:name="com.example.kasun.busysms.second" />
 
@@ -83,8 +83,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".autoSms.smsHome"
-            android:parentActivityName=".home">
+            android:name=".autoSms.SmsHome"
+            android:parentActivityName=".Home">
             <intent-filter>
                 <action android:name="com.example.kasun.busysms.sms_home" />
 
@@ -92,8 +92,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".autoSms.updateTimeSlot"
-            android:parentActivityName=".home">
+            android:name=".autoSms.UpdateTimeSlot"
+            android:parentActivityName=".Home">
             <intent-filter>
                 <action android:name="com.example.kasun.busysms.update_act" />
 
@@ -111,7 +111,7 @@
 
  
         <activity
-            android:name=".callBlock.callBlockerHome"
+            android:name=".callBlock.CallBlockerHome"
             android:label="@string/title_activity_call_blocker_home"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -120,11 +120,11 @@
 
         <!-- Sampath -->
         <activity
-            android:name=".alarm.alarmHome"
-            android:parentActivityName=".home" />
+            android:name=".alarm.AlarmHome"
+            android:parentActivityName=".Home" />
         <activity
-            android:name=".alarm.setAlarm"
-            android:parentActivityName=".alarm.alarmHome">
+            android:name=".alarm.SetAlarm"
+            android:parentActivityName=".alarm.AlarmHome">
             <intent-filter>
                 <action android:name="com.example.kasun.busysms.alarm.setAlarm" />
 
@@ -133,7 +133,7 @@
         </activity>
 
         <receiver
-            android:name=".alarm.alarmReceiver"
+            android:name=".alarm.AlarmReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -144,20 +144,20 @@
         </receiver>
 
         <service
-            android:name=".alarm.ringtonPlayingService"
+            android:name=".alarm.RingtonPlayingService"
             android:enabled="true" />
 
-        <activity android:name=".alarm.alarmFire"
+        <activity android:name=".alarm.AlarmFire"
             android:excludeFromRecents="true"/>
 
         <activity
             android:name=".taskCalendar.TaskCalendarHomeActivity"
             android:label="@string/title_activity_task_calendar_home"
-            android:parentActivityName=".home"
+            android:parentActivityName=".Home"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.kasun.busysms.home" />
+                android:value="com.example.kasun.busysms.Home" />
         </activity>
         <activity
             android:name=".taskCalendar.ViewTaskActivity"

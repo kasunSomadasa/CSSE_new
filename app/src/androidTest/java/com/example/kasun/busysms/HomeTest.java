@@ -3,8 +3,6 @@ package com.example.kasun.busysms;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 
-import com.example.kasun.busysms.autoSms.smsHome;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -15,11 +13,11 @@ import static org.junit.Assert.*;
 /**
  * Created by Kasun on 11/1/2017.
  */
-public class homeTest {
+public class HomeTest {
 
     @Rule
-    public ActivityTestRule<home> activityTestRule = new ActivityTestRule<home>(home.class);
-    private home homeActivity =null;
+    public ActivityTestRule<Home> activityTestRule = new ActivityTestRule<Home>(Home.class);
+    private Home homeActivity =null;
 
     @Before
     public void setUp() throws Exception {

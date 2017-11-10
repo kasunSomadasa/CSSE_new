@@ -1,7 +1,5 @@
 package com.example.kasun.busysms.callBlock;
 
-import android.app.Activity;
-import android.app.Instrumentation;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 
@@ -17,13 +15,13 @@ import static org.junit.Assert.*;
 /**
  * Created by madupoorna on 11/3/17.
  */
-public class callBlockerHomeTest {
+public class CallBlockerHomeTest {
 
     @Rule
-    public ActivityTestRule<callBlockerHome> callBlockerHomeActivityTestRule =
-            new ActivityTestRule<callBlockerHome>(callBlockerHome.class);
+    public ActivityTestRule<CallBlockerHome> callBlockerHomeActivityTestRule =
+            new ActivityTestRule<CallBlockerHome>(CallBlockerHome.class);
 
-    private callBlockerHome callBlockerHomeActivity = null;
+    private CallBlockerHome callBlockerHomeActivity = null;
 
     @Before
     public void setUp() throws Exception {

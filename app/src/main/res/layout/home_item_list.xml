@@ -5,7 +5,7 @@
     android:layout_height="fill_parent">
     <!-- this file belongs to auto sms function-->
 
-    <!-- add images to home main list View-->
+    <!-- add images to Home main list View-->
     <ImageView
         android:id="@+id/homeImage"
         android:layout_width="match_parent"

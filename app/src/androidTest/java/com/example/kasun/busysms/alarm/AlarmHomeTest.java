@@ -15,11 +15,11 @@ import static junit.framework.Assert.assertNotNull;
 /**
  * Created by SM_MYPC on 11/3/2017.
  */
-public class alarmHomeTest {
+public class AlarmHomeTest {
 
     @Rule
-    public ActivityTestRule<alarmHome> testRule = new ActivityTestRule<alarmHome>(alarmHome.class);
-    private alarmHome alarmHomeActivity  = null;
+    public ActivityTestRule<AlarmHome> testRule = new ActivityTestRule<AlarmHome>(AlarmHome.class);
+    private AlarmHome alarmHomeActivity  = null;
 
     @Before
     public void setUp() throws Exception {

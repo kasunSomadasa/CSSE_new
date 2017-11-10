@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 public class PhoneCallStateListenerTest {
 
     Context context;
-    callReceiver.PhoneCallStateListener callReceiver =new callReceiver().new PhoneCallStateListener(context);
+    CallReceiver.PhoneCallStateListener callReceiver =new CallReceiver().new PhoneCallStateListener(context);
 
     @Test
     public void isBetween() throws Exception {

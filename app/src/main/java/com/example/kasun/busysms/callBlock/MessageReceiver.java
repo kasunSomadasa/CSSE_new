@@ -4,18 +4,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
 
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 
 /**
  * Created by madupoorna on 10/19/17.
  */
 
-public class messageReceiver extends BroadcastReceiver {
+public class MessageReceiver extends BroadcastReceiver {
 
     Boolean block_number=false;
 
@@ -30,7 +29,7 @@ public class messageReceiver extends BroadcastReceiver {
                     SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusObj[i]);
                     String Num = currentMessage.getDisplayOriginatingAddress();
                     String senderNum = 0+Num.substring(Num.length()-9);
-                    Database_Helper DC = new Database_Helper(context);
+                    DatabaseHelper DC = new DatabaseHelper(context);
                     DC.open();
                     Cursor c = DC.getDataCallBlocker();
                     int iNum = c.getColumnIndex(DC.columnName()[1]);

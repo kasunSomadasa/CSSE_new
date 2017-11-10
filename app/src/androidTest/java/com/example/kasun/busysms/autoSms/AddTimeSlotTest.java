@@ -1,7 +1,5 @@
 package com.example.kasun.busysms.autoSms;
 
-import android.app.Activity;
-import android.app.Instrumentation;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 
@@ -12,8 +10,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.*;
@@ -21,11 +17,11 @@ import static org.junit.Assert.*;
 /**
  * Created by Kasun on 11/1/2017.
  */
-public class addTimeSlotTest {
+public class AddTimeSlotTest {
 
     @Rule
-    public ActivityTestRule<addTimeSlot> activityTestRule = new ActivityTestRule<addTimeSlot>(addTimeSlot.class);
-    private addTimeSlot addTimeSlotActivity =null;
+    public ActivityTestRule<AddTimeSlot> activityTestRule = new ActivityTestRule<AddTimeSlot>(AddTimeSlot.class);
+    private AddTimeSlot addTimeSlotActivity =null;
 
     @Before
     public void setUp() throws Exception {

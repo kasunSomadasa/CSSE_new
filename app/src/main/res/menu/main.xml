@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".autoSms.autoSmsHome">
     <!-- this file belongs to auto sms function-->
 
-    <!-- add icon for auto sms home-->
+    <!-- add icon for auto sms Home-->
     <item
         android:id="@+id/add_btn"
         android:icon="@drawable/ic_add_black_24dp"
         android:title=""
         app:showAsAction="always"/>
 
-    <!-- log icon for auto sms home-->
+    <!-- log icon for auto sms Home-->
     <item
         android:id="@+id/log_btn"
         android:icon="@drawable/ic_assignment_black_24dp"

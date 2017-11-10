@@ -4,7 +4,7 @@ package com.example.kasun.busysms.callBlock;
  * Created by madupoorna on 10/19/17.
  */
 
-public class callBlockerModel {
+public class CallBlockerModel {
 
     private String name = "";
     private String number = "";

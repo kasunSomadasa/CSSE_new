@@ -9,9 +9,9 @@ import static org.junit.Assert.*;
 /**
  * Created by Kasun on 11/1/2017.
  */
-public class autoSmsRecevierTest {
+public class AutoSmsRecevierTest {
 
-    autoSmsRecevier smsRecevier=new autoSmsRecevier();
+    AutoSmsRecevier smsRecevier=new AutoSmsRecevier();
     @Test
     public void getDayOfWeek() throws Exception {
 

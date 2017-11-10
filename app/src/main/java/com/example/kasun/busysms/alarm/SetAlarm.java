@@ -34,13 +34,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 import com.example.kasun.busysms.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class setAlarm extends AppCompatActivity {
+public class SetAlarm extends AppCompatActivity {
     private TextView update_txt,settimeTxt,setRepeatTxt,showRepeatTxt,show_timetxt;
     ArrayList<String> mSelectedDaysItems=new ArrayList<String>();
     static final int dialog_id = 0;
@@ -58,7 +58,7 @@ public class setAlarm extends AppCompatActivity {
     PowerManager pm;
     Switch switch_silent;
     CheckBox checkSound;
-    Database_Helper alarmDB;
+    DatabaseHelper alarmDB;
     String ringtSound;
     String isSoundChecked;
     String progessVolume;
@@ -77,7 +77,7 @@ public class setAlarm extends AppCompatActivity {
         silentMode = "off";
 
         //database instance
-        alarmDB = new Database_Helper(this);
+        alarmDB = new DatabaseHelper(this);
 
         //initialze the alarm manager
         alarm_Manager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -111,7 +111,7 @@ public class setAlarm extends AppCompatActivity {
         Log.e("Today time",time);
 
 //        create an intent to the alam receiver class
-        final Intent Alarm_intent = new Intent(this.context,alarmReceiver.class);
+        final Intent Alarm_intent = new Intent(this.context,AlarmReceiver.class);
 
 //        get id from time
         settimeTxt = (TextView) findViewById(R.id.AddTimeText);
@@ -151,7 +151,7 @@ public class setAlarm extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    Toast.makeText(setAlarm.this,"Silent mode",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SetAlarm.this,"Silent mode",Toast.LENGTH_SHORT).show();
                     Alarm_intent.putExtra("silentExtra","on");
                     silentMode = "on";
 
@@ -169,17 +169,17 @@ public class setAlarm extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-//               Toast.makeText(setAlarm.this,day,Toast.LENGTH_SHORT).show();
+//               Toast.makeText(SetAlarm.this,day,Toast.LENGTH_SHORT).show();
 
                 if(mSelectedDaysItems.isEmpty()){
-                    Toast.makeText(setAlarm.this,"Alarm not set !!!!!\n Select the days",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SetAlarm.this,"Alarm not set !!!!!\n Select the days",Toast.LENGTH_SHORT).show();
                 }
                 else {
                     for (String s : mSelectedDaysItems) {
                         if (s.equals("Sunday")) {
                             String sunday = String.valueOf(Calendar.SUNDAY);
                             if (sunday.equals(day)) {
-//                                Toast.makeText(setAlarm.this,"Today is Sunday", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(SetAlarm.this,"Today is Sunday", Toast.LENGTH_SHORT).show();
 
                                 //check the date is equal
                                 Log.e("Today is ", "Sunday");
@@ -200,7 +200,7 @@ public class setAlarm extends AppCompatActivity {
 
 
                                 //create a pending intent that delay the intent until the specified calendar time
-                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 0,
+                                pending_intent = PendingIntent.getBroadcast(SetAlarm.this.getApplicationContext(), 0,
                                         Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
 
 
@@ -231,7 +231,7 @@ public class setAlarm extends AppCompatActivity {
                                 Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
                                 Log.e("Ringtone id ", String.valueOf(choose_ringtone));
 
-                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 1,
+                                pending_intent = PendingIntent.getBroadcast(SetAlarm.this.getApplicationContext(), 1,
                                         Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
 
                                 alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
@@ -254,7 +254,7 @@ public class setAlarm extends AppCompatActivity {
                                 Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
                                 Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
 
-                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 2,
+                                pending_intent = PendingIntent.getBroadcast(SetAlarm.this.getApplicationContext(), 2,
                                         Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
 
                                 alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
@@ -277,7 +277,7 @@ public class setAlarm extends AppCompatActivity {
                                 Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
                                 Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
 
-                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 3,
+                                pending_intent = PendingIntent.getBroadcast(SetAlarm.this.getApplicationContext(), 3,
                                         Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
 
                                 alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
@@ -300,7 +300,7 @@ public class setAlarm extends AppCompatActivity {
                                 Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
                                 Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
 
-                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 4,
+                                pending_intent = PendingIntent.getBroadcast(SetAlarm.this.getApplicationContext(), 4,
                                         Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
 
                                 alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
@@ -322,7 +322,7 @@ public class setAlarm extends AppCompatActivity {
                                 Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
                                 Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
 
-                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 5,
+                                pending_intent = PendingIntent.getBroadcast(SetAlarm.this.getApplicationContext(), 5,
                                         Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
 
                                 alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
@@ -344,7 +344,7 @@ public class setAlarm extends AppCompatActivity {
                                 Alarm_intent.putExtra("ringtoneChoice", choose_ringtone);
                                 Log.e("Ringtone id : ", String.valueOf(choose_ringtone));
 
-                                pending_intent = PendingIntent.getBroadcast(setAlarm.this.getApplicationContext(), 6,
+                                pending_intent = PendingIntent.getBroadcast(SetAlarm.this.getApplicationContext(), 6,
                                         Alarm_intent, pending_intent.FLAG_UPDATE_CURRENT);
 
                                 alarm_Manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
@@ -360,19 +360,19 @@ public class setAlarm extends AppCompatActivity {
                     boolean isInserted =  alarmDB.insertAlarmData(show_timetxt.getText().toString(),showRepeatTxt.getText().toString(),
                             ringtSound,isSoundChecked,progessVolume,silentMode);
                     if(isInserted = true){
-                        Toast.makeText(setAlarm.this, "Alarm set!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetAlarm.this, "Alarm set!", Toast.LENGTH_SHORT).show();
                     }
                     else{
-                        Toast.makeText(setAlarm.this, "Not set Alarm", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetAlarm.this, "Not set Alarm", Toast.LENGTH_SHORT).show();
                     }
 
-//                    Toast.makeText(setAlarm.this, "Alarm set..!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SetAlarm.this, "Alarm set..!", Toast.LENGTH_SHORT).show();
 //                    finish();
 
 //                    set the alarm notification
                     alarmSetNotification();
 
-                    Intent intent = new Intent(setAlarm.this, alarmHome.class);
+                    Intent intent = new Intent(SetAlarm.this, AlarmHome.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
@@ -386,7 +386,7 @@ public class setAlarm extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
-//                Toast.makeText(setAlarm.this,"Alarm cancelled!!!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(SetAlarm.this,"Alarm cancelled!!!", Toast.LENGTH_SHORT).show();
 
                 //cancel the alarm
                 alarm_Manager.cancel(pending_intent);
@@ -412,7 +412,7 @@ public class setAlarm extends AppCompatActivity {
                 }
 
 //                // back to the previous activity
-                Intent intent = new Intent(setAlarm.this, alarmHome.class);
+                Intent intent = new Intent(SetAlarm.this, AlarmHome.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
 //                finish();
@@ -435,7 +435,7 @@ public class setAlarm extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 choose_ringtone = (int) id;
-               // Toast.makeText(setAlarm.this,"The selected choice is "+ id,Toast.LENGTH_SHORT).show();
+               // Toast.makeText(SetAlarm.this,"The selected choice is "+ id,Toast.LENGTH_SHORT).show();
                 ringtSound = String.valueOf(parent.getItemAtPosition(position));
 
 //                check whether media player working or not
@@ -445,19 +445,19 @@ public class setAlarm extends AppCompatActivity {
                 //set ringtone options
                 switch (ringtSound) {
                     case "alarm Sound 1":
-                        mp = MediaPlayer.create(setAlarm.this, R.raw.wake_up);
+                        mp = MediaPlayer.create(SetAlarm.this, R.raw.wake_up);
                         break;
                     case "alarm Sound 2":
-                        mp = MediaPlayer.create(setAlarm.this, R.raw.alarm);
+                        mp = MediaPlayer.create(SetAlarm.this, R.raw.alarm);
                         break;
                     case "alarm Sound 3":
-                        mp = MediaPlayer.create(setAlarm.this, R.raw.wake_up_tone);
+                        mp = MediaPlayer.create(SetAlarm.this, R.raw.wake_up_tone);
                         break;
                     case "alarm Sound 4":
-                        mp = MediaPlayer.create(setAlarm.this, R.raw.sweet_alarm);
+                        mp = MediaPlayer.create(SetAlarm.this, R.raw.sweet_alarm);
                         break;
                     case "alarm Sound 5":
-                        mp = MediaPlayer.create(setAlarm.this, R.raw.morning_alarm);
+                        mp = MediaPlayer.create(SetAlarm.this, R.raw.morning_alarm);
                         break;
                     default:
                         break;
@@ -479,12 +479,12 @@ public class setAlarm extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 am.setStreamVolume(AudioManager.STREAM_MUSIC,progress,0);
                 progessVolume = String.valueOf(progress);
-                //Toast.makeText(setAlarm.this,progress+"",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SetAlarm.this,progress+"",Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                //Toast.makeText(setAlarm.this,progess_value+"",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SetAlarm.this,progess_value+"",Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -497,14 +497,14 @@ public class setAlarm extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked && mp != null){
-//                    Toast.makeText(setAlarm.this,"checked",Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SetAlarm.this,"checked",Toast.LENGTH_SHORT).show();
 
                     isSoundChecked = "true";
 
                     mp.stop();
                     spinner.setEnabled(false);
                 }else{
-//                    Toast.makeText(setAlarm.this,"Unchecked",Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SetAlarm.this,"Unchecked",Toast.LENGTH_SHORT).show();
                     // mp.stop();
                     isSoundChecked = "false";
                     spinner.setEnabled(true);
@@ -520,8 +520,8 @@ public class setAlarm extends AppCompatActivity {
                 //Cry about not being clicked on
                 Log.e("notify","default option");
 
-                PackageManager pm  = setAlarm.this.getPackageManager();
-                ComponentName componentName = new ComponentName(setAlarm.this, alarmReceiver.class);
+                PackageManager pm  = SetAlarm.this.getPackageManager();
+                ComponentName componentName = new ComponentName(SetAlarm.this, AlarmReceiver.class);
                 pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                         PackageManager.DONT_KILL_APP);
 //                Toast.makeText(getApplicationContext(), "activated", Toast.LENGTH_LONG).show();
@@ -532,15 +532,15 @@ public class setAlarm extends AppCompatActivity {
                 //Do your stuff here mate :)
                 Log.e("notify","cancel the receiver");
 
-                PackageManager pm  = setAlarm.this.getPackageManager();
-                ComponentName componentName = new ComponentName(setAlarm.this, alarmReceiver.class);
+                PackageManager pm  = SetAlarm.this.getPackageManager();
+                ComponentName componentName = new ComponentName(SetAlarm.this, AlarmReceiver.class);
                 pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                         PackageManager.DONT_KILL_APP);
 
                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 notificationManager.cancel(6);
 
-                Intent intent = new Intent(setAlarm.this, alarmHome.class);
+                Intent intent = new Intent(SetAlarm.this, AlarmHome.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
 
@@ -591,7 +591,7 @@ public class setAlarm extends AppCompatActivity {
             }
 
             set_Alarm_status(hour+":"+min+" "+ampm);
-            //Toast.makeText(setAlarm.this,hour+":"+minut, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(SetAlarm.this,hour+":"+minut, Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -645,13 +645,13 @@ public class setAlarm extends AppCompatActivity {
                     }
                 }
 
-                //   Toast.makeText(setAlarm.this,selections, Toast.LENGTH_LONG).show();
+                //   Toast.makeText(SetAlarm.this,selections, Toast.LENGTH_LONG).show();
                 if(selections.equals("")){
                     showRepeatTxt.setText("Choose your days");
                 }else{
                     showRepeatTxt.setText(selections);
                 }
-                   //Toast.makeText(setAlarm.this,selections, Toast.LENGTH_LONG).show();
+                   //Toast.makeText(SetAlarm.this,selections, Toast.LENGTH_LONG).show();
             }
         });
         builder .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -673,8 +673,8 @@ public class setAlarm extends AppCompatActivity {
     //notification on when alarm is Set.
     public void alarmSetNotification(){
 
-        //set up an intent that goes to the setAlarm activity
-        Intent notifySetAlarmIntent = new Intent(this,setAlarm.class);
+        //set up an intent that goes to the SetAlarm activity
+        Intent notifySetAlarmIntent = new Intent(this,SetAlarm.class);
 
         notifySetAlarmIntent.putExtra("AlrmSetExtra",true);
         //set up a pending intent

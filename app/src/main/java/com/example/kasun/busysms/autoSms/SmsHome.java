@@ -23,22 +23,22 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 import com.example.kasun.busysms.R;
 
 /**
  * Created by Kasun Somadasa
- * This is home activity of auto sms funtion
+ * This is Home activity of auto sms funtion
  * Using this activity navigate to other activitys
  */
 
-public class smsHome extends AppCompatActivity {
+public class SmsHome extends AppCompatActivity {
 
     static final String TAG ="INFO_SMS_HOME";
     /** Constant for permission request */
     private static final int PERMISSION_REQUEST_CODE =123;
     //Databese referance
-    Database_Helper db;
+    DatabaseHelper db;
     ListView homeLogList;
     Button newBtn,logBtn,soundBtn;
     TextView dbStatus;
@@ -57,7 +57,7 @@ public class smsHome extends AppCompatActivity {
         dbStatus=(TextView)findViewById(R.id.displayText);
         dbStatus.setVisibility(View.INVISIBLE);
         homeLogList = (ListView) findViewById(R.id.main_list);
-        db = new Database_Helper(this);
+        db = new DatabaseHelper(this);
         db.open();
         populatelistView();
         homeLogList.setOnItemClickListener(onItemClickListener);
@@ -95,11 +95,11 @@ public class smsHome extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         //navigate to activity according to item click
         if (id == R.id.add_btn) {
-            Intent intent = new Intent(smsHome.this,addTimeSlot.class);
+            Intent intent = new Intent(SmsHome.this,AddTimeSlot.class);
             startActivity(intent);
             return true;
         }else if(id == R.id.log_btn){
-            Intent intent = new Intent(smsHome.this,timeSlotsList.class);
+            Intent intent = new Intent(SmsHome.this,TimeSlotsList.class);
             startActivity(intent);
             return true;
         }
@@ -116,7 +116,7 @@ public class smsHome extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(smsHome.this,addTimeSlot.class);
+                        Intent intent = new Intent(SmsHome.this,AddTimeSlot.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }
@@ -134,7 +134,7 @@ public class smsHome extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        Intent intent = new Intent(smsHome.this,timeSlotsList.class);
+                        Intent intent = new Intent(SmsHome.this,TimeSlotsList.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
 
@@ -214,7 +214,7 @@ public class smsHome extends AppCompatActivity {
         Cursor cursor = db.getListOfData();
 
         //get only from,to,day and activation data from db
-        String[] fromFiledNames = new String[]{Database_Helper.COL2, Database_Helper.COL3, Database_Helper.COL9,Database_Helper.COL5,Database_Helper.COL4};
+        String[] fromFiledNames = new String[]{DatabaseHelper.COL2, DatabaseHelper.COL3, DatabaseHelper.COL9, DatabaseHelper.COL5, DatabaseHelper.COL4};
         int[] toViewIds = new int[]{R.id.from, R.id.to ,R.id.activate,R.id.day,R.id.state};
 
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.time_slot_item_list, cursor, fromFiledNames, toViewIds, 0);

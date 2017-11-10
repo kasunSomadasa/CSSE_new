@@ -25,7 +25,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 import com.example.kasun.busysms.R;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
  * This is the activity which update existing time slot in db
  */
 
-public class updateTimeSlot extends AppCompatActivity {
+public class UpdateTimeSlot extends AppCompatActivity {
 
     static final int DILOG_FROM = 0;
     static final int DILOG_TO = 1;
@@ -45,7 +45,7 @@ public class updateTimeSlot extends AppCompatActivity {
     Button updateBtn;
     TextView timeFromText, timeToText, repeatText;
     int noOfHour, noOfminute;
-    Database_Helper db;
+    DatabaseHelper db;
     AlertDialog alert;
     CheckBox checkBoxCall, checkBoxSms;
     String code, from, to, type, day, messege, call, sms, activation;
@@ -58,7 +58,7 @@ public class updateTimeSlot extends AppCompatActivity {
 
         checkBoxCall = (CheckBox) findViewById(R.id.for_call);
         checkBoxSms = (CheckBox) findViewById(R.id.for_sms);
-        db = new Database_Helper(this);
+        db = new DatabaseHelper(this);
         msg = (EditText) findViewById(R.id.messege);
         state = (EditText) findViewById(R.id.status);
         timeFromText = (TextView) findViewById(R.id.time_from);
@@ -73,7 +73,7 @@ public class updateTimeSlot extends AppCompatActivity {
 
         repeatText.setText("Choose your days");
         UpData();
-        //hold data parsed from timeSlotsList activity and set it to variables
+        //hold data parsed from TimeSlotsList activity and set it to variables
         code = getIntent().getStringExtra("code");
         from = getIntent().getStringExtra("from");
         to = getIntent().getStringExtra("to");
@@ -124,7 +124,7 @@ public boolean checkIconShow(){
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)//R.mipmap.ic_launcher-->for app icon
                 .setContentTitle("Auto SMS Activated");
-        Intent resultIntent = new Intent(this, smsHome.class); //when user click on notification then directly comes to smsHome activity
+        Intent resultIntent = new Intent(this, SmsHome.class); //when user click on notification then directly comes to SmsHome activity
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 this,
                 0,
@@ -300,18 +300,18 @@ public boolean checkIconShow(){
 
 
                             if (isUpdated == true) {
-                                Toast.makeText(updateTimeSlot.this, "Your changers are saved", Toast.LENGTH_LONG).show();
+                                Toast.makeText(UpdateTimeSlot.this, "Your changers are saved", Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(updateTimeSlot.this, "Your changers are NOT saved", Toast.LENGTH_LONG).show();
+                                Toast.makeText(UpdateTimeSlot.this, "Your changers are NOT saved", Toast.LENGTH_LONG).show();
                             }
 
-                            Intent i = new Intent(updateTimeSlot.this, smsHome.class);
+                            Intent i = new Intent(UpdateTimeSlot.this, SmsHome.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
 
                         } else {
 
-                            Toast.makeText(updateTimeSlot.this, "Some required fields are missing !!!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(UpdateTimeSlot.this, "Some required fields are missing !!!", Toast.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -396,10 +396,10 @@ public boolean checkIconShow(){
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     checkActive="Active";
-                    Toast.makeText(updateTimeSlot.this, "Active", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UpdateTimeSlot.this, "Active", Toast.LENGTH_LONG).show();
                 } else {
                     checkActive="Deactive";
-                    Toast.makeText(updateTimeSlot.this, "Deactive", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UpdateTimeSlot.this, "Deactive", Toast.LENGTH_LONG).show();
                 }
             }
         });

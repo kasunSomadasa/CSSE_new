@@ -11,7 +11,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 import com.example.kasun.busysms.R;
 
 import java.util.ArrayList;
@@ -21,14 +21,14 @@ import java.util.List;
  * Created by madupoorna on 10/22/17.
  */
 
-public class tab2Fragment extends Fragment {
+public class Tab2Fragment extends Fragment {
 
-    Database_Helper dbHelper;
-    List<callBlockerLogModel> results;
-    historyCustomAdapter adapter;
+    DatabaseHelper dbHelper;
+    List<CallBlockerLogModel> results;
+    HistoryCustomAdapter adapter;
     Context superContext;
 
-    public tab2Fragment() {
+    public Tab2Fragment() {
     }
 
     public void setContext(Context context) {
@@ -39,7 +39,7 @@ public class tab2Fragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_tab_2, container, false);
 
-        dbHelper = new Database_Helper(this.getActivity());
+        dbHelper = new DatabaseHelper(this.getActivity());
         results = GetlistData();
 
         ListView lv = (ListView) view.findViewById(R.id.frag2ListView);
@@ -47,7 +47,7 @@ public class tab2Fragment extends Fragment {
         //set listview scrollable
         setListViewHeightBasedOnChildren(lv);
 
-        adapter = new historyCustomAdapter(this.getContext(), results);
+        adapter = new HistoryCustomAdapter(this.getContext(), results);
 
         lv.setAdapter(adapter);
 
@@ -80,17 +80,17 @@ public class tab2Fragment extends Fragment {
     }
 
     //method to get data from table
-    private List<callBlockerLogModel> GetlistData() {
-        List<callBlockerLogModel> itemList = new ArrayList<>();
+    private List<CallBlockerLogModel> GetlistData() {
+        List<CallBlockerLogModel> itemList = new ArrayList<>();
 
-        callBlockerLogModel listItem;
-        Database_Helper dbHelper = new Database_Helper(getContext());
+        CallBlockerLogModel listItem;
+        DatabaseHelper dbHelper = new DatabaseHelper(getContext());
 
         Cursor mCursor = dbHelper.getDataCallBlockerHistory();
 
         if (mCursor.getCount() != 0) {
             for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor.moveToNext()) {
-                listItem = new callBlockerLogModel();
+                listItem = new CallBlockerLogModel();
                 String number = mCursor.getString(mCursor.getColumnIndex("_blockedNumber"));
                 String dateTime = mCursor.getString(mCursor.getColumnIndex("_blockedDate"));
 

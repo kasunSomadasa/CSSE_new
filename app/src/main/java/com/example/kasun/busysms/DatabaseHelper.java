@@ -12,7 +12,7 @@ import com.example.kasun.busysms.taskCalendar.Model.Task;
 /**
  * Class which handle all database operation
  */
-public class Database_Helper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     //database name
     public static final String DATABASE_NAME="BUSY.db";
@@ -104,7 +104,7 @@ public class Database_Helper extends SQLiteOpenHelper {
     public static final String[] allColumn=new String[] {COL1,COL2,COL3,COL4,COL5,COL6,COL7,COL8,COL9};
 
 
-    public Database_Helper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 5);
 
     }

@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 
 import com.example.kasun.busysms.R;
 
-public class alarmFire extends AppCompatActivity {
+public class AlarmFire extends AppCompatActivity {
 
     AlarmManager alarm_Manager;
 

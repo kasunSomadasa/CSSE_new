@@ -16,13 +16,13 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 import com.example.kasun.busysms.R;
 
 import java.text.SimpleDateFormat;
 
-public class alarmHome extends AppCompatActivity {
-    Database_Helper alarmDB;
+public class AlarmHome extends AppCompatActivity {
+    DatabaseHelper alarmDB;
     ListView alarmListView;
     private static Button btnAddTime;
 
@@ -36,7 +36,7 @@ public class alarmHome extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         alarmListView = (ListView) findViewById(R.id.alarmList);
-        alarmDB = new Database_Helper(this);
+        alarmDB = new DatabaseHelper(this);
         alarmDB.open();
         populateAlarmView();
 
@@ -64,7 +64,7 @@ public class alarmHome extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.add_alarm_btn) {
-            Intent intent = new Intent(alarmHome.this,setAlarm.class);
+            Intent intent = new Intent(AlarmHome.this,SetAlarm.class);
            startActivity(intent);
            return true;
 
@@ -82,7 +82,7 @@ public class alarmHome extends AppCompatActivity {
         btnAddTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent("com.example.kasun.busysms.alarm.setAlarm");
+                Intent intent = new Intent(AlarmHome.this, SetAlarm.class);
                 startActivity(intent);
             }
         });
@@ -92,7 +92,7 @@ public class alarmHome extends AppCompatActivity {
     public void populateAlarmView(){
         Cursor cursor = alarmDB.getAlarmData();
 
-        String[] from_field_name = new String[] {Database_Helper.ALARM_TIME_COL, Database_Helper.ALARM_REPEAT_COL};
+        String[] from_field_name = new String[] {DatabaseHelper.ALARM_TIME_COL, DatabaseHelper.ALARM_REPEAT_COL};
         int[] to_View_ID= new int[]{R.id.textView18, R.id.textView19};
 
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.alarm_item_list, cursor, from_field_name, to_View_ID, 0);

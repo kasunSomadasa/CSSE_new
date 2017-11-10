@@ -21,14 +21,14 @@ import static org.junit.Assert.*;
 /**
  * Created by Kasun on 11/1/2017.
  */
-public class smsHomeTest {
+public class SmsHomeTest {
 
     @Rule
-    public ActivityTestRule<smsHome>  activityTestRule = new ActivityTestRule<smsHome>(smsHome.class);
-    private smsHome smsHomeActivity =null;
+    public ActivityTestRule<SmsHome>  activityTestRule = new ActivityTestRule<SmsHome>(SmsHome.class);
+    private SmsHome smsHomeActivity =null;
 
-    Instrumentation.ActivityMonitor newMonitor = getInstrumentation().addMonitor(addTimeSlot.class.getName(),null,false);
-    Instrumentation.ActivityMonitor logMonitor = getInstrumentation().addMonitor(timeSlotsList.class.getName(),null,false);
+    Instrumentation.ActivityMonitor newMonitor = getInstrumentation().addMonitor(AddTimeSlot.class.getName(),null,false);
+    Instrumentation.ActivityMonitor logMonitor = getInstrumentation().addMonitor(TimeSlotsList.class.getName(),null,false);
 
     @Before
     public void setUp() throws Exception {

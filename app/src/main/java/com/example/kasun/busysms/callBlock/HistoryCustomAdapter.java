@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 import com.example.kasun.busysms.R;
 
 import java.util.List;
@@ -16,23 +16,23 @@ import java.util.List;
  * Created by madupoorna on 10/31/17.
  */
 
-public class historyCustomAdapter extends BaseAdapter {
+public class HistoryCustomAdapter extends BaseAdapter {
 
-    private List<callBlockerLogModel> historyList;
+    private List<CallBlockerLogModel> historyList;
     private LayoutInflater mInflater;
-    Database_Helper helper;
+    DatabaseHelper helper;
     Context context;
-    com.example.kasun.busysms.callBlock.tab2Fragment tab2Fragment;
+    Tab2Fragment Tab2Fragment;
 
-    public historyCustomAdapter(Context context, List<callBlockerLogModel> results) {
+    public HistoryCustomAdapter(Context context, List<CallBlockerLogModel> results) {
         historyList = results;
         mInflater = LayoutInflater.from(context);
-        helper = new Database_Helper(context);
+        helper = new DatabaseHelper(context);
         this.context = context;
     }
 
-    public void setFragment(com.example.kasun.busysms.callBlock.tab2Fragment tab2Fragment) {
-        this.tab2Fragment = tab2Fragment;
+    public void setFragment(Tab2Fragment Tab2Fragment) {
+        this.Tab2Fragment = Tab2Fragment;
     }
 
     @Override
@@ -57,14 +57,14 @@ public class historyCustomAdapter extends BaseAdapter {
         if (convertView == null) {
 
             convertView = mInflater.inflate(R.layout.call_log_listview_model, null);
-            mHolder = new historyCustomAdapter.ViewHolder();
+            mHolder = new HistoryCustomAdapter.ViewHolder();
 
             mHolder.number = (TextView) convertView.findViewById(R.id.numbertv);
             mHolder.dateTime = (TextView) convertView.findViewById(R.id.datetimetv);
 
             convertView.setTag(mHolder);
         } else {
-            mHolder = (historyCustomAdapter.ViewHolder) convertView.getTag();
+            mHolder = (HistoryCustomAdapter.ViewHolder) convertView.getTag();
         }
 
         mHolder.number.setText(historyList.get(position).getNumber());

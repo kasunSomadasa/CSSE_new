@@ -9,7 +9,7 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.kasun.busysms.Database_Helper;
+import com.example.kasun.busysms.DatabaseHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,7 +20,7 @@ import java.util.Locale;
  * Created by Kasun Somadasa
  * This class run in background for identify incomming SMS
  */
-public class autoSmsRecevier extends BroadcastReceiver {
+public class AutoSmsRecevier extends BroadcastReceiver {
 
     static final String TAG ="INFO_SMS";
     Calendar now = Calendar.getInstance();
@@ -89,7 +89,7 @@ public class autoSmsRecevier extends BroadcastReceiver {
          * this method run in background and detect incomming sms event
          * and check that incomming sms time is between our time slots then return our sms to that number
          */
-        Database_Helper db = new Database_Helper(context);
+        DatabaseHelper db = new DatabaseHelper(context);
         Cursor c = db.getData();
 
         if (c.getCount() == 0) {
